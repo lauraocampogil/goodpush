@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /today
+Disallow: /saved
+Disallow: /history
+Disallow: /settings
+Disallow: /start
+
+Sitemap: https://goodpush.app/sitemap.xml

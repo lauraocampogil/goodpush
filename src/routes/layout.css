@@ -1,0 +1,100 @@
+@import 'tailwindcss';
+
+@theme {
+	--color-ink: #111111;
+	--color-cream: #fff6ec;
+	--color-pink: #ff2e88;
+	--color-sun: #ffe14d;
+	--color-sky: #7fb2ff;
+
+	--font-display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
+	--font-serif: 'Instrument Serif', Georgia, serif;
+	--font-sans: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+
+	--shadow-hard: 4px 4px 0 var(--color-ink);
+	--shadow-hard-pink: 4px 4px 0 var(--color-pink);
+}
+
+@layer base {
+	html {
+		-webkit-tap-highlight-color: transparent;
+		scroll-behavior: smooth;
+	}
+	body {
+		@apply bg-cream text-ink font-sans antialiased;
+		min-height: 100dvh;
+	}
+	:focus-visible {
+		outline: 3px solid var(--color-pink);
+		outline-offset: 2px;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+}
+
+@layer components {
+	.display {
+		@apply font-display uppercase leading-[0.92] tracking-[0.01em];
+	}
+	.soft {
+		@apply font-serif italic normal-case tracking-normal;
+	}
+	.tape {
+		@apply bg-pink text-white inline-block px-[0.18em] pt-[0.08em] leading-[1] -rotate-2;
+		box-decoration-break: clone;
+		-webkit-box-decoration-break: clone;
+	}
+	.btn {
+		@apply inline-flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 font-extrabold text-white transition active:translate-x-[2px] active:translate-y-[2px] disabled:opacity-50;
+		box-shadow: var(--shadow-hard-pink);
+	}
+	.btn:active {
+		box-shadow: 2px 2px 0 var(--color-pink);
+	}
+	.btn-ghost {
+		@apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-ink bg-white px-5 py-3 font-bold transition hover:bg-sun;
+	}
+	.chip {
+		@apply inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-white px-4 py-2 text-sm font-semibold transition select-none;
+	}
+	.chip[aria-pressed='true'] {
+		@apply bg-ink text-white;
+	}
+	.card {
+		@apply rounded-3xl border-[3px] border-ink bg-white;
+		box-shadow: var(--shadow-hard);
+	}
+	.container-site {
+		@apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+	}
+}
+
+@keyframes drop-in {
+	0% {
+		transform: translateY(-120%) rotate(-2deg);
+		opacity: 0;
+	}
+	70% {
+		transform: translateY(6%) rotate(-2deg);
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(0) rotate(-2deg);
+	}
+}
+.animate-drop {
+	animation: drop-in 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+@keyframes wobble {
+	0%, 100% { transform: rotate(-6deg); }
+	50% { transform: rotate(6deg); }
+}
+.animate-wobble {
+	animation: wobble 3s ease-in-out infinite;
+}

@@ -1,0 +1,22 @@
+{
+	"name": "GoodPush — A good push. Every day.",
+	"short_name": "GoodPush",
+	"description": "One motivational phrase a day, right on your phone.",
+	"id": "/",
+	"start_url": "/today?utm_source=pwa",
+	"scope": "/",
+	"display": "standalone",
+	"orientation": "portrait",
+	"background_color": "#FFF6EC",
+	"theme_color": "#FFF6EC",
+	"categories": ["lifestyle", "health", "productivity"],
+	"icons": [
+		{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+		{ "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+		{ "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+	],
+	"shortcuts": [
+		{ "name": "Today", "url": "/today" },
+		{ "name": "Saved", "url": "/saved" }
+	]
+}
