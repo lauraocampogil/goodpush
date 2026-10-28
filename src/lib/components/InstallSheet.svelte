@@ -2,6 +2,8 @@
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { install } from '#lib/install.svelte.ts';
 	import { isAndroid, isInAppBrowser, isIOS } from '#lib/platform.ts';
+	import { track } from '#lib/analytics.ts';
+	import Stepper from './Stepper.svelte';
 
 	let { open = $bindable(false), oncontinue }: { open: boolean; oncontinue: () => void } = $props();
 	const i = getI18n();
@@ -19,6 +21,7 @@
 
 	async function installAndroid() {
 		const ok = await install.prompt();
+		track(ok ? 'app_installed' : 'install_dismissed', { platform: 'android', via: 'prompt' });
 		if (ok) oncontinue();
 	}
 </script>
@@ -29,6 +32,7 @@
 	class="m-auto mb-0 w-full max-w-lg rounded-t-[2rem] border-[3px] border-b-0 border-ink bg-cream p-0 backdrop:bg-ink/50 sm:mb-auto sm:rounded-[2rem] sm:border-b-[3px]"
 >
 	<div class="p-6 sm:p-8">
+		<div class="mb-6"><Stepper current={0} /></div>
 		<div class="mb-1 flex items-start justify-between gap-4">
 			<h2 class="display text-3xl sm:text-4xl">{i.t('install.title')}</h2>
 			<button class="chip shrink-0" onclick={() => (open = false)} aria-label={i.t('install.close')}>✕</button>

@@ -58,6 +58,7 @@ export async function syncProfile(
 				name: profile.name,
 				categories: profile.categories,
 				hour: profile.hour,
+				extraHours: profile.extraHours,
 				timeZone: profile.timeZone,
 				lang,
 				source,

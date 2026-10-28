@@ -9,7 +9,13 @@ export type Profile = {
 	timeZone: string;
 	onboarded: boolean;
 	pushEnabled: boolean;
+	/** Premium only: up to 2 extra local hours for extra pushes. */
+	extraHours: number[];
+	/** Share-card theme (cream is free, the rest are Premium). */
+	theme: ShareTheme;
 };
+
+export type ShareTheme = 'cream' | 'sky' | 'ink' | 'pink';
 
 type Streak = { count: number; best: number; last: string | null };
 type HistoryItem = { id: string; day: string };
@@ -41,8 +47,12 @@ class AppStore {
 		hour: 8,
 		timeZone: 'UTC',
 		onboarded: false,
-		pushEnabled: false
+		pushEnabled: false,
+		extraHours: [],
+		theme: 'cream'
 	});
+	/** Premium status — source of truth is the server (Stripe webhook), cached here. */
+	premium = $state(false);
 	favorites = $state<string[]>([]);
 	history = $state<HistoryItem[]>([]);
 	streak = $state<Streak>({ count: 0, best: 0, last: null });
@@ -56,9 +66,11 @@ class AppStore {
 			favorites: [] as string[],
 			history: [] as HistoryItem[],
 			streak: this.streak,
-			source: null as string | null
+			source: null as string | null,
+			premium: false
 		});
 		this.profile = {
+			...this.profile,
 			...data.profile,
 			deviceId: data.profile.deviceId || uuid(),
 			timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
@@ -67,6 +79,7 @@ class AppStore {
 		this.history = data.history;
 		this.streak = data.streak;
 		this.source = data.source;
+		this.premium = data.premium;
 		this.loaded = true;
 		this.save();
 	}
@@ -80,7 +93,8 @@ class AppStore {
 					favorites: this.favorites,
 					history: this.history,
 					streak: this.streak,
-					source: this.source
+					source: this.source,
+					premium: this.premium
 				})
 			);
 		} catch {
@@ -117,6 +131,24 @@ class AppStore {
 			? this.favorites.filter((f) => f !== id)
 			: [id, ...this.favorites];
 		this.save();
+	}
+
+	/** Asks the server whether this device has an active Premium subscription. */
+	async refreshPremium() {
+		try {
+			const res = await fetch(`/api/premium?deviceId=${encodeURIComponent(this.profile.deviceId)}`);
+			if (!res.ok) return this.premium;
+			const { premium } = (await res.json()) as { premium: boolean };
+			this.premium = premium;
+			if (!premium) {
+				this.profile.extraHours = [];
+				this.profile.theme = 'cream';
+			}
+			this.save();
+		} catch {
+			/* offline: keep cached value */
+		}
+		return this.premium;
 	}
 
 	reset() {

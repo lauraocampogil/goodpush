@@ -21,10 +21,11 @@ export const variables = defineEnvVars({
 		description: 'PostHog host',
 		schema: (v) => optional(v) ?? 'https://eu.i.posthog.com'
 	},
-	PUBLIC_STRIPE_PREMIUM_LINK: {
+	PUBLIC_SENTRY_DSN: { public: true, description: 'Sentry DSN (optional)', schema: optional },
+	PUBLIC_PREMIUM_PRICE: {
 		public: true,
-		description: 'Stripe Payment Link for GoodPush Premium (optional)',
-		schema: optional
+		description: 'Price shown on the site, e.g. 2,99 €',
+		schema: (v) => optional(v) ?? '2,99 €'
 	},
 	PUBLIC_AMAZON_TAG: { public: true, description: 'Amazon Associates tag (optional)', schema: optional },
 	PUBLIC_INSTAGRAM_URL: {
@@ -54,5 +55,8 @@ export const variables = defineEnvVars({
 		description: 'mailto: contact for push services',
 		schema: (v) => optional(v) ?? 'mailto:hello@goodpush.app'
 	},
-	CRON_SECRET: { description: 'Shared secret for /api/cron/send', schema: optional }
+	CRON_SECRET: { description: 'Shared secret for /api/cron/send', schema: optional },
+	STRIPE_SECRET_KEY: { description: 'Stripe secret key (sk_live_… / sk_test_…)', schema: optional },
+	STRIPE_PRICE_ID: { description: 'Stripe recurring Price ID for Premium (price_…)', schema: optional },
+	STRIPE_WEBHOOK_SECRET: { description: 'Stripe webhook signing secret (whsec_…)', schema: optional }
 });

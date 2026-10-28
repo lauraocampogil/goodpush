@@ -3,12 +3,19 @@
 	import Seo from '#lib/components/Seo.svelte';
 	import Logo from '#lib/components/Logo.svelte';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
+	import { onMount } from 'svelte';
+	import { setPerson } from '#lib/analytics.ts';
 	import { app } from '#lib/store.svelte.ts';
 	import type { LayoutProps } from './$types';
 
 	let { children }: LayoutProps = $props();
 	const i = getI18n();
 	app.load();
+	onMount(() => {
+		app.refreshPremium().then((premium) =>
+			setPerson({ premium, lang: i.lang, categories: app.profile.categories, hour: app.profile.hour, push: app.profile.pushEnabled })
+		);
+	});
 
 	const tabs = [
 		{ href: '/today', key: 'nav.today', icon: 'M12 3v2m0 14v2m9-9h-2M5 12H3m15.4-6.4-1.4 1.4M7 17l-1.4 1.4m12.8 0L17 17M7 7 5.6 5.6M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z' },
@@ -21,25 +28,28 @@
 
 <Seo title="GoodPush" description={i.t('meta.description')} noindex />
 
-<div class="mx-auto flex min-h-dvh w-full max-w-2xl flex-col px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 {showNav ? 'pb-28' : 'pb-8'}">
+<div class="dots mx-auto flex min-h-dvh w-full max-w-2xl flex-col px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 {showNav ? 'pb-32' : 'pb-8'}">
 	{#if showNav}
 		<header class="flex items-center justify-between py-3">
 			<a href="/today" aria-label="GoodPush"><Logo size="sm" /></a>
-			{#if app.streak.count > 0}
-				<span class="chip bg-sun">🔥 {app.streak.count}</span>
-			{/if}
+			<div class="flex items-center gap-2">
+				{#if app.premium}<span class="chip border-ink bg-ink text-sun">✦ PRO</span>{/if}
+				{#if app.streak.count > 0}
+					<span class="chip bg-sun">🔥 {app.streak.count}</span>
+				{/if}
+			</div>
 		</header>
 	{/if}
 	{@render children()}
 </div>
 
 {#if showNav}
-	<nav class="fixed inset-x-0 bottom-0 z-20 border-t-[3px] border-ink bg-white pb-[env(safe-area-inset-bottom)]">
-		<ul class="mx-auto grid max-w-2xl grid-cols-4">
+	<nav class="fixed inset-x-0 bottom-0 z-20 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+		<ul class="glass mx-auto grid max-w-md grid-cols-4 rounded-full border-[3px] border-ink p-1 shadow-[4px_4px_0_#111]">
 			{#each tabs as tab (tab.href)}
 				{@const active = page.url.pathname === tab.href}
 				<li>
-					<a href={tab.href} class="flex flex-col items-center gap-1 py-2.5 text-[11px] font-bold {active ? 'text-pink' : 'text-ink/60'}" aria-current={active ? 'page' : undefined}>
+					<a href={tab.href} class="flex flex-col items-center gap-0.5 rounded-full py-2 text-[11px] font-bold transition-colors duration-300 {active ? 'bg-ink text-sun' : 'text-ink/60 hover:text-ink'}" aria-current={active ? 'page' : undefined}>
 						<svg viewBox="0 0 24 24" class="h-6 w-6" fill={active && tab.href === '/saved' ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={tab.icon} /></svg>
 						{i.t(tab.key)}
 					</a>

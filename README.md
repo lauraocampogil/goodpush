@@ -10,12 +10,13 @@ PWA built with **SvelteKit 3 + Svelte 5 + Tailwind 4**, **Web Push**, and **Supa
 
 | Area | Features |
 | --- | --- |
-| **Landing** | Responsive hero, how it works, categories, sample phrases, features, FAQ, final CTA, language switcher (EN default · ES · FR) |
+| **Landing** | GSAP-animated: split-text hero, live phone with notifications dropping in, mouse-parallax stickers, crossing marquees, pinned scroll “How it works”, interactive vibe picker, animated bento (streak counter, heart burst, fanned share cards, typewriter names), pricing, FAQ, giant marquee CTA, view transitions |
 | **Install** | Smart install sheet: step-by-step iPhone guide (+ warning for TikTok/Instagram in-app browser), native install button on Android |
-| **Onboarding** | Name (optional) → categories → time → notifications, with a live preview of the push |
+| **Onboarding** | Numbered 5-step flow shown from the very first screen: **1 Install → 2 Name → 3 Vibe → 4 Time → 5 Push**, live preview, confetti |
 | **App** | Phrase of the day with name + pink tape, **streaks**, **favorites**, **history**, **share as Story image** (1080×1920), settings, test push, delete my data |
 | **Push** | Service worker: push, notification actions (♥ Save / ↗ Share), app badge, offline cache |
-| **Money** | Premium page (Stripe Payment Link), affiliate pick per category (with legal disclosure) |
+| **Money** | **Stripe Premium** (Checkout + webhook + Billing Portal): up to 3 pushes/day, Premium-only phrases, 4 share-card themes · affiliate pick per category |
+| **Monitoring** | **PostHog** (cookie-less, funnel + installs + every option chosen) · **Sentry** (client + server errors) · error page |
 | **Growth** | SEO meta + OpenGraph image, sitemap, robots, JSON-LD, first-touch attribution (`?utm_source=tiktok&utm_campaign=v12` → saved per subscriber), cookie-less PostHog events, feedback → Instagram DM, share links with UTM |
 | **Legal** | Privacy + Terms templates (GDPR), self-hosted fonts (no Google Fonts requests) |
 
@@ -74,8 +75,27 @@ curl -H "Authorization: Bearer $CRON_SECRET" "https://goodpush.app/api/cron/send
 
 ### 5. Optional
 
-- **PostHog** (EU) → `PUBLIC_POSTHOG_KEY` for the funnel: `landing_view → cta_click → onboarding_done → push_enabled → share`.
-- **Stripe** → create a Payment Link (2,99 €/month) → `PUBLIC_STRIPE_PREMIUM_LINK`. The device id is passed as `client_reference_id` (for the webhook in phase 2).
+### 5. Stripe Premium (10 min — use **Test mode** first)
+
+1. Run [`supabase/migrations/0002_premium.sql`](supabase/migrations/0002_premium.sql) in Supabase.
+2. Stripe → **Product catalog** → add product “GoodPush Premium”, recurring **2,99 € / month** → copy the `price_…` → `STRIPE_PRICE_ID`.
+3. **Developers → API keys** → secret key → `STRIPE_SECRET_KEY`.
+4. **Developers → Webhooks** → add endpoint `https://goodpush.app/api/stripe/webhook` with events
+   `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted` → signing secret → `STRIPE_WEBHOOK_SECRET`.
+5. **Settings → Billing → Customer portal** → activate (lets people cancel / change card).
+6. Test with card `4242 4242 4242 4242`. Locally: `stripe listen --forward-to localhost:5173/api/stripe/webhook`.
+
+Premium is tied to the device id (no accounts). Supabase → view `stats` shows `premium` and `mrr_eur`.
+
+### 6. PostHog + Sentry (5 min)
+
+- **PostHog** (EU cloud) → project API key → `PUBLIC_POSTHOG_KEY`. Cookie-less (memory persistence), identified by the random device id.
+  Main events: `cta_click`, `install_sheet_open`, **`app_installed`** (= a “download”: first open from the home screen or the Android install prompt), `onboarding_step`, `category_toggled`, `hour_selected`, `push_enabled` / `push_failed`, `phrase_viewed`, `favorite`, `share`, `affiliate_click`, `premium_view`, `checkout_started`, `premium_activated`, `theme_changed`, `extra_hour_toggled`, `lang_changed`, `streak_milestone`.
+  Super-properties on every event: `lang`, `platform`, `standalone`, `source`, `premium`.
+- **Sentry** → new project (SvelteKit) → DSN → `PUBLIC_SENTRY_DSN`. Errors from the browser and the server are reported.
+
+### 7. Optional
+
 - **Amazon Associates** → `PUBLIC_AMAZON_TAG`. Edit picks in `src/lib/data/picks.ts`.
 
 ---
@@ -103,7 +123,7 @@ In Supabase → Table editor: views **`stats`** (active, new today, new 7 days) 
 
 ## 🗺️ Roadmap (next)
 
-- [ ] Stripe webhook → set `premium = true` and unlock up to 3 pushes/day + exclusive phrases
+- [ ] Restore Premium on a new phone (magic link by email)
 - [ ] Phrases in Supabase / Directus (admin panel without redeploy)
 - [ ] Sync favorites/streak to Supabase (multi-device)
 - [ ] Streak reminders ("Don't lose your 12-day streak!")

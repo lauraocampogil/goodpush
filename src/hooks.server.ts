@@ -1,7 +1,14 @@
-import type { Handle } from '@sveltejs/kit/hooks';
+import * as Sentry from '@sentry/sveltekit';
+import { sequence } from '@sveltejs/kit/hooks';
+import type { Handle, HandleServerError } from '@sveltejs/kit/hooks';
+import { PUBLIC_SENTRY_DSN } from '$app/env/public';
 import { pickLang } from '#lib/i18n/index.svelte.ts';
 
-export const handle: Handle = async ({ event, resolve }) => {
+if (PUBLIC_SENTRY_DSN) {
+	Sentry.init({ dsn: PUBLIC_SENTRY_DSN, tracesSampleRate: 0.1 });
+}
+
+const app: Handle = async ({ event, resolve }) => {
 	const lang = pickLang(event.cookies.get('lang'), event.request.headers.get('accept-language'));
 	event.locals.lang = lang;
 	const response = await resolve(event, {
@@ -12,3 +19,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 	response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 	return response;
 };
+
+export const handle = PUBLIC_SENTRY_DSN ? sequence(Sentry.sentryHandle(), app) : app;
+
+const fallback: HandleServerError = ({ error, kind }) => {
+	if (kind === 'unknown') console.error(error);
+};
+
+export const handleError = PUBLIC_SENTRY_DSN ? Sentry.handleErrorWithSentry(fallback) : fallback;

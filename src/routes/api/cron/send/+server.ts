@@ -17,6 +17,8 @@ type Row = {
 	p256dh: string;
 	auth: string;
 	last_sent_on: string | null;
+	extra_hours: number[] | null;
+	sent_slots: number[] | null;
 };
 
 /**
@@ -32,6 +34,8 @@ export const GET: RequestHandler = async ({ request, url }) => {
 	if (!supabase || !pushReady()) error(503, 'Supabase or VAPID keys not configured');
 
 	const now = new Date();
+	const { data: prem } = await supabase.from('premium_active').select('device_id');
+	const premiumIds = new Set((prem ?? []).map((p: { device_id: string }) => p.device_id));
 	const dryRun = url.searchParams.has('dry');
 	let sent = 0;
 	let removed = 0;
@@ -40,7 +44,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
 	for (let from = 0; ; from += 1000) {
 		const { data, error: e } = await supabase
 			.from('subscribers')
-			.select('id,name,categories,hour,time_zone,lang,endpoint,p256dh,auth,last_sent_on')
+			.select('id,name,categories,hour,time_zone,lang,endpoint,p256dh,auth,last_sent_on,extra_hours,sent_slots')
 			.eq('active', true)
 			.order('id')
 			.range(from, from + 999);
@@ -51,19 +55,28 @@ export const GET: RequestHandler = async ({ request, url }) => {
 			rows.map(async (r) => {
 				checked++;
 				const today = dayKey(now, r.time_zone);
-				if (r.last_sent_on === today || localHour(now, r.time_zone) < r.hour) return;
+				const premium = premiumIds.has(r.id);
+				// Slot 0 = free daily push; slots 1–2 = Premium extra pushes
+				const hours = [r.hour, ...(premium ? (r.extra_hours ?? []).slice(0, 2) : [])];
+				const sentToday = r.last_sent_on === today ? (r.sent_slots?.length ? r.sent_slots : [0]) : [];
+				const nowHour = localHour(now, r.time_zone);
+				const slot = hours.findIndex((h, k) => h <= nowHour && !sentToday.includes(k));
+				if (slot === -1) return;
 
-				const phrase = phraseForDay(r.categories, today);
+				const phrase = phraseForDay(r.categories, today, { slot, premium });
 				if (dryRun) return void sent++;
 				try {
 					await sendPush(r, {
-						title: 'GoodPush',
+						title: slot === 0 ? 'GoodPush' : 'GoodPush ✦',
 						body: pushBody(phrase, r.lang, r.name),
 						id: phrase.id,
-						url: `/today?utm_source=push`
+						url: `/today?utm_source=push&slot=${slot}`
 					});
 					sent++;
-					await supabase.from('subscribers').update({ last_sent_on: today }).eq('id', r.id);
+					await supabase
+						.from('subscribers')
+						.update({ last_sent_on: today, sent_slots: [...sentToday, slot] })
+						.eq('id', r.id);
 				} catch (err) {
 					const status = (err as { statusCode?: number }).statusCode;
 					if (status === 404 || status === 410) {

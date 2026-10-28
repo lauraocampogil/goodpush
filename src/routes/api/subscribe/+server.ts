@@ -18,6 +18,10 @@ export const POST: RequestHandler = async ({ request }) => {
 		CATEGORY_IDS.includes(c as CategoryId)
 	);
 	const hour = Number.isInteger(body.hour) && body.hour >= 0 && body.hour <= 23 ? body.hour : 8;
+	// Premium extra pushes: max 2 distinct hours (enforced again by the cron)
+	const extraHours = (Array.isArray(body.extraHours) ? body.extraHours : [])
+		.filter((h: unknown) => Number.isInteger(h) && (h as number) >= 0 && (h as number) <= 23 && h !== hour)
+		.slice(0, 2);
 	let timeZone = 'UTC';
 	try {
 		timeZone = new Intl.DateTimeFormat('en', { timeZone: body.timeZone }).resolvedOptions().timeZone;
@@ -34,6 +38,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			name: typeof body.name === 'string' ? body.name.trim().slice(0, 40) : null,
 			categories,
 			hour,
+			extra_hours: [...new Set(extraHours)],
 			time_zone: timeZone,
 			lang: LANGS.includes(body.lang) ? body.lang : 'en',
 			source: typeof body.source === 'string' ? body.source.slice(0, 80) : null,

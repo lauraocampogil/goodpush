@@ -6,20 +6,57 @@
 	import '@fontsource-variable/bricolage-grotesque';
 	import './layout.css';
 	import { onMount } from 'svelte';
+	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
+	import { initAnalytics, track } from '#lib/analytics.ts';
 	import { setI18n } from '#lib/i18n/index.svelte.ts';
 	import { install } from '#lib/install.svelte.ts';
+	import { isAndroid, isIOS, isStandalone } from '#lib/platform.ts';
 	import { app } from '#lib/store.svelte.ts';
 	import type { LayoutProps } from './$types';
 
 	let { data, children }: LayoutProps = $props();
 	// svelte-ignore state_referenced_locally
-	setI18n(data.lang);
+	const i = setI18n(data.lang);
 
 	onMount(() => {
 		app.load();
 		app.captureSource(new URL(page.url.href));
 		install.listen();
+
+		const standalone = isStandalone();
+		initAnalytics(app.profile.deviceId, {
+			lang: i.lang,
+			standalone,
+			platform: isIOS() ? 'ios' : isAndroid() ? 'android' : 'desktop',
+			source: app.source,
+			premium: app.premium
+		});
+
+		// "Downloads": a PWA install = the app's first open from the home screen
+		try {
+			if (standalone && !localStorage.getItem('goodpush:installed')) {
+				localStorage.setItem('goodpush:installed', '1');
+				track('app_installed', { via: 'home_screen', platform: isIOS() ? 'ios' : isAndroid() ? 'android' : 'desktop' });
+			}
+		} catch {
+			/* ignore */
+		}
+		addEventListener('appinstalled', () => track('app_installed', { via: 'browser_prompt' }));
+	});
+
+	// Smooth page-to-page transitions (View Transitions API, where supported)
+	onNavigate((navigation) => {
+		if (!document.startViewTransition || navigation.from?.url.pathname === navigation.to?.url.pathname) return;
+		return new Promise((resolve) => {
+			const vt = document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+			// An interrupted transition is harmless — don't report it as an error
+			vt.ready.catch(() => {});
+			vt.finished.catch(() => {});
+		});
 	});
 </script>
 

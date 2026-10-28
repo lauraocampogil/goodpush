@@ -31,15 +31,26 @@ export function shiftDay(key: string, delta: number): string {
  * Deterministic phrase of the day. The server (push) and the app use the
  * same function, so the notification and the app always show the same phrase.
  */
-export function phraseForDay(categories: CategoryId[], key: string): Phrase {
+export function phraseForDay(
+	categories: CategoryId[],
+	key: string,
+	opts: { slot?: number; premium?: boolean } = {}
+): Phrase {
+	const slot = opts.slot ?? 0;
 	const cats = (categories.length ? categories : [...CATEGORY_IDS]).filter((c) =>
 		CATEGORY_IDS.includes(c)
 	);
 	const n = dayNumber(key);
-	const cat = cats[n % cats.length];
-	const pool = PHRASES.filter((p) => p.cat === cat);
+	const cat = cats[(n + slot) % cats.length];
+	// Slot 0 is the free daily push. Premium extra slots (1, 2) draw from the Premium drops first.
+	const all = PHRASES.filter((p) => p.cat === cat);
+	const premiumPool = all.filter((p) => p.premium);
+	const pool =
+		slot > 0 && opts.premium && premiumPool.length
+			? premiumPool
+			: all.filter((p) => !p.premium);
 	// Divide by number of categories so each category walks through its own list.
-	return pool[Math.floor(n / cats.length) % pool.length];
+	return pool[(Math.floor(n / cats.length) + slot * 3) % pool.length];
 }
 
 export type Segment = { text: string; hl: boolean };

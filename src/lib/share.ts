@@ -2,7 +2,15 @@ import { segments } from './phrase';
 
 const C = { ink: '#111111', cream: '#FFF6EC', pink: '#FF2E88', sun: '#FFE14D', white: '#FFFFFF' };
 
-type Opts = { text: string; name?: string; category: string; time: string; site: string };
+export type Theme = 'cream' | 'sky' | 'ink' | 'pink';
+const THEMES: Record<Theme, { bg: string; fg: string; accent: string }> = {
+	cream: { bg: '#FFF6EC', fg: '#111111', accent: '#FF2E88' },
+	sky: { bg: '#7FB2FF', fg: '#111111', accent: '#FF2E88' },
+	ink: { bg: '#111111', fg: '#FFFFFF', accent: '#FFE14D' },
+	pink: { bg: '#FF2E88', fg: '#111111', accent: '#FFFFFF' }
+};
+
+type Opts = { text: string; name?: string; category: string; time: string; site: string; theme?: Theme };
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
 	ctx.beginPath();
@@ -48,8 +56,16 @@ export async function renderShareCard(o: Opts): Promise<Blob> {
 	canvas.height = H;
 	const ctx = canvas.getContext('2d')!;
 
-	ctx.fillStyle = C.cream;
+	const T = THEMES[o.theme ?? 'cream'];
+	ctx.fillStyle = T.bg;
 	ctx.fillRect(0, 0, W, H);
+	// subtle dot grid
+	ctx.fillStyle = T.fg === '#FFFFFF' ? 'rgba(255,255,255,.08)' : 'rgba(17,17,17,.08)';
+	for (let gx = 20; gx < W; gx += 44) for (let gy = 20; gy < H; gy += 44) {
+		ctx.beginPath();
+		ctx.arc(gx, gy, 2.4, 0, Math.PI * 2);
+		ctx.fill();
+	}
 
 	// Wordmark: G ☺ ☺ D PUSH
 	ctx.textBaseline = 'alphabetic';
@@ -59,7 +75,7 @@ export async function renderShareCard(o: Opts): Promise<Blob> {
 	const parts = [ctx.measureText('G').width, o1 + 6, o1 + 6, ctx.measureText('D').width, ctx.measureText('PUSH').width];
 	let x = (W - parts.reduce((a, b) => a + b, 0)) / 2;
 	const base = 230;
-	ctx.fillStyle = C.ink;
+	ctx.fillStyle = T.fg;
 	ctx.fillText('G', x, base);
 	x += parts[0];
 	smiley(ctx, x + o1 / 2 + 3, base - 36, o1 / 2);
@@ -68,7 +84,7 @@ export async function renderShareCard(o: Opts): Promise<Blob> {
 	x += parts[2];
 	ctx.fillText('D', x, base);
 	x += parts[3];
-	ctx.fillStyle = C.pink;
+	ctx.fillStyle = T.accent;
 	ctx.fillText('PUSH', x, base);
 
 	// Layout phrase words
@@ -112,7 +128,7 @@ export async function renderShareCard(o: Opts): Promise<Blob> {
 	const cardY = Math.max(340, (H - cardH) / 2 - 40);
 
 	// Card shadow + body
-	ctx.fillStyle = C.ink;
+	ctx.fillStyle = o.theme === 'ink' ? C.pink : C.ink;
 	roundRect(ctx, cardX + 14, cardY + 14, cardW, cardH, 56);
 	ctx.fill();
 	ctx.fillStyle = C.white;
@@ -169,7 +185,7 @@ export async function renderShareCard(o: Opts): Promise<Blob> {
 	// Footer
 	smiley(ctx, W / 2, H - 330, 56);
 	ctx.textAlign = 'center';
-	ctx.fillStyle = C.ink;
+	ctx.fillStyle = T.fg;
 	ctx.font = '700 44px "Bricolage Grotesque Variable", sans-serif';
 	ctx.fillText(o.site, W / 2, H - 210);
 	ctx.font = 'italic 52px "Instrument Serif", serif';

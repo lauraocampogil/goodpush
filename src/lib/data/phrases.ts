@@ -5,7 +5,8 @@ import type { CategoryId, Lang } from './categories';
  * Add as many as you want: each category rotates through its list day by day.
  * Keep the same `id` forever (favorites are stored by id).
  */
-export type Phrase = { id: string; cat: CategoryId } & Record<Lang, string>;
+/** `premium: true` → only sent / shown to Premium members. */
+export type Phrase = { id: string; cat: CategoryId; premium?: boolean } & Record<Lang, string>;
 
 export const PHRASES: Phrase[] = [
 	// ---------- DISCIPLINE ----------
@@ -76,7 +77,22 @@ export const PHRASES: Phrase[] = [
 	{ id: 'l5', cat: 'selflove', en: 'You don’t need to *earn* rest.', es: 'No tienes que *ganarte* el descanso.', fr: 'Tu n’as pas à *mériter* le repos.' },
 	{ id: 'l6', cat: 'selflove', en: 'Mistakes don’t cancel your *worth*.', es: 'Los errores no cancelan tu *valor*.', fr: 'Les erreurs n’annulent pas ta *valeur*.' },
 	{ id: 'l7', cat: 'selflove', en: 'Choose *you*. Without guilt.', es: 'Elígete a *ti*. Sin culpa.', fr: 'Choisis-*toi*. Sans culpabilité.' },
-	{ id: 'l8', cat: 'selflove', en: 'You’re doing *better* than you think.', es: 'Lo estás haciendo *mejor* de lo que crees.', fr: 'Tu fais *mieux* que tu ne le penses.' }
+	{ id: 'l8', cat: 'selflove', en: 'You’re doing *better* than you think.', es: 'Lo estás haciendo *mejor* de lo que crees.', fr: 'Tu fais *mieux* que tu ne le penses.' },
+	// ---------- PREMIUM DROPS (Premium only) ----------
+	{ id: 'pd1', cat: 'discipline', premium: true, en: 'Win the morning. *Win* the day.', es: 'Gana la mañana. *Gana* el día.', fr: 'Gagne le matin. *Gagne* la journée.' },
+	{ id: 'pd2', cat: 'discipline', premium: true, en: 'Discipline is self-*respect*.', es: 'La disciplina es *respeto* propio.', fr: 'La discipline, c’est du *respect* pour soi.' },
+	{ id: 'pc1', cat: 'calm', premium: true, en: 'Unclench your jaw. *Drop* your shoulders.', es: 'Suelta la mandíbula. *Baja* los hombros.', fr: 'Desserre la mâchoire. *Baisse* les épaules.' },
+	{ id: 'pc2', cat: 'calm', premium: true, en: 'Not every thought deserves an *answer*.', es: 'No todo pensamiento merece una *respuesta*.', fr: 'Toutes les pensées ne méritent pas une *réponse*.' },
+	{ id: 'ps1', cat: 'sport', premium: true, en: 'Your rival is *yesterday’s* you.', es: 'Tu rival es tu yo de *ayer*.', fr: 'Ton rival, c’est toi d’*hier*.' },
+	{ id: 'ps2', cat: 'sport', premium: true, en: 'Pressure is a *privilege*.', es: 'La presión es un *privilegio*.', fr: 'La pression est un *privilège*.' },
+	{ id: 'pt1', cat: 'study', premium: true, en: 'Learn it like you’ll *teach* it.', es: 'Apréndelo como si fueras a *enseñarlo*.', fr: 'Apprends-le comme si tu devais l’*enseigner*.' },
+	{ id: 'pt2', cat: 'study', premium: true, en: 'Today’s effort is tomorrow’s *ease*.', es: 'El esfuerzo de hoy es la *calma* de mañana.', fr: 'L’effort d’aujourd’hui, c’est la *facilité* de demain.' },
+	{ id: 'pb1', cat: 'build', premium: true, en: 'Charge what you’re *worth*.', es: 'Cobra lo que *vales*.', fr: 'Facture ce que tu *vaux*.' },
+	{ id: 'pb2', cat: 'build', premium: true, en: 'Ideas are cheap. *Execution* isn’t.', es: 'Las ideas son baratas. La *ejecución* no.', fr: 'Les idées sont gratuites. L’*exécution*, non.' },
+	{ id: 'pf1', cat: 'faith', premium: true, en: 'Grace for *today*. That’s enough.', es: 'Gracia para *hoy*. Con eso basta.', fr: 'De la grâce pour *aujourd’hui*. Ça suffit.' },
+	{ id: 'pf2', cat: 'faith', premium: true, en: 'Your story isn’t *over*.', es: 'Tu historia no ha *terminado*.', fr: 'Ton histoire n’est pas *finie*.' },
+	{ id: 'pl1', cat: 'selflove', premium: true, en: 'Softness is *strength* too.', es: 'La suavidad también es *fuerza*.', fr: 'La douceur aussi, c’est de la *force*.' },
+	{ id: 'pl2', cat: 'selflove', premium: true, en: 'You’re allowed to *outgrow* things.', es: 'Tienes derecho a *dejar atrás* cosas.', fr: 'Tu as le droit de *dépasser* certaines choses.' }
 ];
 
 export const PHRASE_BY_ID = new Map(PHRASES.map((p) => [p.id, p]));
