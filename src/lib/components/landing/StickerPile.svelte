@@ -5,6 +5,7 @@
 	import NotifCard from '../NotifCard.svelte';
 	import PhraseText from '../PhraseText.svelte';
 	import Smiley from '../Smiley.svelte';
+	import CatIcon from '../CatIcon.svelte';
 	import { CATEGORY_IDS, type CategoryId } from '#lib/data/categories.ts';
 	import { PHRASES } from '#lib/data/phrases.ts';
 	import { track } from '#lib/analytics.ts';
@@ -31,43 +32,115 @@
 	];
 	const moods = ['smile', 'calm', 'smile', 'wink', 'smile', 'calm', 'wink'] as const;
 
+	// Floating label (rendered on top of the whole pile, so it's never hidden)
+	let label = $state<{ c: CategoryId; x: number; y: number } | null>(null);
+	let hovered: HTMLElement | null = null;
+
+	function placeLabel(el: HTMLElement | null) {
+		if (!el || !pile) return;
+		const p = pile.getBoundingClientRect();
+		const r = el.getBoundingClientRect();
+		label = { c: el.dataset.cat as CategoryId, x: r.left - p.left + r.width / 2, y: r.top - p.top };
+	}
+	const selectedEl = () => pile?.querySelector<HTMLElement>(`[data-cat="${cat}"]`) ?? null;
+
 	onMount(() => {
 		const t = setInterval(() => k++, 3200);
 		const { gsap, Draggable } = motion();
 		const els = gsap.utils.toArray<HTMLElement>('[data-sticker]', pile);
+		const faces = els.map((el) => el.querySelector<HTMLElement>('[data-face]')!);
+		els.forEach((el, n) => gsap.set(el, { rotation: spots[n][3] }));
+
 		if (!reduced()) {
+			// 1. Drop onto the table, bounce, settle
 			gsap.from(els, {
-				y: -500,
-				rotate: () => gsap.utils.random(-120, 120),
-				duration: 1.1,
+				y: () => gsap.utils.random(-700, -450),
+				x: () => gsap.utils.random(-80, 80),
+				rotation: () => gsap.utils.random(-200, 200),
+				duration: 1.2,
 				ease: 'bounce.out',
-				stagger: 0.08,
-				scrollTrigger: { trigger: pile, start: 'top 75%', once: true }
+				stagger: { each: 0.09, from: 'random' },
+				scrollTrigger: { trigger: pile, start: 'top 75%', once: true },
+				onComplete: () => placeLabel(selectedEl())
 			});
+			// 2. Idle: each sticker breathes at its own pace
+			faces.forEach((f) =>
+				gsap.to(f, {
+					y: gsap.utils.random(-10, -5),
+					rotation: gsap.utils.random(-5, 5),
+					duration: gsap.utils.random(1.6, 2.6),
+					ease: 'sine.inOut',
+					yoyo: true,
+					repeat: -1,
+					delay: gsap.utils.random(0, 1.5)
+				})
+			);
 		}
+
 		const drags = Draggable.create(els, {
 			bounds: pile,
 			zIndexBoost: true,
 			onPress() {
-				gsap.to(this.target, { scale: 1.08, duration: 0.2 });
+				const f = (this.target as HTMLElement).querySelector('[data-face]');
+				gsap.to(f, { scale: 1.12, duration: 0.25, ease: 'back.out(3)', overwrite: 'auto' });
+			},
+			onDrag() {
+				// tilt in the direction of the drag
+				const f = (this.target as HTMLElement).querySelector('[data-face]');
+				gsap.to(f, { rotation: gsap.utils.clamp(-28, 28, this.deltaX * 2.2), duration: 0.25, overwrite: 'auto' });
+				placeLabel(this.target as HTMLElement);
 			},
 			onRelease() {
-				gsap.to(this.target, { scale: 1, duration: 0.4, ease: 'back.out(3)' });
+				const f = (this.target as HTMLElement).querySelector('[data-face]');
+				gsap.to(f, { scale: 1, rotation: 0, duration: 0.9, ease: 'elastic.out(1, 0.35)', overwrite: 'auto' });
+				placeLabel(hovered ?? selectedEl());
 			},
 			onClick() {
-				pick((this.target as HTMLElement).dataset.cat as CategoryId);
+				pick((this.target as HTMLElement).dataset.cat as CategoryId, this.target as HTMLElement);
 			}
 		});
+
+		const onResize = () => placeLabel(hovered ?? selectedEl());
+		addEventListener('resize', onResize);
+		placeLabel(selectedEl());
 		return () => {
 			clearInterval(t);
+			removeEventListener('resize', onResize);
 			drags.forEach((d) => d.kill());
 		};
 	});
 
-	function pick(c: CategoryId) {
+	function enter(el: HTMLElement) {
+		hovered = el;
+		placeLabel(el);
+		if (reduced()) return;
+		const { gsap } = motion();
+		const f = el.querySelector('[data-face]');
+		gsap.timeline({ overwrite: 'auto' })
+			.to(f, { scale: 1.1, duration: 0.3, ease: 'back.out(3)' })
+			.to(f, { rotation: -10, duration: 0.08 }, 0)
+			.to(f, { rotation: 8, duration: 0.1 })
+			.to(f, { rotation: 0, duration: 0.5, ease: 'elastic.out(1, 0.3)' });
+	}
+
+	function leave(el: HTMLElement) {
+		hovered = null;
+		placeLabel(selectedEl());
+		if (reduced()) return;
+		motion().gsap.to(el.querySelector('[data-face]'), { scale: 1, duration: 0.4, ease: 'power3.out' });
+	}
+
+	function pick(c: CategoryId, el?: HTMLElement) {
 		cat = c;
 		k = 0;
 		track('vibe_demo', { category: c });
+		if (el) {
+			placeLabel(el);
+			if (!reduced()) {
+				const { gsap } = motion();
+				gsap.fromTo(el.querySelector('[data-face]'), { scale: 0.82 }, { scale: 1.1, duration: 0.7, ease: 'elastic.out(1.2, 0.35)' });
+			}
+		}
 	}
 </script>
 
@@ -83,15 +156,25 @@
 					<button
 						data-sticker
 						data-cat={c}
-						class="group absolute cursor-grab active:cursor-grabbing"
-						style="left:{x}%; top:{y}%; width:{s}%; transform: rotate({r}deg)"
+						class="absolute cursor-grab rounded-full outline-none active:cursor-grabbing"
+						style="left:{x}%; top:{y}%; width:{s}%"
 						aria-label={i.cat(c)}
 						aria-pressed={cat === c}
+						onpointerenter={(e) => enter(e.currentTarget)}
+						onpointerleave={(e) => leave(e.currentTarget)}
+						onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), pick(c, e.currentTarget))}
 					>
-						<Smiley size={0} color={CATEGORY_COLOR[c]} mood={moods[n]} class="h-auto w-full drop-shadow-[0_18px_24px_rgb(0_0_0/0.45)] transition-[filter] {cat === c ? '' : 'saturate-[.85]'}" />
-						<span class="pill pointer-events-none absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-paper text-ink transition {cat === c ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}">{i.cat(c)}</span>
+						<span data-face class="block rounded-full transition-shadow duration-300 {cat === c ? 'shadow-[0_0_0_5px_#fbf8f1,0_22px_30px_rgb(0_0_0/0.5)]' : 'shadow-[0_18px_26px_rgb(0_0_0/0.45)]'}">
+							<Smiley size={0} color={CATEGORY_COLOR[c]} mood={moods[n]} class="block h-auto w-full" />
+						</span>
 					</button>
 				{/each}
+				{#if label}
+					<span
+						class="pill pointer-events-none absolute z-[5000] -translate-x-1/2 -translate-y-[130%] bg-paper px-3 py-1.5 text-sm whitespace-nowrap text-ink shadow-[var(--shadow-soft)] transition-[left,top] duration-200"
+						style="left:{label.x}px; top:{label.y}px"
+					><CatIcon cat={label.c} /> {i.cat(label.c)}</span>
+				{/if}
 			</div>
 		</div>
 

@@ -92,14 +92,15 @@ Premium is tied to the device id (no accounts). Supabase → view `stats` shows 
   Super-properties on every event: `lang`, `platform`, `standalone`, `source`, `premium`.
 - **Sentry** → new project (SvelteKit) → DSN → `PUBLIC_SENTRY_DSN`. Errors from the browser and the server are reported.
 
-### 7. Accounts — Google, Apple, email code (optional, 15 min)
+### 7. Accounts — Google or email code (optional, 15 min)
 
 1. Run [`supabase/migrations/0003_accounts.sql`](supabase/migrations/0003_accounts.sql).
 2. Add `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_ANON_KEY` (Project Settings → API → anon key).
 3. **Authentication → URL Configuration**: Site URL `https://goodpush.app`, redirect URL `https://goodpush.app/account` (+ `http://localhost:5173/account`).
 4. **Email**: Authentication → Email Templates → “Magic Link”: put the code in the email, e.g. `Your GoodPush code: {{ .Token }}`. (A code works inside the installed iPhone app; a link would open Safari.)
 5. **Google**: Google Cloud Console → OAuth client (Web) → callback `https://<project>.supabase.co/auth/v1/callback` → paste ID/secret in Supabase → Providers → Google.
-6. **Apple**: Apple Developer (99 $/year) → Services ID + key for “Sign in with Apple” → Supabase → Providers → Apple. If people hide their email, register your sending domain in Apple’s *Private Email Relay*.
+
+Sign in with Apple is intentionally not used.
 
 What accounts do: sync streak / favorites / history across phones, Premium follows the account, turn notifications off for any phone, email-marketing consent (view `marketing_audience` → export to Brevo/Resend/MailerLite), delete account (also cancels Premium).
 

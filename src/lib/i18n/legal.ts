@@ -19,7 +19,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
 <li><strong>First name</strong> (optional), <strong>categories, time(s), language and time zone</strong> — to send the right phrase at the right time.</li>
 <li><strong>Push subscription</strong> (a technical address created by your browser) — to deliver the notification.</li>
 <li><strong>Random device ID</strong> — to update or delete your settings.</li>
-<li><strong>If you create an account</strong> (optional): your email address (and your Apple/Google identifier), your synced favorites, history and streak.</li>
+<li><strong>If you create an account</strong> (optional): your email address (and your Google identifier), your synced favorites, history and streak.</li>
 <li><strong>Where you came from</strong> (e.g. a TikTok or Instagram link) — to understand which content works.</li>
 <li><strong>Usage events</strong> (e.g. “phrase shared”, “app installed”) — no cookies, nothing stored in your browser for this.</li>
 <li><strong>Error reports</strong> — technical crash details, to fix bugs.</li>
@@ -69,7 +69,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
 <li><strong>Nombre</strong> (opcional), <strong>categorías, hora(s), idioma y zona horaria</strong>: para enviarte la frase adecuada a la hora adecuada.</li>
 <li><strong>Suscripción push</strong> (una dirección técnica creada por tu navegador): para entregar la notificación.</li>
 <li><strong>Identificador aleatorio del dispositivo</strong>: para actualizar o borrar tus ajustes.</li>
-<li><strong>Si creas una cuenta</strong> (opcional): tu email (y tu identificador de Apple/Google), tus favoritas, historial y racha sincronizados.</li>
+<li><strong>Si creas una cuenta</strong> (opcional): tu email (y tu identificador de Google), tus favoritas, historial y racha sincronizados.</li>
 <li><strong>De dónde vienes</strong> (por ejemplo, un enlace de TikTok o Instagram): para saber qué contenido funciona.</li>
 <li><strong>Eventos de uso</strong> (por ejemplo, “frase compartida”, “app instalada”): sin cookies y sin guardar nada en tu navegador para esto.</li>
 <li><strong>Informes de errores</strong>: detalles técnicos para corregir fallos.</li>
@@ -116,7 +116,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
 <li><strong>Prénom</strong> (optionnel), <strong>catégories, heure(s), langue et fuseau horaire</strong> — pour t’envoyer la bonne phrase au bon moment.</li>
 <li><strong>Abonnement push</strong> (une adresse technique créée par ton navigateur) — pour livrer la notification.</li>
 <li><strong>Identifiant aléatoire de l’appareil</strong> — pour modifier ou supprimer tes réglages.</li>
-<li><strong>Si tu crées un compte</strong> (optionnel) : ton email (et ton identifiant Apple/Google), tes favoris, ton historique et ta série synchronisés.</li>
+<li><strong>Si tu crées un compte</strong> (optionnel) : ton email (et ton identifiant Google), tes favoris, ton historique et ta série synchronisés.</li>
 <li><strong>D’où tu viens</strong> (par ex. un lien TikTok ou Instagram) — pour savoir quel contenu fonctionne.</li>
 <li><strong>Événements d’usage</strong> (par ex. « phrase partagée », « app installée ») — sans cookies, rien n’est stocké dans ton navigateur pour cela.</li>
 <li><strong>Rapports d’erreurs</strong> — détails techniques pour corriger les bugs.</li>
@@ -161,7 +161,7 @@ export const TERMS: Record<Lang, LegalDoc> = {
 		sections: [
 			{ h: 'The service', html: '<p>GoodPush sends motivational phrases by notification. The free plan is provided “as is”: we do our best to deliver every day but can’t guarantee it.</p>' },
 			{ h: 'Not professional advice', html: '<p>GoodPush is for encouragement only. It is not medical, psychological or professional advice. If you are going through a hard time, please reach out to a professional or someone you trust.</p>' },
-			{ h: 'Account', html: '<p>An account is optional. You are responsible for access to your email, Apple or Google account. You can delete your account at any time.</p>' },
+			{ h: 'Account', html: '<p>An account is optional. You are responsible for access to your email or Google account. You can delete your account at any time.</p>' },
 			{
 				h: 'Premium',
 				html: `<ul>
@@ -181,7 +181,7 @@ export const TERMS: Record<Lang, LegalDoc> = {
 		sections: [
 			{ h: 'El servicio', html: '<p>GoodPush envía frases motivacionales por notificación. El plan gratuito se ofrece “tal cual”: hacemos lo posible por enviarlas cada día, pero no podemos garantizarlo.</p>' },
 			{ h: 'No es consejo profesional', html: '<p>GoodPush es solo para animarte. No es un consejo médico, psicológico ni profesional. Si estás pasando por un momento difícil, habla con un profesional o con alguien de confianza.</p>' },
-			{ h: 'Cuenta', html: '<p>La cuenta es opcional. Eres responsable del acceso a tu email o a tu cuenta de Apple o Google. Puedes borrar tu cuenta cuando quieras.</p>' },
+			{ h: 'Cuenta', html: '<p>La cuenta es opcional. Eres responsable del acceso a tu email o a tu cuenta de Google. Puedes borrar tu cuenta cuando quieras.</p>' },
 			{
 				h: 'Premium',
 				html: `<ul>
@@ -201,7 +201,7 @@ export const TERMS: Record<Lang, LegalDoc> = {
 		sections: [
 			{ h: 'Le service', html: '<p>GoodPush envoie des phrases motivantes par notification. Le plan gratuit est fourni « tel quel » : on fait de notre mieux pour l’envoyer chaque jour, sans pouvoir le garantir.</p>' },
 			{ h: 'Pas un conseil professionnel', html: '<p>GoodPush sert uniquement à encourager. Ce n’est pas un conseil médical, psychologique ou professionnel. Si tu traverses une période difficile, parle à un professionnel ou à une personne de confiance.</p>' },
-			{ h: 'Compte', html: '<p>Le compte est optionnel. Tu es responsable de l’accès à ton email ou à ton compte Apple ou Google. Tu peux supprimer ton compte à tout moment.</p>' },
+			{ h: 'Compte', html: '<p>Le compte est optionnel. Tu es responsable de l’accès à ton email ou à ton compte Google. Tu peux supprimer ton compte à tout moment.</p>' },
 			{
 				h: 'Premium',
 				html: `<ul>

@@ -5,7 +5,7 @@
 	/** The whole "Get my daily push" flow, numbered from the very first screen. */
 	let { current }: { current: number } = $props();
 	const i = getI18n();
-	const steps = ['ob.s.install', 'ob.s.name', 'ob.s.vibe', 'ob.s.time', 'ob.s.push'] as const;
+	const steps = ['ob.s.install', 'ob.s.name', 'ob.s.vibe', 'ob.s.time', 'ob.s.push', 'ob.s.account'] as const;
 </script>
 
 <ol class="flex w-full items-start" aria-label="{i.t('ob.step')} {current + 1}/{steps.length}">

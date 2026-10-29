@@ -49,7 +49,7 @@ const en = {
 	'faq.3.q': 'Why do I need to add it to my iPhone home screen?',
 	'faq.3.a': 'Apple only allows notifications from websites that are added to the home screen. It takes 10 seconds.',
 	'faq.4.q': 'Do you need my phone number or email?',
-	'faq.4.a': 'No. No number, no account needed. If you want, you can sign in with Apple, Google or email to keep your streak on every phone and turn notifications off from anywhere.',
+	'faq.4.a': 'No. No number, no account needed. If you want, you can sign in with Google or email to keep your streak on every phone and turn notifications off from anywhere.',
 
 	'final.title': 'Ready for your first push?',
 
@@ -195,6 +195,10 @@ const en = {
 	'poster.3': 'Grow from it.',
 	'poster.small': 'Don’t let fear hold you back',
 	'nav.get': 'Get the push',
+	'ob.s.account': 'Account',
+	'ob.acc.t': 'Save your streak',
+	'ob.acc.d': 'Create a free account with Google or your email. Optional.',
+	'ob.acc.skip': 'Skip for now',
 	'nav.account': 'Account',
 	'acc.title': 'Your account',
 	'acc.sub': 'Optional. Keep your streak and favorites on every phone, and control your notifications from anywhere.',
@@ -240,7 +244,7 @@ const en = {
 	'footer.product': 'Product',
 	'footer.legal': 'Legal',
 	'footer.social': 'Follow',
-	'footer.by': 'Designed & built by',
+	'footer.by': 'Made with love by',
 	'footer.cta': 'Your daily push is one tap away.',
 	'common.back': 'Back'
 };
@@ -291,7 +295,7 @@ const es: Dict = {
 	'faq.3.q': '¿Por qué tengo que añadirla a la pantalla de inicio del iPhone?',
 	'faq.3.a': 'Apple solo permite notificaciones de webs añadidas a la pantalla de inicio. Son 10 segundos.',
 	'faq.4.q': '¿Necesitas mi número o mi email?',
-	'faq.4.a': 'No. Sin número y sin cuenta obligatoria. Si quieres, puedes iniciar sesión con Apple, Google o email para guardar tu racha en todos tus móviles y desactivar las notificaciones desde donde sea.',
+	'faq.4.a': 'No. Sin número y sin cuenta obligatoria. Si quieres, puedes iniciar sesión con Google o email para guardar tu racha en todos tus móviles y desactivar las notificaciones desde donde sea.',
 	'final.title': '¿Te animas con tu primer empujón?',
 	'footer.made': 'Hecho en Bruselas con cariño',
 	'footer.privacy': 'Privacidad',
@@ -427,6 +431,10 @@ const es: Dict = {
 	'poster.3': 'Crece con ellas.',
 	'poster.small': 'Que el miedo no te frene',
 	'nav.get': 'Quiero mi push',
+	'ob.s.account': 'Cuenta',
+	'ob.acc.t': 'Guarda tu racha',
+	'ob.acc.d': 'Crea una cuenta gratis con Google o tu email. Opcional.',
+	'ob.acc.skip': 'Ahora no',
 	'nav.account': 'Cuenta',
 	'acc.title': 'Tu cuenta',
 	'acc.sub': 'Opcional. Guarda tu racha y tus favoritas en todos tus móviles y controla tus notificaciones desde donde quieras.',
@@ -472,7 +480,7 @@ const es: Dict = {
 	'footer.product': 'Producto',
 	'footer.legal': 'Legal',
 	'footer.social': 'Síguenos',
-	'footer.by': 'Diseñado y desarrollado por',
+	'footer.by': 'Hecho con amor por',
 	'footer.cta': 'Tu empujón diario está a un toque.',
 	'common.back': 'Atrás'
 };
@@ -520,7 +528,7 @@ const fr: Dict = {
 	'faq.3.q': 'Pourquoi l’ajouter à l’écran d’accueil de l’iPhone ?',
 	'faq.3.a': 'Apple n’autorise les notifications que pour les sites ajoutés à l’écran d’accueil. Ça prend 10 secondes.',
 	'faq.4.q': 'Tu as besoin de mon numéro ou de mon email ?',
-	'faq.4.a': 'Non. Pas de numéro, pas de compte obligatoire. Si tu veux, tu peux te connecter avec Apple, Google ou ton email pour garder ta série sur tous tes téléphones et couper les notifications depuis n’importe où.',
+	'faq.4.a': 'Non. Pas de numéro, pas de compte obligatoire. Si tu veux, tu peux te connecter avec Google ou ton email pour garder ta série sur tous tes téléphones et couper les notifications depuis n’importe où.',
 	'final.title': 'Prêt·e pour ton premier push ?',
 	'footer.made': 'Fait à Bruxelles avec amour',
 	'footer.privacy': 'Confidentialité',
@@ -656,6 +664,10 @@ const fr: Dict = {
 	'poster.3': 'Grandis avec.',
 	'poster.small': 'Ne laisse pas la peur te retenir',
 	'nav.get': 'Je veux mon push',
+	'ob.s.account': 'Compte',
+	'ob.acc.t': 'Garde ta série',
+	'ob.acc.d': 'Crée un compte gratuit avec Google ou ton email. Optionnel.',
+	'ob.acc.skip': 'Plus tard',
 	'nav.account': 'Compte',
 	'acc.title': 'Ton compte',
 	'acc.sub': 'Optionnel. Garde ta série et tes favoris sur tous tes téléphones, et gère tes notifications depuis n’importe où.',
@@ -701,7 +713,7 @@ const fr: Dict = {
 	'footer.product': 'Produit',
 	'footer.legal': 'Légal',
 	'footer.social': 'Suivre',
-	'footer.by': 'Conçu et développé par',
+	'footer.by': 'Fait avec amour par',
 	'footer.cta': 'Ton push quotidien est à un geste.',
 	'common.back': 'Retour'
 };

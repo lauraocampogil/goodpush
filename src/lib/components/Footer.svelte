@@ -6,7 +6,7 @@
 	import { LANG_LABEL } from '#lib/i18n/dict.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { track } from '#lib/analytics.ts';
-	import { ArrowRight, ArrowUpRight, ChatDots, Instagram, TikTok } from '#lib/icons.ts';
+	import { ArrowRight, ChatDots, Instagram, TikTok } from '#lib/icons.ts';
 
 	let { onstart }: { onstart?: () => void } = $props();
 	const i = getI18n();
@@ -75,10 +75,9 @@
 	<!-- Bottom bar -->
 	<div class="container-site flex flex-col items-start gap-4 border-t border-ink/10 py-6 text-xs text-ink/60 sm:flex-row sm:items-center sm:justify-between">
 		<p>© {new Date().getFullYear()} GoodPush</p>
-		<a href="https://unixcreativestudio.com" target="_blank" rel="noopener" class="group inline-flex items-center gap-3 text-ink">
-			<span class="text-ink/60">{i.t('footer.by')}</span>
-			<img src="/assets/unix-logo.svg" alt="Unix Creative Studio" class="h-6 w-auto" />
-			<ArrowUpRight size={14} class="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+		<a href="https://unixcreativestudio.com" target="_blank" rel="noopener" class="group inline-flex items-center gap-2.5 text-sm font-medium text-ink/70 transition hover:text-ink">
+			<span>{i.t('footer.by')}</span>
+			<img src="/assets/unix-logo-ink.svg" alt="Unix Creative Studio" width="71" height="28" class="h-7 w-auto transition-transform duration-500 ease-[cubic-bezier(0.3,1.6,0.5,1)] group-hover:-rotate-4 group-hover:scale-110" />
 		</a>
 	</div>
 </footer>

@@ -69,7 +69,7 @@
 					<IPhone screen="bg-cream">
 						<div class="flex h-full flex-col justify-center gap-4 p-4 pt-12">
 							<NotifCard label={i.cat(today.cat)} time="08:00">
-								<p class="display text-[1.15rem] leading-[0.95]"><span class="soft block text-xl">Laura,</span><PhraseText text={today[i.lang]} /></p>
+								<p class="display text-[1.15rem] leading-[0.95]"><span class="soft block text-xl">Alex,</span><PhraseText text={today[i.lang]} /></p>
 							</NotifCard>
 							<div class="flex items-center gap-3 rounded-[22px] bg-white p-4 shadow-[var(--shadow-soft)]">
 								<Smiley size={40} color="orange" wink />
@@ -106,7 +106,7 @@
 				<IPhone screen="bg-pink">
 					<div class="flex h-full flex-col items-center justify-between p-6 pt-14 pb-8 text-ink">
 						<span class="font-display text-sm font-extrabold tracking-tight uppercase">GoodPush</span>
-						<p class="display text-center text-3xl leading-[0.92]"><span class="soft block text-3xl">Laura,</span><PhraseText text={story[i.lang]} /></p>
+						<p class="display text-center text-3xl leading-[0.92]"><span class="soft block text-3xl">Alex,</span><PhraseText text={story[i.lang]} /></p>
 						<Smiley size={64} color="ink" wink />
 					</div>
 				</IPhone>

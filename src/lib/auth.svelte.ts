@@ -4,7 +4,7 @@ import { setPerson, track } from './analytics.ts';
 import { app } from './store.svelte.ts';
 
 /**
- * Optional accounts (Supabase Auth): Google, Apple, or a 6-digit email code.
+ * Optional accounts (Supabase Auth): Google or a 6-digit email code.
  * The email *code* (not a magic link) is used on purpose: on iPhone, a link would
  * open Safari instead of the installed app.
  */
@@ -78,9 +78,10 @@ class Auth {
 		await this.api('POST', { action: 'sync', data: app.exportData(), lang }).catch(() => {});
 	}
 
-	async oauth(provider: 'google' | 'apple') {
+	/** Google sign-in. `next` = page to come back to after Google. */
+	async oauth(provider: 'google', next = '/account') {
 		track('sign_in_started', { provider });
-		await this.client?.auth.signInWithOAuth({ provider, options: { redirectTo: `${location.origin}/account` } });
+		await this.client?.auth.signInWithOAuth({ provider, options: { redirectTo: `${location.origin}${next}` } });
 	}
 
 	async sendCode(email: string) {

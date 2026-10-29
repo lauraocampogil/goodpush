@@ -17,6 +17,8 @@
 	import { isStandalone } from '#lib/platform.ts';
 	import { enablePush, type PushResult } from '#lib/push.ts';
 	import { app } from '#lib/store.svelte.ts';
+	import { auth } from '#lib/auth.svelte.ts';
+	import SignIn from '#lib/components/SignIn.svelte';
 
 	const i = getI18n();
 	// Step 1 (Install) happens on the landing page → onboarding starts at step 2
@@ -28,7 +30,7 @@
 	const p = app.profile;
 	const canNext = $derived(step !== 2 || p.categories.length > 0);
 	const preview = $derived(phraseForDay(p.categories, dayKey()));
-	const names = { 1: 'name', 2: 'vibe', 3: 'time', 4: 'push' } as Record<number, string>;
+	const names = { 1: 'name', 2: 'vibe', 3: 'time', 4: 'push', 5: 'account' } as Record<number, string>;
 
 	onMount(() => track('onboarding_step', { step: 1, name: 'name', standalone: isStandalone() }));
 
@@ -58,8 +60,25 @@
 		if (result === 'granted') {
 			app.profile.pushEnabled = true;
 			confetti(50);
-			setTimeout(finish, 700);
+			setTimeout(afterPush, 700);
 		}
+	}
+
+	/** Step 6 (optional): create an account with Google or email — skipped if unavailable or already signed in. */
+	function afterPush() {
+		if (auth.enabled && !auth.user) go(5);
+		else finish();
+	}
+
+	// Signed in during onboarding → done
+	$effect(() => {
+		if (step === 5 && auth.user) setTimeout(finish, 600);
+	});
+
+	/** Before leaving for Google: mark onboarding done so the user lands in the app. */
+	function beforeGoogle() {
+		app.profile.onboarded = true;
+		app.save();
 	}
 
 	function finish() {
@@ -72,7 +91,7 @@
 
 <div class="flex flex-1 flex-col">
 	<div class="flex items-center gap-3 py-4">
-		<button class="chip shrink-0 px-3 {step > 1 ? '' : 'invisible'}" onclick={() => go(step - 1)} aria-label={i.t('ob.back')}><ArrowLeft /></button>
+		<button class="chip shrink-0 px-3 {step > 1 && step < 5 ? '' : 'invisible'}" onclick={() => go(step - 1)} aria-label={i.t('ob.back')}><ArrowLeft /></button>
 		<Stepper current={step} />
 	</div>
 
@@ -120,6 +139,10 @@
 						{/each}
 					</div>
 					<p class="mt-6 flex items-center gap-2 text-sm font-semibold text-ink/60"><Crown weight="fill" class="text-orange" /> {i.t('ob.time.extra')}</p>
+				{:else if step === 5}
+					<h1 class="display text-4xl sm:text-[2.6rem]">{i.t('ob.acc.t')}</h1>
+					<p class="soft mt-2 text-2xl">{i.t('ob.acc.d')}</p>
+					<div class="mt-8 max-w-md"><SignIn next="/today" onbefore={beforeGoogle} /></div>
 				{:else}
 					<h1 class="display text-4xl sm:text-[2.6rem]">{i.t('ob.notif.t')}</h1>
 					<p class="soft mt-2 text-2xl">{i.t('ob.notif.d')}</p>
@@ -144,11 +167,13 @@
 	<div class="sticky bottom-0 flex flex-col gap-3 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
 		{#if step < 4}
 			<button class="btn w-full py-4 text-lg" disabled={!canNext} onclick={() => go(step + 1)}>{i.t('ob.next')} <ArrowRight /></button>
+		{:else if step === 5}
+			<button class="py-2 font-semibold text-ink/60 underline" onclick={finish}>{i.t('ob.acc.skip')}</button>
 		{:else}
 			<button class="btn w-full py-4 text-lg" disabled={busy} onclick={enable}>
 				<Smiley size={24} /> {i.t('ob.notif.cta')}
 			</button>
-			<button class="py-2 font-semibold text-ink/60 underline" onclick={finish}>{i.t('ob.notif.skip')}</button>
+			<button class="py-2 font-semibold text-ink/60 underline" onclick={afterPush}>{i.t('ob.notif.skip')}</button>
 		{/if}
 	</div>
 </div>

@@ -30,7 +30,7 @@
 
 <Seo title="GoodPush" description={i.t('meta.description')} noindex />
 
-<div class="mx-auto flex min-h-dvh w-full max-w-2xl flex-col px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 {showNav ? 'pb-32' : 'pb-8'}">
+<div class="mx-auto flex min-h-dvh w-full max-w-3xl flex-col px-6 pt-[max(1rem,env(safe-area-inset-top))] sm:px-12 {showNav ? 'pb-32' : 'pb-8'}">
 	{#if showNav}
 		<header class="flex items-center justify-between py-3">
 			<a href="/today" aria-label="GoodPush"><Logo size="sm" /></a>
