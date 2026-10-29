@@ -46,14 +46,14 @@
 
 <div class="space-y-3" in:fly={{ y: 20 }}>
 	{#if step === 'start'}
-		<button class="btn w-full py-4" disabled={busy} onclick={google}><GoogleLogo weight="bold" size={20} /> {i.t('acc.google')}</button>
+		<form class="space-y-3" onsubmit={(e) => (e.preventDefault(), sendCode())}>
+			<input class="field" type="email" required autocomplete="email" placeholder={i.t('acc.email.ph')} bind:value={email} />
+			<button class="btn w-full py-4" disabled={busy || !email.includes('@')}><Envelope /> {i.t('acc.send')}</button>
+		</form>
 		<div class="flex items-center gap-3 py-3 text-xs font-semibold tracking-wider text-ink/40 uppercase">
 			<span class="h-px flex-1 bg-ink/10"></span>{i.t('acc.or')}<span class="h-px flex-1 bg-ink/10"></span>
 		</div>
-		<form class="space-y-3" onsubmit={(e) => (e.preventDefault(), sendCode())}>
-			<input class="field" type="email" required autocomplete="email" placeholder={i.t('acc.email.ph')} bind:value={email} />
-			<button class="btn-ghost w-full py-4" disabled={busy || !email.includes('@')}><Envelope /> {i.t('acc.send')}</button>
-		</form>
+		<button class="btn-ghost w-full py-4" disabled={busy} onclick={google}><GoogleLogo weight="bold" size={20} /> {i.t('acc.google')}</button>
 	{:else}
 		<p class="text-sm text-ink/60">{i.t('acc.code')} <strong class="text-ink">{email}</strong></p>
 		<form class="space-y-3" onsubmit={(e) => (e.preventDefault(), verify())}>

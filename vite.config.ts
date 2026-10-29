@@ -4,6 +4,8 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+	// Bundle GSAP into the server build: its plugin files are not valid ESM for Node on Vercel
+	ssr: { noExternal: ['gsap'] },
 	plugins: [
 		tailwindcss(),
 		sveltekit({
