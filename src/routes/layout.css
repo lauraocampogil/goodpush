@@ -27,7 +27,7 @@
 	--color-lilac: #c7b5f2;
 	--color-sky: #a9c8ff;
 
-	--font-display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
+	--font-display: 'Unbounded Variable', 'Arial Black', sans-serif;
 	--font-serif: 'Instrument Serif', Georgia, serif;
 	--font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
 
@@ -39,6 +39,10 @@
 	html {
 		-webkit-tap-highlight-color: transparent;
 		scroll-behavior: smooth;
+	}
+	html,
+	body {
+		overflow-x: clip;
 	}
 	body {
 		@apply bg-paper text-ink font-sans antialiased;
@@ -64,17 +68,19 @@
 
 @layer components {
 	.display {
-		@apply font-display uppercase leading-[0.9] tracking-[-0.005em];
+		@apply font-display leading-[1.02] font-extrabold tracking-[-0.035em];
 	}
 	.soft {
 		@apply font-serif italic normal-case tracking-normal;
 	}
 	/* Marker highlight on the key word of a phrase */
+	/* Highlighter stroke under the key word — never covers the line above */
 	.tape {
-		@apply inline rounded-[0.14em] px-[0.1em] text-ink;
-		background: var(--hl, var(--color-sun));
-		box-decoration-break: clone;
-		-webkit-box-decoration-break: clone;
+		text-decoration-line: underline;
+		text-decoration-color: var(--hl, var(--color-sun));
+		text-decoration-thickness: 0.32em;
+		text-underline-offset: -0.18em;
+		text-decoration-skip-ink: none;
 	}
 	.btn {
 		@apply inline-flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-[15px] font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_rgb(0_0_0/0.45)] active:translate-y-0 disabled:opacity-40 disabled:hover:translate-y-0;

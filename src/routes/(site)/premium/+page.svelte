@@ -45,13 +45,13 @@
 	<main>
 		<section class="bg-sun pt-36 pb-24 text-center"><div class="container-site">
 			<Smiley size={96} color="orange" wink class="mx-auto animate-float" />
-			<h1 use:splitReveal class="display mx-auto mt-6 max-w-4xl text-[clamp(3.2rem,10vw,7rem)]">{i.t('premium.title')}</h1>
+			<h1 use:splitReveal class="display mx-auto mt-6 max-w-4xl text-[clamp(2.24rem,7.0vw,4.9rem)]">{i.t('premium.title')}</h1>
 			<p class="soft mx-auto mt-4 max-w-2xl text-3xl">{i.t('premium.sub')}</p>
 			{#if app.premium}
 				<p class="pill mt-8 bg-ink px-4 py-2 text-sun">{i.t('premium.active')}</p>
 			{/if}
 			{#if page.url.searchParams.has('canceled')}
-				<p class="mx-auto mt-6 max-w-md rounded-2xl ring-1 ring-ink/10 bg-white p-3 font-semibold">No worries — you can come back anytime.</p>
+				<p class="mx-auto mt-6 max-w-md rounded-2xl ring-1 ring-ink/10 bg-white p-3 font-semibold">{i.t('premium.canceled')}</p>
 			{/if}
 		</div></section>
 

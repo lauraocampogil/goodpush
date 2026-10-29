@@ -18,7 +18,7 @@
 	{#if heading}
 		<div class="text-center">
 			<p class="kicker">{i.t('pricing.kicker')}</p>
-			<h2 use:splitReveal={{ scroll: true }} class="display mx-auto mt-4 max-w-3xl text-5xl sm:text-7xl">{i.t('pricing.title')}</h2>
+			<h2 use:splitReveal={{ scroll: true }} class="display mx-auto mt-4 max-w-3xl text-4xl sm:text-5xl">{i.t('pricing.title')}</h2>
 		</div>
 	{/if}
 
@@ -28,7 +28,7 @@
 				<h3 class="text-lg font-semibold">{i.t('premium.free')}</h3>
 				<Smiley size={40} color="cream" />
 			</div>
-			<p class="mt-6"><span class="display text-7xl">0 €</span></p>
+			<p class="mt-6"><span class="display text-5xl">0 €</span></p>
 			<ul class="mt-8 flex-1 space-y-3.5 text-[15px]">
 				{#each ['f1', 'f2', 'f3'] as k (k)}
 					<li class="flex items-center gap-3"><Check size={18} class="text-ink/40" />{i.t(`premium.${k}` as 'premium.f1')}</li>
@@ -42,7 +42,7 @@
 				<h3 class="flex items-center gap-2 text-lg font-semibold"><Crown weight="fill" class="text-sun" /> {i.t('premium.pro')}</h3>
 				<span class="pill bg-sun text-ink">{i.t('pricing.popular')}</span>
 			</div>
-			<p class="mt-6"><span class="display text-7xl">{PUBLIC_PREMIUM_PRICE}</span><span class="ml-1 text-paper/60">{i.t('premium.month')}</span></p>
+			<p class="mt-6"><span class="display text-5xl">{PUBLIC_PREMIUM_PRICE}</span><span class="ml-1 text-paper/60">{i.t('premium.month')}</span></p>
 			<ul class="mt-8 flex-1 space-y-3.5 text-[15px]">
 				{#each ['f2', 'f3', 'p1', 'p2', 'p3', 'p4'] as k (k)}
 					<li class="flex items-center gap-3"><Check size={18} class="text-sun" />{i.t(`premium.${k}` as 'premium.p1')}</li>

@@ -11,7 +11,6 @@
 	import Hero from '#lib/components/landing/Hero.svelte';
 	import Nav from '#lib/components/landing/Nav.svelte';
 	import PhoneRow from '#lib/components/landing/PhoneRow.svelte';
-	import Poster from '#lib/components/landing/Poster.svelte';
 	import Pricing from '#lib/components/landing/Pricing.svelte';
 	import StickerPile from '#lib/components/landing/StickerPile.svelte';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
@@ -58,10 +57,9 @@
 	<PhoneRow />
 	<DarkFeatures onstart={() => start('dark')} {cta} />
 	<StickerPile />
-	<Poster onstart={() => start('poster')} {cta} />
 	<Pricing onfree={() => start('pricing')} onpremium={() => { track('premium_click', { from: 'landing' }); goto('/premium'); }} />
 	<Faq />
 </main>
-<Footer />
+<Footer onstart={() => start('footer')} />
 
 <InstallSheet bind:open={sheet} oncontinue={() => goto('/start')} />

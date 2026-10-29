@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CatIcon from '#lib/components/CatIcon.svelte';
-	import { ChatDots, Crown, Lock } from '#lib/icons.ts';
+	import { ArrowRight, ChatDots, Crown, Lock, UserCircle } from '#lib/icons.ts';
+	import { auth } from '#lib/auth.svelte.ts';
 	import { goto } from '$app/navigation';
 	import { PUBLIC_INSTAGRAM_URL } from '$app/env/public';
 	import { setPerson, track } from '#lib/analytics.ts';
@@ -112,11 +113,20 @@
 </script>
 
 <div class="flex items-center justify-between">
-	<h1 class="display my-4 text-5xl">{i.t('settings.title')}</h1>
+	<h1 class="display my-4 text-4xl">{i.t('settings.title')}</h1>
 	{#if saved}<span class="chip bg-sun" role="status">{i.t('settings.saved')}</span>{/if}
 </div>
 
 <div class="space-y-5">
+	<a href="/account" class="card flex items-center gap-4 p-5 transition hover:-translate-y-0.5">
+		<UserCircle size={28} weight="duotone" />
+		<span class="flex-1">
+			<span class="block font-semibold">{i.t('nav.account')}</span>
+			<span class="block truncate text-sm text-ink/50">{auth.user?.email ?? i.t('acc.cta')}</span>
+		</span>
+		<ArrowRight />
+	</a>
+
 	<section class="card p-5">
 		<label for="name" class="mb-2 block text-sm font-extrabold uppercase tracking-wider">{i.t('settings.name')}</label>
 		<input id="name" class="field" bind:value={p.name} maxlength="30" oninput={() => persist()} />
@@ -163,7 +173,7 @@
 					aria-label={t.id}
 					onclick={() => setTheme(t.id)}
 				>
-					<span class="display text-2xl" style="color:{t.fg}">Aa</span>
+					<span class="display text-xl" style="color:{t.fg}">Aa</span>
 					{#if t.id !== 'cream' && !app.premium}<span class="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full bg-white/90 text-ink"><Lock size={12} /></span>{/if}
 				</button>
 			{/each}
@@ -196,7 +206,7 @@
 
 	{#if app.premium}
 		<section class="flex items-center justify-between gap-4 rounded-3xl bg-ink p-5 text-white shadow-[var(--shadow-soft)]">
-			<p class="display text-2xl text-sun">{i.t('premium.active')}</p>
+			<p class="display text-xl text-sun">{i.t('premium.active')}</p>
 			<button class="btn-ghost !text-ink" onclick={manage} disabled={busy}>{i.t('premium.manage')}</button>
 		</section>
 	{:else}

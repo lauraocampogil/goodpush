@@ -1,9 +1,10 @@
 import { track } from './analytics.ts';
+import { app } from './store.svelte.ts';
 
 async function post(path: string, body: Record<string, unknown>) {
 	const res = await fetch(path, {
 		method: 'POST',
-		headers: { 'content-type': 'application/json' },
+		headers: { 'content-type': 'application/json', ...(app.authHeader ? { authorization: app.authHeader } : {}) },
 		body: JSON.stringify(body)
 	});
 	if (!res.ok) throw new Error((await res.json().catch(() => null))?.message ?? res.statusText);

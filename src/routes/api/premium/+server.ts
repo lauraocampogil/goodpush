@@ -1,18 +1,15 @@
 import { error, json } from '@sveltejs/kit';
 import { db } from '#lib/server/supabase.ts';
-import { ACTIVE, isDeviceId } from '#lib/server/stripe.ts';
+import { getUser, isPremium } from '#lib/server/auth.ts';
+import { isDeviceId } from '#lib/server/stripe.ts';
 import type { RequestHandler } from './$types';
 
-/** Is this device Premium? (The app caches the answer.) */
-export const GET: RequestHandler = async ({ url, setHeaders }) => {
+/** Is this device (or the signed-in account) Premium? The app caches the answer. */
+export const GET: RequestHandler = async ({ url, request, setHeaders }) => {
 	const deviceId = url.searchParams.get('deviceId');
 	if (!isDeviceId(deviceId)) error(400, 'Invalid device');
 	setHeaders({ 'cache-control': 'no-store' });
-
-	const supabase = db();
-	if (!supabase) return json({ premium: false, demo: true });
-
-	const { data } = await supabase.from('premium').select('status,current_period_end').eq('device_id', deviceId).maybeSingle();
-	const premium = !!data && ACTIVE.includes(data.status);
-	return json({ premium, until: data?.current_period_end ?? null });
+	if (!db()) return json({ premium: false, demo: true });
+	const user = await getUser(request);
+	return json({ premium: await isPremium(deviceId, user?.id ?? null) });
 };

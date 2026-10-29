@@ -27,7 +27,7 @@
 
 <svg viewBox="0 0 1440 240" class="block w-full overflow-visible" aria-hidden="true">
 	<path id="arc-{uid}" d="M -300 225 Q 720 -15 1740 225" fill="none" />
-	<text bind:this={txt} class="font-display uppercase {cls}" font-size="78" letter-spacing="2">
+	<text bind:this={txt} class="font-display font-extrabold uppercase {cls}" font-size="56" letter-spacing="-1">
 		<textPath bind:this={tp} href="#arc-{uid}">{unit.repeat(8)}</textPath>
 	</text>
 </svg>

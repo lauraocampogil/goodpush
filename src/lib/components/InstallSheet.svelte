@@ -36,7 +36,7 @@
 		<div class="mx-auto mb-5 h-1 w-10 rounded-full bg-ink/15 sm:hidden"></div>
 		<div class="mb-7"><Stepper current={0} /></div>
 		<div class="mb-2 flex items-start justify-between gap-4">
-			<h2 class="display text-3xl sm:text-4xl">{i.t('install.title')}</h2>
+			<h2 class="display text-2xl sm:text-3xl">{i.t('install.title')}</h2>
 			<button class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white ring-1 ring-ink/10" onclick={() => (open = false)} aria-label={i.t('install.close')}><X size={16} /></button>
 		</div>
 

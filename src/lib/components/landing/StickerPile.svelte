@@ -74,7 +74,7 @@
 <section id="vibes" class="overflow-hidden bg-ink pb-28 text-paper sm:pb-36">
 	<div class="container-site grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
 		<div>
-			<h2 use:splitReveal={{ scroll: true }} class="display text-6xl sm:text-7xl">{i.t('vibe.pile.title')}</h2>
+			<h2 use:splitReveal={{ scroll: true }} class="display text-[2.6rem] sm:text-5xl">{i.t('vibe.pile.title')}</h2>
 			<p class="mt-3 text-paper/60">{i.t('vibe.pile.sub')}</p>
 
 			<div bind:this={pile} class="relative mt-6 aspect-square w-full max-w-[560px] touch-none sm:aspect-[5/4]">
@@ -99,7 +99,7 @@
 			{#key phrase.id + i.lang}
 				<div in:fly={{ y: 40, duration: 600, easing: backOut }}>
 					<NotifCard label={i.cat(cat)} time="08:00" class="p-7 sm:p-9">
-						<p class="display text-[clamp(2.4rem,6vw,4rem)] leading-[0.92]"><PhraseText text={phrase[i.lang]} /></p>
+						<p class="display text-[clamp(1.68rem,4.2vw,2.8rem)] leading-[0.92]"><PhraseText text={phrase[i.lang]} /></p>
 					</NotifCard>
 				</div>
 			{/key}

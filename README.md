@@ -73,8 +73,6 @@ Manual test (dry run, sends nothing):
 curl -H "Authorization: Bearer $CRON_SECRET" "https://goodpush.app/api/cron/send?dry"
 ```
 
-### 5. Optional
-
 ### 5. Stripe Premium (10 min — use **Test mode** first)
 
 1. Run [`supabase/migrations/0002_premium.sql`](supabase/migrations/0002_premium.sql) in Supabase.
@@ -94,7 +92,22 @@ Premium is tied to the device id (no accounts). Supabase → view `stats` shows 
   Super-properties on every event: `lang`, `platform`, `standalone`, `source`, `premium`.
 - **Sentry** → new project (SvelteKit) → DSN → `PUBLIC_SENTRY_DSN`. Errors from the browser and the server are reported.
 
-### 7. Optional
+### 7. Accounts — Google, Apple, email code (optional, 15 min)
+
+1. Run [`supabase/migrations/0003_accounts.sql`](supabase/migrations/0003_accounts.sql).
+2. Add `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_ANON_KEY` (Project Settings → API → anon key).
+3. **Authentication → URL Configuration**: Site URL `https://goodpush.app`, redirect URL `https://goodpush.app/account` (+ `http://localhost:5173/account`).
+4. **Email**: Authentication → Email Templates → “Magic Link”: put the code in the email, e.g. `Your GoodPush code: {{ .Token }}`. (A code works inside the installed iPhone app; a link would open Safari.)
+5. **Google**: Google Cloud Console → OAuth client (Web) → callback `https://<project>.supabase.co/auth/v1/callback` → paste ID/secret in Supabase → Providers → Google.
+6. **Apple**: Apple Developer (99 $/year) → Services ID + key for “Sign in with Apple” → Supabase → Providers → Apple. If people hide their email, register your sending domain in Apple’s *Private Email Relay*.
+
+What accounts do: sync streak / favorites / history across phones, Premium follows the account, turn notifications off for any phone, email-marketing consent (view `marketing_audience` → export to Brevo/Resend/MailerLite), delete account (also cancels Premium).
+
+### Streaks — the rule
+
+Open GoodPush (or tap the push) at least once per calendar day → +1. Miss a full day → back to 0 (best streak is kept). Stored on the phone, synced to the account when signed in.
+
+### 8. Optional
 
 - **Amazon Associates** → `PUBLIC_AMAZON_TAG`. Edit picks in `src/lib/data/picks.ts`.
 

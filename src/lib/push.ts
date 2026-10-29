@@ -1,7 +1,7 @@
 import { PUBLIC_VAPID_KEY } from '$app/env/public';
 import type { Lang } from './data/categories';
 import { pushSupported } from './platform';
-import type { Profile } from './store.svelte';
+import { app, type Profile } from './store.svelte';
 
 export type PushResult = 'granted' | 'denied' | 'unsupported' | 'error';
 
@@ -52,7 +52,7 @@ export async function syncProfile(
 		if (!sub) return;
 		await fetch('/api/subscribe', {
 			method: 'POST',
-			headers: { 'content-type': 'application/json' },
+			headers: { 'content-type': 'application/json', ...(app.authHeader ? { authorization: app.authHeader } : {}) },
 			body: JSON.stringify({
 				deviceId: profile.deviceId,
 				name: profile.name,

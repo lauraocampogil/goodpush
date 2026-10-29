@@ -19,6 +19,7 @@ type Row = {
 	last_sent_on: string | null;
 	extra_hours: number[] | null;
 	sent_slots: number[] | null;
+	user_id: string | null;
 };
 
 /**
@@ -34,8 +35,9 @@ export const GET: RequestHandler = async ({ request, url }) => {
 	if (!supabase || !pushReady()) error(503, 'Supabase or VAPID keys not configured');
 
 	const now = new Date();
-	const { data: prem } = await supabase.from('premium_active').select('device_id');
+	const { data: prem } = await supabase.from('premium_active').select('device_id,user_id');
 	const premiumIds = new Set((prem ?? []).map((p: { device_id: string }) => p.device_id));
+	const premiumUsers = new Set((prem ?? []).map((p: { user_id: string | null }) => p.user_id).filter(Boolean));
 	const dryRun = url.searchParams.has('dry');
 	let sent = 0;
 	let removed = 0;
@@ -44,7 +46,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
 	for (let from = 0; ; from += 1000) {
 		const { data, error: e } = await supabase
 			.from('subscribers')
-			.select('id,name,categories,hour,time_zone,lang,endpoint,p256dh,auth,last_sent_on,extra_hours,sent_slots')
+			.select('id,name,categories,hour,time_zone,lang,endpoint,p256dh,auth,last_sent_on,extra_hours,sent_slots,user_id')
 			.eq('active', true)
 			.order('id')
 			.range(from, from + 999);
@@ -55,7 +57,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
 			rows.map(async (r) => {
 				checked++;
 				const today = dayKey(now, r.time_zone);
-				const premium = premiumIds.has(r.id);
+				const premium = premiumIds.has(r.id) || (!!r.user_id && premiumUsers.has(r.user_id));
 				// Slot 0 = free daily push; slots 1–2 = Premium extra pushes
 				const hours = [r.hour, ...(premium ? (r.extra_hours ?? []).slice(0, 2) : [])];
 				const sentToday = r.last_sent_on === today ? (r.sent_slots?.length ? r.sent_slots : [0]) : [];

@@ -21,6 +21,8 @@ export const variables = defineEnvVars({
 		description: 'PostHog host',
 		schema: (v) => optional(v) ?? 'https://eu.i.posthog.com'
 	},
+	PUBLIC_SUPABASE_URL: { public: true, description: 'Supabase project URL (for sign-in)', schema: optional },
+	PUBLIC_SUPABASE_ANON_KEY: { public: true, description: 'Supabase anon (public) key — for sign-in only', schema: optional },
 	PUBLIC_SENTRY_DSN: { public: true, description: 'Sentry DSN (optional)', schema: optional },
 	PUBLIC_PREMIUM_PRICE: {
 		public: true,

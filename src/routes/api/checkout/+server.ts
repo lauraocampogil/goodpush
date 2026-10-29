@@ -1,6 +1,7 @@
 import { error, json } from '@sveltejs/kit';
 import { STRIPE_PRICE_ID } from '$app/env/private';
 import { isDeviceId, stripe } from '#lib/server/stripe.ts';
+import { getUser } from '#lib/server/auth.ts';
 import type { RequestHandler } from './$types';
 
 const LOCALES = { en: 'en', es: 'es', fr: 'fr' } as const;
@@ -14,12 +15,17 @@ export const POST: RequestHandler = async ({ request, url }) => {
 	if (!isDeviceId(body?.deviceId)) error(400, 'Invalid device');
 	const lang = (body.lang in LOCALES ? body.lang : 'en') as keyof typeof LOCALES;
 
+	// Signed in? Premium is attached to the account → works on every phone.
+	const user = await getUser(request);
+	const metadata: Record<string, string> = { deviceId: body.deviceId, ...(user ? { userId: user.id } : {}) };
+
 	const session = await s.checkout.sessions.create({
 		mode: 'subscription',
 		line_items: [{ price: STRIPE_PRICE_ID, quantity: 1 }],
 		client_reference_id: body.deviceId,
-		metadata: { deviceId: body.deviceId },
-		subscription_data: { metadata: { deviceId: body.deviceId } },
+		metadata,
+		subscription_data: { metadata },
+		...(user?.email ? { customer_email: user.email } : {}),
 		allow_promotion_codes: true,
 		billing_address_collection: 'auto',
 		locale: LOCALES[lang],

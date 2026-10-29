@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ArrowRight, ArrowUpRight, Bell, BookOpen, Crown, Heart } from '#lib/icons.ts';
+	import { ArrowRight, ArrowUpRight, Bell, BookOpen, Clock, Crown, Fire, Heart, Info, UserCircle } from '#lib/icons.ts';
+	import { auth } from '#lib/auth.svelte.ts';
 	import { onMount, tick } from 'svelte';
 	import { goto, replaceState } from '$app/navigation';
 	import { page } from '$app/state';
@@ -31,6 +32,7 @@
 	const pick = $derived(PICKS[phrase.cat]?.[0]);
 	const hourLabel = $derived(`${String(app.profile.hour).padStart(2, '0')}:00`);
 	let highlightShare = $state(false);
+	let showRules = $state(false);
 	let busy = $state(false);
 	let toast = $state('');
 	let card: HTMLElement;
@@ -114,7 +116,7 @@
 				<span class="flex items-center gap-2"><CatIcon cat={phrase.cat} /> {i.cat(phrase.cat)}</span>
 				<span>{hourLabel}</span>
 			</div>
-			<p bind:this={text} class="display my-8 text-[clamp(2.8rem,12vw,4.8rem)] leading-[0.92]">
+			<p bind:this={text} class="display my-8 text-[clamp(1.96rem,8.4vw,3.36rem)] leading-[0.92]">
 				{#if app.profile.name}<span data-words class="soft block text-[0.62em] leading-none">{app.profile.name},</span>{/if}
 				<span data-words><PhraseText text={phrase[i.lang]} /></span>
 			</p>
@@ -133,17 +135,36 @@
 			<ShareButton {phrase} highlight={highlightShare} />
 		</div>
 
-		<div class="card flex items-center gap-4 p-5">
-			<Smiley size={44} color="orange" />
-			<div class="flex-1">
-				<p class="display text-3xl">{app.streak.count} <span class="font-sans text-sm font-semibold normal-case text-ink/60">{i.t('today.streak')}</span></p>
-				<div class="mt-2 flex gap-1">
-					{#each Array.from({ length: 7 }) as _, n (n)}
-						<span class="h-1.5 flex-1 rounded-full transition-colors duration-500 {n < Math.min(app.streak.count, 7) ? 'bg-orange' : 'bg-ink/10'}" style="transition-delay:{n * 80}ms"></span>
-					{/each}
+		<div class="card p-5">
+			<div class="flex items-center gap-4">
+				<Smiley size={44} color="orange" />
+				<div class="flex-1">
+					<p class="display text-2xl">{app.currentStreak} <span class="font-sans text-sm font-semibold tracking-normal text-ink/60">{i.t('today.streak')}</span></p>
+					<div class="mt-2 flex gap-1">
+						{#each Array.from({ length: 7 }) as _, n (n)}
+							<span class="h-1.5 flex-1 rounded-full transition-colors duration-500 {n < Math.min(app.currentStreak, 7) ? 'bg-orange' : 'bg-ink/10'}" style="transition-delay:{n * 80}ms"></span>
+						{/each}
+					</div>
+				</div>
+				<div class="text-right">
+					<p class="text-xs font-semibold text-ink/50">{i.t('today.streak.best')}</p>
+					<p class="display text-lg">{app.streak.best}</p>
+				</div>
+				<button class="grid h-8 w-8 place-items-center rounded-full text-ink/50 hover:bg-ink/5" aria-label={i.t('streak.how')} aria-expanded={showRules} onclick={() => (showRules = !showRules)}><Info size={18} /></button>
+			</div>
+			<div class="collapse-grid" data-open={showRules}>
+				<div>
+					<p class="mt-4 text-sm font-semibold">{i.t('streak.how')}</p>
+					<ul class="mt-2 space-y-1.5 text-sm text-ink/60">
+						<li class="flex gap-2"><Fire weight="duotone" class="mt-0.5 shrink-0 text-orange" />{i.t('streak.rule1')}</li>
+						<li class="flex gap-2"><Clock weight="duotone" class="mt-0.5 shrink-0" />{i.t('streak.rule2')}</li>
+						<li class="flex gap-2"><UserCircle weight="duotone" class="mt-0.5 shrink-0" />{i.t('streak.rule3')}</li>
+					</ul>
 				</div>
 			</div>
-			<p class="text-right text-xs font-semibold text-ink/50">{i.t('today.streak.best')}<br /><span class="display text-xl">{app.streak.best}</span></p>
+			{#if auth.enabled && !auth.user}
+				<a href="/account" class="btn-ghost mt-4 w-full py-2.5 text-sm"><UserCircle weight="duotone" /> {i.t('acc.cta')}</a>
+			{/if}
 		</div>
 
 		{#each extras as x (x.h)}
@@ -152,7 +173,7 @@
 					<Crown weight="fill" class="text-sun" /><span class="uppercase tracking-wide">Premium · {i.cat(x.p.cat)}</span>
 					<span class="ml-auto">{String(x.h).padStart(2, '0')}:00</span>
 				</div>
-				<p class="display text-2xl text-sun"><PhraseText text={x.p[i.lang]} /></p>
+				<p class="display text-xl text-sun"><PhraseText text={x.p[i.lang]} /></p>
 			</div>
 		{/each}
 
@@ -164,7 +185,7 @@
 
 		{#if !app.premium}
 			<a href="/premium" class="card group flex items-center gap-4 bg-ink p-4 text-white" onclick={() => track('premium_click', { from: 'today' })}>
-				<span class="display grid h-12 w-12 shrink-0 place-items-center rounded-full bg-sun text-2xl text-ink transition-transform group-hover:rotate-12"><Crown weight="fill" /></span>
+				<span class="display grid h-12 w-12 shrink-0 place-items-center rounded-full bg-sun text-xl text-ink transition-transform group-hover:rotate-12"><Crown weight="fill" /></span>
 				<span class="flex-1">
 					<span class="block font-semibold">{i.t('premium.title')}</span>
 					<span class="block text-sm text-white/70">{i.t('premium.p1')} · {i.t('premium.p2')}</span>

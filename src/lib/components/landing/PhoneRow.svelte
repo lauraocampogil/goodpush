@@ -23,7 +23,7 @@
 <section class="overflow-hidden" style="background: linear-gradient(to bottom, var(--color-sun) 0 58%, var(--color-ink) 58% 100%)">
 	<div class="container-site pt-8 text-center sm:pt-16">
 		<p class="kicker">{i.t('real.kicker')}</p>
-		<h2 use:splitReveal={{ scroll: true }} class="display mx-auto mt-4 max-w-3xl text-5xl sm:text-7xl">{i.t('real.title')}</h2>
+		<h2 use:splitReveal={{ scroll: true }} class="display mx-auto mt-4 max-w-3xl text-4xl sm:text-5xl">{i.t('real.title')}</h2>
 		<p use:reveal class="mx-auto mt-5 max-w-md text-[15px] text-ink/70">{i.t('real.sub')}</p>
 	</div>
 
@@ -37,7 +37,7 @@
 				<div class="flex items-center justify-between text-[11px] font-semibold tracking-wider uppercase opacity-70">
 					<span>{i.cat(p.cat)}</span><span>08:00</span>
 				</div>
-				<p class="display text-[1.9rem] leading-[0.95]">{plain(p[i.lang])}</p>
+				<p class="display text-[1.37rem] leading-[0.95]">{plain(p[i.lang])}</p>
 				<Smiley size={52} color={DARK.includes(color) ? 'cream' : 'ink'} wink={n % 3 === 1} mood={n % 3 === 2 ? 'calm' : undefined} />
 			</article>
 		{/each}

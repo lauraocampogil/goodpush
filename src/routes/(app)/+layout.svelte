@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Clock, Crown, Fire, Gear, Heart, Sun } from '#lib/icons.ts';
+	import { Clock, Crown, Fire, Gear, Heart, Sun, UserCircle } from '#lib/icons.ts';
+	import { auth } from '#lib/auth.svelte.ts';
 	import { page } from '$app/state';
 	import Seo from '#lib/components/Seo.svelte';
 	import Logo from '#lib/components/Logo.svelte';
@@ -35,8 +36,9 @@
 			<a href="/today" aria-label="GoodPush"><Logo size="sm" /></a>
 			<div class="flex items-center gap-2">
 				{#if app.premium}<span class="pill bg-ink text-sun"><Crown weight="fill" /> PRO</span>{/if}
-				{#if app.streak.count > 0}
-					<span class="pill bg-white py-1.5 shadow-[var(--shadow-soft)]"><Fire weight="fill" class="text-orange" /> {app.streak.count}</span>
+				<a href="/account" class="grid h-9 w-9 place-items-center rounded-full bg-white shadow-[var(--shadow-soft)]" aria-label={i.t('nav.account')}><UserCircle size={20} weight={auth.user ? 'fill' : 'duotone'} /></a>
+				{#if app.currentStreak > 0}
+					<span class="pill bg-white py-1.5 shadow-[var(--shadow-soft)]"><Fire weight="fill" class="text-orange" /> {app.currentStreak}</span>
 				{/if}
 			</div>
 		</header>

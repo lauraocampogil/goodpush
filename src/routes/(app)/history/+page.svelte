@@ -12,7 +12,7 @@
 	);
 </script>
 
-<h1 class="display my-4 text-5xl">{i.t('history.title')}</h1>
+<h1 class="display my-4 text-4xl">{i.t('history.title')}</h1>
 {#if items.length === 0}
 	<p class="soft mt-10 text-center text-3xl">{i.t('history.empty')}</p>
 {:else}
@@ -20,7 +20,7 @@
 		{#each items as h (h.day)}
 			<li class="card flex gap-4 p-4">
 				<span class="w-16 shrink-0 text-xs font-bold uppercase text-ink/60">{fmt.format(new Date(h.day + 'T12:00:00'))}</span>
-				<p class="display flex-1 text-2xl"><PhraseText text={h.p![i.lang]} /></p>
+				<p class="display flex-1 text-xl"><PhraseText text={h.p![i.lang]} /></p>
 				<button class="self-start text-xl" aria-label="favorite" onclick={() => app.toggleFavorite(h.id)}>
 					<Heart weight={app.favorites.includes(h.id) ? 'fill' : 'regular'} class={app.favorites.includes(h.id) ? 'text-orange' : ''} />
 				</button>

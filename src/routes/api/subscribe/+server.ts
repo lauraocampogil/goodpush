@@ -1,6 +1,7 @@
 import { error, json } from '@sveltejs/kit';
 import { CATEGORY_IDS, LANGS, type CategoryId } from '#lib/data/categories.ts';
 import { db } from '#lib/server/supabase.ts';
+import { getUser } from '#lib/server/auth.ts';
 import type { RequestHandler } from './$types';
 
 const isUuidish = (v: unknown): v is string => typeof v === 'string' && /^[\w-]{8,64}$/.test(v);
@@ -32,9 +33,11 @@ export const POST: RequestHandler = async ({ request }) => {
 	const supabase = db();
 	if (!supabase) return json({ ok: true, demo: true });
 
+	const user = await getUser(request);
 	const { error: e } = await supabase.from('subscribers').upsert(
 		{
 			id: body.deviceId,
+			...(user ? { user_id: user.id } : {}),
 			name: typeof body.name === 'string' ? body.name.trim().slice(0, 40) : null,
 			categories,
 			hour,

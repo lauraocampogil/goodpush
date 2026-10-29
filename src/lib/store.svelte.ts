@@ -58,6 +58,53 @@ class AppStore {
 	streak = $state<Streak>({ count: 0, best: 0, last: null });
 	source = $state<string | null>(null);
 	loaded = $state(false);
+	/** Called after every save (used to sync to the account when signed in). */
+	onSave: (() => void) | null = null;
+	/** Set by the auth module while signed in. */
+	authHeader: string | null = null;
+
+	/** Streak as it stands today: it's lost once a full day was missed. */
+	get currentStreak(): number {
+		const last = this.streak.last;
+		if (!last) return 0;
+		const today = dayKey();
+		return last === today || last === shiftDay(today, -1) ? this.streak.count : 0;
+	}
+
+	/** Is today's visit still needed to keep the streak? */
+	get streakAtRisk(): boolean {
+		return this.currentStreak > 0 && this.streak.last !== dayKey();
+	}
+
+	/** Snapshot that is synced to the account. */
+	exportData() {
+		const { name, categories, hour, extraHours, theme } = this.profile;
+		return {
+			profile: { name, categories, hour, extraHours, theme },
+			favorites: this.favorites,
+			history: this.history,
+			streak: this.streak
+		};
+	}
+
+	/** Merge account data with this phone (union favorites/history, best streak). */
+	mergeData(remote: ReturnType<AppStore['exportData']> | null) {
+		if (!remote) return;
+		this.favorites = [...new Set([...this.favorites, ...(remote.favorites ?? [])])];
+		const byDay = new Map<string, HistoryItem>();
+		for (const h of [...(remote.history ?? []), ...this.history]) byDay.set(h.day, h);
+		this.history = [...byDay.values()].sort((a, b) => (a.day < b.day ? 1 : -1)).slice(0, 366);
+		const r = remote.streak;
+		if (r?.last) {
+			const l = this.streak;
+			const newer = !l.last || r.last > l.last || (r.last === l.last && r.count > l.count);
+			this.streak = { ...(newer ? r : l), best: Math.max(r.best ?? 0, l.best ?? 0) };
+		}
+		if (!this.profile.onboarded && remote.profile) {
+			Object.assign(this.profile, remote.profile, { onboarded: true });
+		}
+		this.save();
+	}
 
 	load() {
 		if (this.loaded || typeof window === 'undefined') return;
@@ -100,6 +147,7 @@ class AppStore {
 		} catch {
 			/* private mode: app still works for this session */
 		}
+		this.onSave?.();
 	}
 
 	/** First-touch attribution: which TikTok / IG video brought this person. */
@@ -119,6 +167,7 @@ class AppStore {
 		if (!this.history.some((h) => h.day === today)) {
 			this.history = [{ id: phraseId, day: today }, ...this.history].slice(0, 366);
 		}
+		// Streak rule: open GoodPush (or tap the push) once a day. Miss a full day → back to 1.
 		if (this.streak.last !== today) {
 			const count = this.streak.last === shiftDay(today, -1) ? this.streak.count + 1 : 1;
 			this.streak = { count, best: Math.max(count, this.streak.best), last: today };
@@ -136,7 +185,9 @@ class AppStore {
 	/** Asks the server whether this device has an active Premium subscription. */
 	async refreshPremium() {
 		try {
-			const res = await fetch(`/api/premium?deviceId=${encodeURIComponent(this.profile.deviceId)}`);
+			const res = await fetch(`/api/premium?deviceId=${encodeURIComponent(this.profile.deviceId)}`, {
+				headers: this.authHeader ? { authorization: this.authHeader } : {}
+			});
 			if (!res.ok) return this.premium;
 			const { premium } = (await res.json()) as { premium: boolean };
 			this.premium = premium;

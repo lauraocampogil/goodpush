@@ -36,6 +36,7 @@ export const POST: RequestHandler = async ({ request }) => {
 				device_id: id,
 				stripe_customer_id: typeof sub.customer === 'string' ? sub.customer : sub.customer.id,
 				stripe_subscription_id: sub.id,
+				user_id: sub.metadata?.userId || null,
 				status: sub.status,
 				current_period_end: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
 				updated_at: new Date().toISOString()

@@ -79,9 +79,9 @@
 	<section class="relative flex flex-1 flex-col justify-center overflow-hidden py-6">
 		{#key step}
 			<div in:fly={{ x: 80 * dir, duration: 550, easing: backOut }}>
-				<p class="display text-7xl text-orange">0{step + 1}</p>
+				<p class="display text-5xl text-orange">0{step + 1}</p>
 				{#if step === 1}
-					<h1 class="display text-5xl sm:text-6xl">{i.t('ob.name.t')}</h1>
+					<h1 class="display text-4xl sm:text-[2.6rem]">{i.t('ob.name.t')}</h1>
 					<p class="soft mt-2 text-2xl">{i.t('ob.name.d')}</p>
 					<input
 						class="mt-8 field"
@@ -95,7 +95,7 @@
 						<p class="soft mt-4 text-3xl" in:fly={{ y: 10 }}>{p.name}, <span class="display not-italic">{i.t('sticker.you').toUpperCase()}</span> <Sparkle weight="fill" class="inline text-orange" /></p>
 					{/if}
 				{:else if step === 2}
-					<h1 class="display text-5xl sm:text-6xl">{i.t('ob.cats.t')}</h1>
+					<h1 class="display text-4xl sm:text-[2.6rem]">{i.t('ob.cats.t')}</h1>
 					<p class="soft mt-2 text-2xl">{i.t('ob.cats.d')}</p>
 					<div class="mt-8 flex flex-wrap gap-3">
 						{#each CATEGORY_IDS as c, k (c)}
@@ -110,7 +110,7 @@
 						{/each}
 					</div>
 				{:else if step === 3}
-					<h1 class="display text-5xl sm:text-6xl">{i.t('ob.time.t')}</h1>
+					<h1 class="display text-4xl sm:text-[2.6rem]">{i.t('ob.time.t')}</h1>
 					<p class="soft mt-2 text-2xl">{i.t('ob.time.d')}</p>
 					<div class="mt-8 grid grid-cols-4 gap-3 sm:grid-cols-7">
 						{#each SEND_HOURS as h, k (h)}
@@ -121,11 +121,11 @@
 					</div>
 					<p class="mt-6 flex items-center gap-2 text-sm font-semibold text-ink/60"><Crown weight="fill" class="text-orange" /> {i.t('ob.time.extra')}</p>
 				{:else}
-					<h1 class="display text-5xl sm:text-6xl">{i.t('ob.notif.t')}</h1>
+					<h1 class="display text-4xl sm:text-[2.6rem]">{i.t('ob.notif.t')}</h1>
 					<p class="soft mt-2 text-2xl">{i.t('ob.notif.d')}</p>
 					<div class="mt-8 -rotate-1" in:fly={{ y: -120, delay: 250, duration: 900, easing: backOut }}>
 						<NotifCard label={i.cat(preview.cat)} time="{String(p.hour).padStart(2, '0')}:00">
-							<p class="display text-3xl">
+							<p class="display text-2xl">
 								{#if p.name}<span class="soft text-3xl">{p.name},</span>{/if}
 								<PhraseText text={preview[i.lang]} />
 							</p>

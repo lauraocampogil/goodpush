@@ -30,7 +30,8 @@
 				time: `${String(app.profile.hour).padStart(2, '0')}:00`,
 				site,
 				theme,
-				badge: CATEGORY_COLOR[phrase.cat]
+				badge: CATEGORY_COLOR[phrase.cat],
+				tagline: i.t('share.tagline')
 			});
 			const link = `${PUBLIC_SITE_URL}/?utm_source=share&utm_campaign=${phrase.id}`;
 			const res = await shareImage(blob, i.t('share.text'), link);

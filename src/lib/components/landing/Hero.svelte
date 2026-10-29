@@ -24,7 +24,7 @@
 
 <section bind:this={root} class="bg-sun pt-28 pb-20 sm:pt-32 sm:pb-24">
 	<div class="container-site">
-		<h1 class="display mx-auto max-w-5xl text-center text-[clamp(3.1rem,9vw,7rem)] leading-[0.88]">
+		<h1 class="display mx-auto max-w-5xl text-center text-[clamp(2.3rem,6.6vw,5.2rem)] leading-[0.98] uppercase">
 			<span class="flex flex-wrap items-center justify-center gap-x-[0.18em]">
 				<span use:splitReveal={{ delay: 0.05 }}>{i.t('hero.title.1')}</span>
 				<span data-pop class="inline-block w-[0.8em]"><Smiley size={0} color="orange" class="h-[0.8em] w-[0.8em]" /></span>
@@ -41,7 +41,7 @@
 		</h1>
 
 		<div class="mx-auto mt-10 flex max-w-md flex-col items-center gap-6 text-center">
-			<p data-fade class="text-[15px] leading-relaxed text-ink/70">{i.t('hero.sub')} {i.t('hero.kicker')}.</p>
+			<p data-fade class="text-[15px] leading-relaxed text-ink/70">{i.t('hero.sub')}</p>
 			<div data-fade><button class="btn group px-7 py-4" onclick={onstart}>
 				{cta}
 				<ArrowRight class="transition-transform group-hover:translate-x-1" />
