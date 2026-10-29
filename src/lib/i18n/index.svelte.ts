@@ -1,6 +1,7 @@
 import { getContext, setContext } from 'svelte';
 import { LANGS, type CategoryId, type Lang } from '../data/categories';
 import { CATEGORY_LABEL, DICTS, type DictKey } from './dict';
+import { TOPIC_LABEL, type TopicId } from '../data/topics';
 
 const KEY = Symbol('i18n');
 
@@ -13,6 +14,7 @@ export class I18n {
 
 	t = (key: DictKey): string => DICTS[this.lang][key] ?? DICTS.en[key] ?? key;
 	cat = (id: CategoryId): string => CATEGORY_LABEL[this.lang][id];
+	topic = (id: TopicId): string => TOPIC_LABEL[this.lang][id];
 
 	set(lang: Lang) {
 		this.lang = lang;

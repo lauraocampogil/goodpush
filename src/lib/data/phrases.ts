@@ -1,4 +1,5 @@
 import type { CategoryId, Lang } from './categories';
+import type { TopicId } from './topics';
 
 /**
  * The phrase library. Wrap ONE key word in *asterisks* — it gets the pink tape.
@@ -6,7 +7,16 @@ import type { CategoryId, Lang } from './categories';
  * Keep the same `id` forever (favorites are stored by id).
  */
 /** `premium: true` → only sent / shown to Premium members. */
-export type Phrase = { id: string; cat: CategoryId; premium?: boolean } & Record<Lang, string>;
+export type Phrase = {
+	id: string;
+	cat: CategoryId;
+	premium?: boolean;
+	/** Only shown to people who picked this sub-topic. */
+	topic?: TopicId;
+	/** Real quotes ("in the news") carry who said it + where it was reported. */
+	author?: string;
+	source?: string;
+} & Record<Lang, string>;
 
 export const PHRASES: Phrase[] = [
 	// ---------- DISCIPLINE ----------
@@ -95,4 +105,68 @@ export const PHRASES: Phrase[] = [
 	{ id: 'pl2', cat: 'selflove', premium: true, en: 'You’re allowed to *outgrow* things.', es: 'Tienes derecho a *dejar atrás* cosas.', fr: 'Tu as le droit de *dépasser* certaines choses.' }
 ];
 
-export const PHRASE_BY_ID = new Map(PHRASES.map((p) => [p.id, p]));
+/** Sub-topic phrases: only people who picked that sub-topic get them (mixed with their vibe's phrases). */
+export const TOPIC_PHRASES: Phrase[] = [
+	// discipline
+	{ id: 'th1', cat: 'discipline', topic: 'habits', en: 'Make it so small you *can’t* say no.', es: 'Hazlo tan pequeño que *no puedas* decir que no.', fr: 'Rends-le si petit que tu *ne peux pas* dire non.' },
+	{ id: 'th2', cat: 'discipline', topic: 'habits', en: 'Don’t break the *chain* today.', es: 'Hoy no rompas la *cadena*.', fr: 'Ne casse pas la *chaîne* aujourd’hui.' },
+	{ id: 'tm1', cat: 'discipline', topic: 'mornings', en: 'Win the *first hour*, win the day.', es: 'Gana la *primera hora*, gana el día.', fr: 'Gagne la *première heure*, gagne la journée.' },
+	{ id: 'tm2', cat: 'discipline', topic: 'mornings', en: 'Feet on the floor. *Go*.', es: 'Pies en el suelo. *Vamos*.', fr: 'Les pieds par terre. *Go*.' },
+	{ id: 'tf1', cat: 'discipline', topic: 'focus', en: 'Phone in the other room. *Deep work* now.', es: 'El móvil en otra habitación. *Concentración* total.', fr: 'Téléphone dans l’autre pièce. *Focus* total.' },
+	{ id: 'tf2', cat: 'discipline', topic: 'focus', en: 'One tab. One task. *One win*.', es: 'Una pestaña. Una tarea. *Una victoria*.', fr: 'Un onglet. Une tâche. *Une victoire*.' },
+	// calm
+	{ id: 'ta1', cat: 'calm', topic: 'anxiety', en: 'Your thoughts are loud, not *true*.', es: 'Tus pensamientos son ruidosos, no *verdad*.', fr: 'Tes pensées sont bruyantes, pas *vraies*.' },
+	{ id: 'ta2', cat: 'calm', topic: 'anxiety', en: 'Name five things you can *see*. You’re here.', es: 'Nombra cinco cosas que *ves*. Estás aquí.', fr: 'Nomme cinq choses que tu *vois*. Tu es là.' },
+	{ id: 'tsl1', cat: 'calm', topic: 'sleep', en: 'Tomorrow can *wait*. Rest now.', es: 'Mañana puede *esperar*. Ahora descansa.', fr: 'Demain peut *attendre*. Repose-toi.' },
+	{ id: 'tsl2', cat: 'calm', topic: 'sleep', en: 'Screens off. *Mind off*.', es: 'Pantallas fuera. *Mente fuera*.', fr: 'Écrans éteints. *Tête éteinte*.' },
+	{ id: 'tmi1', cat: 'calm', topic: 'mindfulness', en: 'Notice your *breath*. That’s the whole practice.', es: 'Nota tu *respiración*. Esa es toda la práctica.', fr: 'Remarque ta *respiration*. C’est toute la pratique.' },
+	{ id: 'tmi2', cat: 'calm', topic: 'mindfulness', en: 'Be *here*. Not in the next thing.', es: 'Está *aquí*. No en lo siguiente.', fr: 'Sois *ici*. Pas dans la suite.' },
+	// sport
+	{ id: 'tfo1', cat: 'sport', topic: 'football', en: 'Every touch in training is a *goal* later.', es: 'Cada toque en el entreno es un *gol* después.', fr: 'Chaque touche à l’entraînement est un *but* plus tard.' },
+	{ id: 'tfo2', cat: 'sport', topic: 'football', en: 'Lose the ball? Win it *back*.', es: '¿Pierdes el balón? *Recupéralo*.', fr: 'Tu perds le ballon ? *Récupère-le*.' },
+	{ id: 'tfo3', cat: 'sport', topic: 'football', en: 'Play for the *badge* on the front.', es: 'Juega por el *escudo* del pecho.', fr: 'Joue pour l’*écusson* sur le maillot.' },
+	{ id: 'tba1', cat: 'sport', topic: 'basketball', en: 'Miss the shot? Take the *next* one.', es: '¿Fallas el tiro? Lanza el *siguiente*.', fr: 'Tu rates le tir ? Prends le *suivant*.' },
+	{ id: 'tba2', cat: 'sport', topic: 'basketball', en: 'Defense is *effort*. Effort is free.', es: 'La defensa es *esfuerzo*. Y el esfuerzo es gratis.', fr: 'La défense, c’est de l’*effort*. Et l’effort est gratuit.' },
+	{ id: 'tte1', cat: 'sport', topic: 'tennis', en: 'Next point. *Only* the next point.', es: 'Siguiente punto. *Solo* el siguiente.', fr: 'Point suivant. *Seulement* le suivant.' },
+	{ id: 'tte2', cat: 'sport', topic: 'tennis', en: 'Breathe between points. *Reset*.', es: 'Respira entre puntos. *Reinicia*.', fr: 'Respire entre les points. *Reset*.' },
+	{ id: 'tru1', cat: 'sport', topic: 'running', en: 'Slow kilometres are still *kilometres*.', es: 'Los kilómetros lentos también son *kilómetros*.', fr: 'Les kilomètres lents restent des *kilomètres*.' },
+	{ id: 'tru2', cat: 'sport', topic: 'running', en: 'The first kilometre lies. *Keep going*.', es: 'El primer kilómetro miente. *Sigue*.', fr: 'Le premier kilomètre ment. *Continue*.' },
+	{ id: 'tgy1', cat: 'sport', topic: 'gym', en: 'Show up. Even for a *short* session.', es: 'Ve. Aunque sea una sesión *corta*.', fr: 'Vas-y. Même pour une séance *courte*.' },
+	{ id: 'tgy2', cat: 'sport', topic: 'gym', en: 'Progress is *one plate* at a time.', es: 'El progreso va *disco a disco*.', fr: 'Le progrès, c’est *un disque* à la fois.' },
+	{ id: 'tco1', cat: 'sport', topic: 'combat', en: 'Hard rounds make *calm* fighters.', es: 'Los asaltos duros forman luchadores *tranquilos*.', fr: 'Les rounds durs font des combattants *calmes*.' },
+	{ id: 'tco2', cat: 'sport', topic: 'combat', en: 'Hands up. *Heart* in.', es: 'Guardia arriba. *Corazón* dentro.', fr: 'Garde haute. *Cœur* dedans.' },
+	{ id: 'tcy1', cat: 'sport', topic: 'cycling', en: 'The hill is *shorter* than it looks.', es: 'La cuesta es más *corta* de lo que parece.', fr: 'La côte est plus *courte* qu’elle n’en a l’air.' },
+	{ id: 'tcy2', cat: 'sport', topic: 'cycling', en: 'Keep the legs *turning*.', es: 'Que las piernas sigan *girando*.', fr: 'Garde les jambes qui *tournent*.' },
+	{ id: 'tf11', cat: 'sport', topic: 'f1', en: 'Hit your *marks*. Lap after lap.', es: 'Clava tus *referencias*. Vuelta tras vuelta.', fr: 'Touche tes *repères*. Tour après tour.' },
+	{ id: 'tf12', cat: 'sport', topic: 'f1', en: 'Champions are made in the *details*.', es: 'Los campeones se hacen en los *detalles*.', fr: 'Les champions se font dans les *détails*.' },
+	// study
+	{ id: 'tex1', cat: 'study', topic: 'exams', en: 'You know more than you *think*.', es: 'Sabes más de lo que *crees*.', fr: 'Tu en sais plus que tu ne *crois*.' },
+	{ id: 'tex2', cat: 'study', topic: 'exams', en: 'One more chapter. Then *rest*.', es: 'Un capítulo más. Luego *descansa*.', fr: 'Encore un chapitre. Puis *repos*.' },
+	{ id: 'tla1', cat: 'study', topic: 'languages', en: 'Speak badly *today*. Speak well later.', es: 'Habla mal *hoy*. Hablarás bien después.', fr: 'Parle mal *aujourd’hui*. Tu parleras bien plus tard.' },
+	{ id: 'tla2', cat: 'study', topic: 'languages', en: 'Ten new words. *Every* day.', es: 'Diez palabras nuevas. *Cada* día.', fr: 'Dix nouveaux mots. *Chaque* jour.' },
+	{ id: 'tun1', cat: 'study', topic: 'university', en: 'Future you is *proud* of this all-nighter.', es: 'Tu yo del futuro está *orgulloso* de esto.', fr: 'Le toi du futur est *fier* de ça.' },
+	{ id: 'tun2', cat: 'study', topic: 'university', en: 'Go to class. *Half* the work is showing up.', es: 'Ve a clase. *La mitad* del trabajo es ir.', fr: 'Va en cours. *La moitié* du travail, c’est d’y être.' },
+	// build
+	{ id: 'tst1', cat: 'build', topic: 'startup', en: 'Talk to *one* user today.', es: 'Habla con *un* usuario hoy.', fr: 'Parle à *un* utilisateur aujourd’hui.' },
+	{ id: 'tst2', cat: 'build', topic: 'startup', en: 'Ship it. *Then* make it pretty.', es: 'Lánzalo. *Después* lo pones bonito.', fr: 'Lance-le. *Ensuite* rends-le joli.' },
+	{ id: 'tcr1', cat: 'build', topic: 'creator', en: 'Post the *imperfect* one.', es: 'Publica el *imperfecto*.', fr: 'Publie le *imparfait*.' },
+	{ id: 'tcr2', cat: 'build', topic: 'creator', en: 'Views come and go. *Consistency* stays.', es: 'Las vistas van y vienen. La *constancia* se queda.', fr: 'Les vues passent. La *régularité* reste.' },
+	{ id: 'tca1', cat: 'build', topic: 'career', en: 'Ask for the *opportunity*. Worst case: no.', es: 'Pide la *oportunidad*. Lo peor: un no.', fr: 'Demande l’*opportunité*. Au pire : non.' },
+	{ id: 'tca2', cat: 'build', topic: 'career', en: 'Your first job is not your *last*.', es: 'Tu primer trabajo no es el *último*.', fr: 'Ton premier job n’est pas le *dernier*.' },
+	// faith
+	{ id: 'tgr1', cat: 'faith', topic: 'gratitude', en: 'Name *three* good things today.', es: 'Nombra *tres* cosas buenas de hoy.', fr: 'Cite *trois* bonnes choses d’aujourd’hui.' },
+	{ id: 'tgr2', cat: 'faith', topic: 'gratitude', en: 'Thank *someone* today.', es: 'Dale las gracias a *alguien* hoy.', fr: 'Remercie *quelqu’un* aujourd’hui.' },
+	{ id: 'tho1', cat: 'faith', topic: 'hope', en: 'Better days are *coming*.', es: 'Vienen días *mejores*.', fr: 'De meilleurs jours *arrivent*.' },
+	{ id: 'tho2', cat: 'faith', topic: 'hope', en: 'Even the longest night *ends*.', es: 'Hasta la noche más larga *termina*.', fr: 'Même la plus longue nuit *finit*.' },
+	{ id: 'tpr1', cat: 'faith', topic: 'prayer', en: 'Take a quiet *minute* for your heart.', es: 'Regálale un *minuto* de silencio a tu corazón.', fr: 'Offre une *minute* de silence à ton cœur.' },
+	{ id: 'tpr2', cat: 'faith', topic: 'prayer', en: 'Give it *up*. Then keep walking.', es: '*Entrégalo*. Y sigue caminando.', fr: '*Confie-le*. Puis continue d’avancer.' },
+	// selflove
+	{ id: 'tcn1', cat: 'selflove', topic: 'confidence', en: 'Walk in like you *belong*. You do.', es: 'Entra como si *pertenecieras*. Es así.', fr: 'Entre comme si tu étais *à ta place*. Tu l’es.' },
+	{ id: 'tcn2', cat: 'selflove', topic: 'confidence', en: 'Say it *out loud*.', es: 'Dilo *en voz alta*.', fr: 'Dis-le *à voix haute*.' },
+	{ id: 'tbo1', cat: 'selflove', topic: 'body', en: 'Your body is a *home*, not a project.', es: 'Tu cuerpo es un *hogar*, no un proyecto.', fr: 'Ton corps est une *maison*, pas un projet.' },
+	{ id: 'tbo2', cat: 'selflove', topic: 'body', en: 'Thank your legs for *carrying* you.', es: 'Agradece a tus piernas por *llevarte*.', fr: 'Remercie tes jambes de te *porter*.' },
+	{ id: 'thb1', cat: 'selflove', topic: 'heartbreak', en: 'It hurts because it *mattered*. You’ll heal.', es: 'Duele porque *importaba*. Vas a sanar.', fr: 'Ça fait mal parce que ça *comptait*. Tu vas guérir.' },
+	{ id: 'thb2', cat: 'selflove', topic: 'heartbreak', en: 'Choose *you* today.', es: 'Hoy elígete *a ti*.', fr: 'Aujourd’hui, choisis-*toi*.' }
+];
+
+export const PHRASE_BY_ID = new Map([...PHRASES, ...TOPIC_PHRASES].map((p) => [p.id, p]));

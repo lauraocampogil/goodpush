@@ -2,7 +2,6 @@
 	import { PUBLIC_INSTAGRAM_URL, PUBLIC_TIKTOK_URL } from '$app/env/public';
 	import Logo from './Logo.svelte';
 	import Smiley from './Smiley.svelte';
-	import NewsletterForm from './NewsletterForm.svelte';
 	import { LANGS } from '#lib/data/categories.ts';
 	import { LANG_LABEL } from '#lib/i18n/dict.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
@@ -31,17 +30,6 @@
 				<Smiley size={120} color="pink" wink class="-mr-8 animate-float [animation-delay:-1.2s]" />
 				<Smiley size={120} color="mint" mood="calm" class="animate-float [animation-delay:-2.4s]" />
 			</div>
-		</div>
-	</div>
-
-	<!-- Newsletter -->
-	<div class="container-site pb-12">
-		<div class="grid items-center gap-6 rounded-[28px] bg-white/50 p-6 sm:p-8 lg:grid-cols-2">
-			<div>
-				<p class="display text-xl sm:text-2xl">{i.t('nl.title')}</p>
-				<p class="mt-1 text-sm text-ink/60">{i.t('nl.sub')}</p>
-			</div>
-			<NewsletterForm />
 		</div>
 	</div>
 

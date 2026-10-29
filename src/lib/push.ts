@@ -57,6 +57,7 @@ export async function syncProfile(
 				deviceId: profile.deviceId,
 				name: profile.name,
 				categories: profile.categories,
+				topics: profile.topics,
 				hour: profile.hour,
 				extraHours: profile.extraHours,
 				pausedUntil: profile.pausedUntil,

@@ -18,10 +18,16 @@
 	import { enablePush } from '#lib/push.ts';
 	import { app } from '#lib/store.svelte.ts';
 	import ShareButton from '../ShareButton.svelte';
+	import { todaysQuote } from '#lib/quotes.ts';
+	import type { Phrase } from '#lib/data/phrases.ts';
+	import { TOPIC_EMOJI } from '#lib/data/topics.ts';
 
 	const i = getI18n();
 	const today = dayKey();
-	const phrase = $derived(phraseForDay(app.profile.categories, today));
+	// A real quote from the news for one of your sub-topics beats the usual phrase
+	let quote = $state<Phrase | null>(null);
+	let ready = $state(false);
+	const phrase = $derived(quote ?? phraseForDay(app.profile.categories, today, { topics: app.profile.topics }));
 	// Premium: today's extra drops (same phrases the extra pushes send)
 	const extras = $derived(
 		app.premium
@@ -55,6 +61,17 @@
 			goto('/start', { replaceState: true });
 			return;
 		}
+		todaysQuote(today, app.profile.topics).then((q) => {
+			if (q) {
+				quote = q;
+				app.rememberQuote(q);
+			}
+			start();
+		});
+	});
+
+	function start() {
+		ready = true;
 		const before = app.streak.count;
 		app.visit(phrase.id);
 		navigator.clearAppBadge?.().catch(() => {});
@@ -81,7 +98,7 @@
 		}
 		askRating = feedback.shouldAsk(app.currentStreak);
 		animateIn();
-	});
+	}
 
 	async function animateIn() {
 		await tick();
@@ -118,19 +135,33 @@
 <section class="flex flex-1 flex-col justify-center gap-6 py-4">
 	<p class="kicker text-center">{i.t('today.kicker')}</p>
 
-	<div bind:this={card}>
+	<div bind:this={card} style:visibility={ready ? 'visible' : 'hidden'}>
 		<article
 			class="relative flex min-h-[26rem] flex-col justify-between overflow-hidden rounded-[32px] p-7 shadow-[var(--shadow-float)] sm:p-9"
 			style="background:{STICKER[color]}; color:{dark ? '#fff' : '#141414'}; --hl:{dark ? '#F6E36B' : '#fff'}"
 		>
 			<div class="flex items-center justify-between text-xs font-semibold tracking-wider uppercase opacity-70">
-				<span class="flex items-center gap-2"><CatIcon cat={phrase.cat} /> {i.cat(phrase.cat)}</span>
+				{#if phrase.author && phrase.topic}
+					<span class="flex items-center gap-2">{TOPIC_EMOJI[phrase.topic]} {i.t('quote.news')} · {i.topic(phrase.topic)}</span>
+				{:else}
+					<span class="flex items-center gap-2"><CatIcon cat={phrase.cat} /> {i.cat(phrase.cat)}</span>
+				{/if}
 				<span>{hourLabel}</span>
 			</div>
 			<p bind:this={text} class="display my-8 text-[clamp(1.96rem,8.4vw,3.36rem)] leading-[0.92]">
-				{#if app.profile.name}<span data-words class="soft block text-[0.62em] leading-none">{app.profile.name},</span>{/if}
-				<span data-words><PhraseText text={phrase[i.lang]} /></span>
+				{#if phrase.author}
+					<span data-words>“{phrase[i.lang]}”</span>
+				{:else}
+					{#if app.profile.name}<span data-words class="soft block text-[0.62em] leading-none">{app.profile.name},</span>{/if}
+					<span data-words><PhraseText text={phrase[i.lang]} /></span>
+				{/if}
 			</p>
+			{#if phrase.author}
+				<p class="-mt-4 mb-6 text-sm font-semibold">
+					— {phrase.author}
+					{#if phrase.source}<a href={phrase.source} target="_blank" rel="noopener" class="ml-2 underline opacity-60">{i.t('quote.source')}</a>{/if}
+				</p>
+			{/if}
 			<div class="flex items-end justify-between">
 				<span class="text-xs font-semibold opacity-60">{new Intl.DateTimeFormat(i.lang, { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date())}</span>
 				<Smiley size={72} color={dark ? 'cream' : 'ink'} wink class="animate-float" />

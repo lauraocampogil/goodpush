@@ -1,6 +1,7 @@
 import { error, json } from '@sveltejs/kit';
 import { CATEGORY_IDS, LANGS, type CategoryId } from '#lib/data/categories.ts';
 import { db } from '#lib/server/supabase.ts';
+import { isTopic } from '#lib/data/topics.ts';
 import { getUser } from '#lib/server/auth.ts';
 import type { RequestHandler } from './$types';
 
@@ -18,6 +19,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	const categories = (Array.isArray(body.categories) ? body.categories : []).filter((c: string) =>
 		CATEGORY_IDS.includes(c as CategoryId)
 	);
+	const topics = [...new Set((Array.isArray(body.topics) ? body.topics : []).filter(isTopic))].slice(0, 30);
 	const hour = Number.isInteger(body.hour) && body.hour >= 0 && body.hour <= 23 ? body.hour : 8;
 	// Premium extra pushes: max 2 distinct hours (enforced again by the cron)
 	const extraHours = (Array.isArray(body.extraHours) ? body.extraHours : [])
@@ -44,6 +46,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			...(user ? { user_id: user.id } : {}),
 			name: typeof body.name === 'string' ? body.name.trim().slice(0, 40) : null,
 			categories,
+			topics,
 			hour,
 			extra_hours: [...new Set(extraHours)],
 			days: days.length ? [...new Set(days)] : [0, 1, 2, 3, 4, 5, 6],

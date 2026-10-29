@@ -22,8 +22,8 @@
 	});
 </script>
 
-<section bind:this={root} class="bg-sun pt-28 pb-20 sm:pt-32 sm:pb-24">
-	<div class="container-site">
+<section bind:this={root} class="flex min-h-[100svh] items-center bg-sun pt-24 pb-12">
+	<div class="container-site w-full">
 		<h1 class="display mx-auto max-w-5xl text-center text-[clamp(2.3rem,6.6vw,5.2rem)] leading-[0.98] uppercase">
 			<span class="flex flex-wrap items-center justify-center gap-x-[0.18em]">
 				<span use:splitReveal={{ delay: 0.05 }}>{i.t('hero.title.1')}</span>

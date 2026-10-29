@@ -6,6 +6,8 @@
 	import { goto } from '$app/navigation';
 	import { PUBLIC_INSTAGRAM_URL } from '$app/env/public';
 	import { setPerson, track } from '#lib/analytics.ts';
+	import TopicPicker from '#lib/components/TopicPicker.svelte';
+	import { TOPIC_CAT, type TopicId } from '#lib/data/topics.ts';
 	import { CATEGORY_IDS, LANGS, SEND_HOURS, type CategoryId, type Lang } from '#lib/data/categories.ts';
 	import { LANG_LABEL } from '#lib/i18n/dict.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
@@ -35,7 +37,7 @@
 		clearTimeout(timer);
 		timer = setTimeout(async () => {
 			if (p.pushEnabled) await syncProfile(app.profile, i.lang, app.source);
-			setPerson({ lang: i.lang, categories: p.categories, hour: p.hour, extra_hours: p.extraHours.length, theme: p.theme });
+			setPerson({ lang: i.lang, categories: p.categories, topics: p.topics, hour: p.hour, extra_hours: p.extraHours.length, theme: p.theme });
 			saved = true;
 			setTimeout(() => (saved = false), 1500);
 		}, 500);
@@ -46,7 +48,14 @@
 		const next = on ? [...p.categories, c] : p.categories.filter((x) => x !== c);
 		if (next.length === 0) return; // keep at least one
 		p.categories = next;
+		p.topics = p.topics.filter((t) => next.includes(TOPIC_CAT[t]));
 		persist('category_toggled', { category: c, on, from: 'settings' });
+	}
+
+	function toggleTopic(t: TopicId) {
+		const on = !p.topics.includes(t);
+		p.topics = on ? [...p.topics, t] : p.topics.filter((x) => x !== t);
+		persist('topic_toggled', { topic: t, on, from: 'settings' });
 	}
 
 	function setHour(h: number) {
@@ -108,7 +117,7 @@
 	}
 
 	async function test() {
-		const ph = phraseForDay(p.categories, dayKey());
+		const ph = phraseForDay(p.categories, dayKey(), { topics: p.topics });
 		await testNotification('GoodPush', pushBody(ph, i.lang, p.name));
 		track('push_test');
 	}
@@ -158,6 +167,9 @@
 				<button class="chip" aria-pressed={p.categories.includes(c)} onclick={() => toggleCat(c)}><CatIcon cat={c} /> {i.cat(c)}</button>
 			{/each}
 		</div>
+		<h2 class="mt-6 mb-1 text-sm font-extrabold uppercase tracking-wider">{i.t('settings.topics')}</h2>
+		<p class="mb-4 text-sm text-ink/60">{i.t('ob.topics.d')}</p>
+		<TopicPicker categories={p.categories} topics={p.topics} ontoggle={toggleTopic} />
 	</section>
 
 	<section class="card p-5">

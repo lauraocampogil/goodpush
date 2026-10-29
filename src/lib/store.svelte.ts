@@ -1,10 +1,14 @@
 import type { CategoryId, Lang } from './data/categories';
+import { PHRASE_BY_ID, type Phrase } from './data/phrases';
+import type { TopicId } from './data/topics';
 import { dayKey, shiftDay } from './phrase';
 
 export type Profile = {
 	deviceId: string;
 	name: string;
 	categories: CategoryId[];
+	/** Optional sub-topics (football, exams…) inside the chosen categories. */
+	topics: TopicId[];
 	hour: number;
 	timeZone: string;
 	onboarded: boolean;
@@ -48,6 +52,7 @@ class AppStore {
 		deviceId: '',
 		name: '',
 		categories: [],
+		topics: [],
 		hour: 8,
 		timeZone: 'UTC',
 		onboarded: false,
@@ -65,6 +70,8 @@ class AppStore {
 	/** Premium status — source of truth is the server (Stripe webhook), cached here. */
 	premium = $state(false);
 	favorites = $state<string[]>([]);
+	/** "In the news" quotes seen on this phone (so history/favorites can show them later). */
+	quotes = $state<Record<string, Phrase>>({});
 	history = $state<HistoryItem[]>([]);
 	streak = $state<Streak>({ count: 0, best: 0, last: null });
 	source = $state<string | null>(null);
@@ -89,9 +96,10 @@ class AppStore {
 
 	/** Snapshot that is synced to the account. */
 	exportData() {
-		const { name, categories, hour, extraHours, theme } = this.profile;
+		const { name, categories, topics, hour, extraHours, theme } = this.profile;
 		return {
-			profile: { name, categories, hour, extraHours, theme },
+			profile: { name, categories, topics, hour, extraHours, theme },
+			quotes: this.quotes,
 			favorites: this.favorites,
 			history: this.history,
 			streak: this.streak
@@ -101,6 +109,7 @@ class AppStore {
 	/** Merge account data with this phone (union favorites/history, best streak). */
 	mergeData(remote: ReturnType<AppStore['exportData']> | null) {
 		if (!remote) return;
+		this.quotes = { ...(remote.quotes ?? {}), ...this.quotes };
 		this.favorites = [...new Set([...this.favorites, ...(remote.favorites ?? [])])];
 		const byDay = new Map<string, HistoryItem>();
 		for (const h of [...(remote.history ?? []), ...this.history]) byDay.set(h.day, h);
@@ -125,7 +134,8 @@ class AppStore {
 			history: [] as HistoryItem[],
 			streak: this.streak,
 			source: null as string | null,
-			premium: false
+			premium: false,
+			quotes: {} as Record<string, Phrase>
 		});
 		this.profile = {
 			...this.profile,
@@ -138,6 +148,8 @@ class AppStore {
 		this.streak = data.streak;
 		this.source = data.source;
 		this.premium = data.premium;
+		this.quotes = data.quotes ?? {};
+		if (!Array.isArray(this.profile.topics)) this.profile.topics = [];
 		this.loaded = true;
 		this.save();
 	}
@@ -152,7 +164,8 @@ class AppStore {
 					history: this.history,
 					streak: this.streak,
 					source: this.source,
-					premium: this.premium
+					premium: this.premium,
+					quotes: this.quotes
 				})
 			);
 		} catch {
@@ -183,6 +196,17 @@ class AppStore {
 			const count = this.streak.last === shiftDay(today, -1) ? this.streak.count + 1 : 1;
 			this.streak = { count, best: Math.max(count, this.streak.best), last: today };
 		}
+		this.save();
+	}
+
+	/** Any phrase or saved quote by id. */
+	phrase(id: string): Phrase | undefined {
+		return PHRASE_BY_ID.get(id) ?? this.quotes[id];
+	}
+
+	rememberQuote(q: Phrase) {
+		if (this.quotes[q.id]) return;
+		this.quotes = { ...this.quotes, [q.id]: q };
 		this.save();
 	}
 

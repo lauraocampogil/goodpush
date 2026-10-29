@@ -24,8 +24,8 @@
 			const site = PUBLIC_SITE_URL.replace(/^https?:\/\//, '');
 			const theme = app.premium ? app.profile.theme : 'cream';
 			const blob = await renderShareCard({
-				text: phrase[i.lang],
-				name: app.profile.name || undefined,
+				text: phrase.author ? `“${phrase[i.lang]}” — ${phrase.author}` : phrase[i.lang],
+				name: phrase.author ? undefined : app.profile.name || undefined,
 				category: i.cat(phrase.cat),
 				time: `${String(app.profile.hour).padStart(2, '0')}:00`,
 				site,

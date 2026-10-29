@@ -19,6 +19,8 @@
 	import { app } from '#lib/store.svelte.ts';
 	import { auth } from '#lib/auth.svelte.ts';
 	import SignIn from '#lib/components/SignIn.svelte';
+	import TopicPicker from '#lib/components/TopicPicker.svelte';
+	import { TOPIC_CAT, type TopicId } from '#lib/data/topics.ts';
 
 	const i = getI18n();
 	// Step 1 (Install) happens on the landing page → onboarding starts at step 2
@@ -29,7 +31,7 @@
 
 	const p = app.profile;
 	const canNext = $derived(step !== 2 || p.categories.length > 0);
-	const preview = $derived(phraseForDay(p.categories, dayKey()));
+	const preview = $derived(phraseForDay(p.categories, dayKey(), { topics: p.topics }));
 	const names = { 1: 'name', 2: 'vibe', 3: 'time', 4: 'push', 5: 'account' } as Record<number, string>;
 
 	onMount(() => track('onboarding_step', { step: 1, name: 'name', standalone: isStandalone() }));
@@ -44,7 +46,15 @@
 	function toggle(c: CategoryId) {
 		const on = !p.categories.includes(c);
 		p.categories = on ? [...p.categories, c] : p.categories.filter((x) => x !== c);
+		// Drop sub-topics of a category that was removed
+		p.topics = p.topics.filter((t) => p.categories.includes(TOPIC_CAT[t]));
 		track('category_toggled', { category: c, on });
+	}
+
+	function toggleTopic(t: TopicId) {
+		const on = !p.topics.includes(t);
+		p.topics = on ? [...p.topics, t] : p.topics.filter((x) => x !== t);
+		track('topic_toggled', { topic: t, on });
 	}
 
 	function setHour(h: number) {
@@ -128,6 +138,13 @@
 							</button>
 						{/each}
 					</div>
+					{#if p.categories.length}
+						<div class="mt-8 rounded-[28px] bg-white/60 p-5 ring-1 ring-ink/5">
+							<p class="display text-xl">{i.t('ob.topics.t')}</p>
+							<p class="mt-1 mb-5 text-sm text-ink/60">{i.t('ob.topics.d')}</p>
+							<TopicPicker categories={p.categories} topics={p.topics} ontoggle={toggleTopic} />
+						</div>
+					{/if}
 				{:else if step === 3}
 					<h1 class="display text-4xl sm:text-[2.6rem]">{i.t('ob.time.t')}</h1>
 					<p class="soft mt-2 text-2xl">{i.t('ob.time.d')}</p>

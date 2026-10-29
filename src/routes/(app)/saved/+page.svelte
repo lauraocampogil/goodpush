@@ -2,13 +2,12 @@
 	import { Trash } from '#lib/icons.ts';
 	import NotifCard from '#lib/components/NotifCard.svelte';
 	import PhraseText from '#lib/components/PhraseText.svelte';
-	import { PHRASE_BY_ID } from '#lib/data/phrases.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { app } from '#lib/store.svelte.ts';
 	import ShareButton from '../ShareButton.svelte';
 
 	const i = getI18n();
-	const items = $derived(app.favorites.map((id) => PHRASE_BY_ID.get(id)).filter((p) => !!p));
+	const items = $derived(app.favorites.map((id) => app.phrase(id)).filter((p) => !!p));
 </script>
 
 <h1 class="display my-4 text-4xl">{i.t('saved.title')}</h1>
@@ -19,6 +18,7 @@
 		{#each items as p (p.id)}
 			<NotifCard label={i.cat(p.cat)} time="">
 				<p class="display text-2xl"><PhraseText text={p[i.lang]} /></p>
+				{#if p.author}<p class="mt-2 text-sm font-semibold text-ink/60">— {p.author}</p>{/if}
 				<div class="mt-4 flex gap-2">
 					<button class="chip" aria-label="Remove" onclick={() => app.toggleFavorite(p.id)}><Trash /></button>
 					<ShareButton phrase={p} class="chip" />
