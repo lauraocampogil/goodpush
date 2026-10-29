@@ -6,6 +6,7 @@
 	import '@fontsource-variable/bricolage-grotesque';
 	import './layout.css';
 	import { onMount } from 'svelte';
+	import IconContext from 'phosphor-svelte/lib/IconContext';
 	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import { initAnalytics, track } from '#lib/analytics.ts';
@@ -60,4 +61,6 @@
 	});
 </script>
 
-{@render children()}
+<IconContext values={{ weight: 'bold' }}>
+	{@render children()}
+</IconContext>

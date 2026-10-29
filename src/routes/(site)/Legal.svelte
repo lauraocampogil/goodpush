@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ArrowLeft } from '#lib/icons.ts';
 	import type { Snippet } from 'svelte';
 	import Footer from '#lib/components/Footer.svelte';
 	import Logo from '#lib/components/Logo.svelte';
@@ -12,7 +13,7 @@
 <Seo {title} description="{title} — GoodPush" />
 <header class="container-site flex items-center justify-between py-5">
 	<a href="/" class="group inline-flex items-center gap-2 font-bold">
-		<span class="grid h-10 w-10 place-items-center rounded-full border-2 border-ink bg-white transition-transform group-hover:-translate-x-1">←</span>
+		<span class="grid h-10 w-10 place-items-center rounded-full border-2 border-ink bg-white transition-transform group-hover:-translate-x-1"><ArrowLeft /></span>
 		{i.t('common.back')}
 	</a>
 	<a href="/" aria-label="GoodPush"><Logo size="sm" /></a>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ShareFat } from '#lib/icons.ts';
 	import { PUBLIC_SITE_URL } from '$app/env/public';
 	import { track } from '#lib/analytics.ts';
 	import type { Phrase } from '#lib/data/phrases.ts';
@@ -43,7 +44,7 @@
 </script>
 
 <!-- `highlight` (from the notification "Share" action) only highlights: browsers require a tap to share. -->
-<button class="{cls} transition-transform active:scale-90 {highlight ? 'animate-bounce bg-sun' : ''}" onclick={share} disabled={busy}>↗ {i.t('today.share')}</button>
+<button class="{cls} transition-transform active:scale-90 {highlight ? 'animate-bounce bg-sun' : ''}" onclick={share} disabled={busy}><ShareFat weight="duotone" /> {i.t('today.share')}</button>
 {#if toast}
 	<p class="fixed inset-x-4 bottom-28 z-30 mx-auto max-w-sm rounded-2xl border-2 border-ink bg-sun p-3 text-center font-bold" role="status">{toast}</p>
 {/if}

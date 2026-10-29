@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ArrowLeft } from '#lib/icons.ts';
 	import { page } from '$app/state';
 	import Smiley from '#lib/components/Smiley.svelte';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
@@ -25,6 +26,6 @@
 			<span class="display text-[clamp(6rem,25vw,14rem)] leading-none">{String(page.status).slice(2)}</span>
 		</div>
 		<p class="soft mt-4 text-4xl">{message}</p>
-		<a href="/" class="btn mt-10">← {i.t('error.back')}</a>
+		<a href="/" class="btn mt-10"><ArrowLeft /> {i.t('error.back')}</a>
 	</div>
 </main>

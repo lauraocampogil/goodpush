@@ -51,7 +51,7 @@
 				<p class="sticker mt-8 rotate-[-2deg] bg-sun">{i.t('premium.active')}</p>
 			{/if}
 			{#if page.url.searchParams.has('canceled')}
-				<p class="mx-auto mt-6 max-w-md rounded-2xl border-2 border-ink bg-white p-3 font-semibold">🙂 No worries — you can come back anytime.</p>
+				<p class="mx-auto mt-6 max-w-md rounded-2xl border-2 border-ink bg-white p-3 font-semibold">No worries — you can come back anytime.</p>
 			{/if}
 		</section>
 

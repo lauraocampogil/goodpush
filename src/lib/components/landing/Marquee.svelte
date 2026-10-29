@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Sparkle } from '#lib/icons.ts';
 	import Smiley from '../Smiley.svelte';
 	import { PHRASES } from '#lib/data/phrases.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
@@ -28,7 +29,7 @@
 				{#each b as p (p.id + dup)}
 					<span class="display flex items-center gap-6 px-6 text-4xl whitespace-nowrap sm:text-5xl">
 						{plain(p[i.lang])}
-						<span class="text-sun">✦</span>
+						<Sparkle weight="fill" class="text-sun" />
 					</span>
 				{/each}
 			{/each}

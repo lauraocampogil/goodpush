@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Heart } from '#lib/icons.ts';
 	import PhraseText from '#lib/components/PhraseText.svelte';
 	import { PHRASE_BY_ID } from '#lib/data/phrases.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
@@ -21,7 +22,7 @@
 				<span class="w-16 shrink-0 text-xs font-bold uppercase text-ink/60">{fmt.format(new Date(h.day + 'T12:00:00'))}</span>
 				<p class="display flex-1 text-2xl"><PhraseText text={h.p![i.lang]} /></p>
 				<button class="self-start text-xl" aria-label="favorite" onclick={() => app.toggleFavorite(h.id)}>
-					{app.favorites.includes(h.id) ? '♥' : '♡'}
+					<Heart weight={app.favorites.includes(h.id) ? 'fill' : 'regular'} class={app.favorites.includes(h.id) ? 'text-pink' : ''} />
 				</button>
 			</li>
 		{/each}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Check } from '#lib/icons.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 
 	/** The whole "Get my daily push" flow, numbered from the very first screen. */
@@ -24,7 +25,7 @@
 						? 'bg-ink text-sun'
 						: 'bg-white text-ink/50'}"
 			>
-				{done ? '✓' : n + 1}
+				{#if done}<Check size={16} weight="bold" />{:else}{n + 1}{/if}
 			</span>
 			<span class="text-[11px] font-extrabold uppercase tracking-wide {active ? 'text-ink' : 'text-ink/50'}">{i.t(key)}</span>
 		</li>

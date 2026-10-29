@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Clock, Crown, Fire, Gear, Heart, Sun } from '#lib/icons.ts';
 	import { page } from '$app/state';
 	import Seo from '#lib/components/Seo.svelte';
 	import Logo from '#lib/components/Logo.svelte';
@@ -18,10 +19,10 @@
 	});
 
 	const tabs = [
-		{ href: '/today', key: 'nav.today', icon: 'M12 3v2m0 14v2m9-9h-2M5 12H3m15.4-6.4-1.4 1.4M7 17l-1.4 1.4m12.8 0L17 17M7 7 5.6 5.6M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z' },
-		{ href: '/saved', key: 'nav.saved', icon: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z' },
-		{ href: '/history', key: 'nav.history', icon: 'M4 6h16M4 12h16M4 18h10' },
-		{ href: '/settings', key: 'nav.settings', icon: 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.4-3a7.4 7.4 0 0 0-.1-1.3l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-2.2-1.3L14.3 3h-4.6l-.4 2.4A7.6 7.6 0 0 0 7.1 6.7l-2.4-1-2 3.4 2 1.6a7.4 7.4 0 0 0 0 2.6l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 2.2 1.3l.4 2.4h4.6l.4-2.4a7.6 7.6 0 0 0 2.2-1.3l2.4 1 2-3.4-2-1.6c.1-.4.1-.9.1-1.3z' }
+		{ href: '/today', key: 'nav.today', icon: Sun },
+		{ href: '/saved', key: 'nav.saved', icon: Heart },
+		{ href: '/history', key: 'nav.history', icon: Clock },
+		{ href: '/settings', key: 'nav.settings', icon: Gear }
 	] as const;
 	const showNav = $derived(page.url.pathname !== '/start');
 </script>
@@ -33,9 +34,9 @@
 		<header class="flex items-center justify-between py-3">
 			<a href="/today" aria-label="GoodPush"><Logo size="sm" /></a>
 			<div class="flex items-center gap-2">
-				{#if app.premium}<span class="chip border-ink bg-ink text-sun">✦ PRO</span>{/if}
+				{#if app.premium}<span class="chip border-ink bg-ink text-sun"><Crown weight="fill" /> PRO</span>{/if}
 				{#if app.streak.count > 0}
-					<span class="chip bg-sun">🔥 {app.streak.count}</span>
+					<span class="chip bg-sun"><Fire weight="fill" class="text-pink" /> {app.streak.count}</span>
 				{/if}
 			</div>
 		</header>
@@ -50,7 +51,7 @@
 				{@const active = page.url.pathname === tab.href}
 				<li>
 					<a href={tab.href} class="flex flex-col items-center gap-0.5 rounded-full py-2 text-[11px] font-bold transition-colors duration-300 {active ? 'bg-ink text-sun' : 'text-ink/60 hover:text-ink'}" aria-current={active ? 'page' : undefined}>
-						<svg viewBox="0 0 24 24" class="h-6 w-6" fill={active && tab.href === '/saved' ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={tab.icon} /></svg>
+						<tab.icon size={22} weight={active ? 'fill' : 'duotone'} />
 						{i.t(tab.key)}
 					</a>
 				</li>

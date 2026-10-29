@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ArrowRight, ArrowUpRight, Bell, BookOpen, Crown, Heart } from '#lib/icons.ts';
 	import { onMount, tick } from 'svelte';
 	import { goto, replaceState } from '$app/navigation';
 	import { page } from '$app/state';
@@ -113,7 +114,7 @@
 	<div data-today-rest class="flex flex-col gap-6">
 		<div class="flex justify-center gap-3">
 			<button class="btn-ghost transition-transform active:scale-90 {fav ? '!bg-pink text-white' : ''}" onclick={toggleFav} aria-pressed={fav}>
-				{fav ? '♥' : '♡'} {fav ? i.t('today.saved') : i.t('today.save')}
+				<Heart weight={fav ? 'fill' : 'duotone'} /> {fav ? i.t('today.saved') : i.t('today.save')}
 			</button>
 			<ShareButton {phrase} highlight={highlightShare} />
 		</div>
@@ -134,7 +135,7 @@
 		{#each extras as x (x.h)}
 			<div class="rounded-3xl border-[3px] border-ink bg-ink p-4 text-white shadow-[4px_4px_0_#FF2E88]">
 				<div class="mb-2 flex items-center gap-2 text-xs font-semibold text-white/60">
-					<span class="text-sun">✦</span><span class="uppercase tracking-wide">Premium · {i.cat(x.p.cat)}</span>
+					<Crown weight="fill" class="text-sun" /><span class="uppercase tracking-wide">Premium · {i.cat(x.p.cat)}</span>
 					<span class="ml-auto">{String(x.h).padStart(2, '0')}:00</span>
 				</div>
 				<p class="display text-2xl text-sun"><PhraseText text={x.p[i.lang]} /></p>
@@ -142,31 +143,31 @@
 		{/each}
 
 		{#if app.profile.pushEnabled}
-			<p class="text-center text-sm font-semibold text-ink/60">🔔 {i.t('today.next')} {hourLabel}</p>
+			<p class="flex items-center justify-center gap-2 text-sm font-semibold text-ink/60"><Bell weight="duotone" /> {i.t('today.next')} {hourLabel}</p>
 		{:else}
-			<button class="btn w-full" onclick={turnOn} disabled={busy}>🔔 {i.t('today.enable')}</button>
+			<button class="btn w-full" onclick={turnOn} disabled={busy}><Bell weight="duotone" /> {i.t('today.enable')}</button>
 		{/if}
 
 		{#if !app.premium}
 			<a href="/premium" class="card group flex items-center gap-4 bg-ink p-4 text-white" onclick={() => track('premium_click', { from: 'today' })}>
-				<span class="display grid h-12 w-12 shrink-0 place-items-center rounded-full bg-sun text-2xl text-ink transition-transform group-hover:rotate-12">✦</span>
+				<span class="display grid h-12 w-12 shrink-0 place-items-center rounded-full bg-sun text-2xl text-ink transition-transform group-hover:rotate-12"><Crown weight="fill" /></span>
 				<span class="flex-1">
 					<span class="block font-extrabold">{i.t('premium.title')}</span>
 					<span class="block text-sm text-white/70">{i.t('premium.p1')} · {i.t('premium.p2')}</span>
 				</span>
-				<span class="text-xl transition-transform group-hover:translate-x-1">→</span>
+				<span class="text-xl transition-transform group-hover:translate-x-1"><ArrowRight /></span>
 			</a>
 		{/if}
 
 		{#if pick}
 			<a href={pickUrl(pick)} target="_blank" rel="sponsored noopener" class="card flex items-center gap-4 p-4 transition hover:-translate-y-0.5" onclick={() => track('affiliate_click', { category: phrase.cat, item: pick.title })}>
-				<span class="grid h-14 w-11 shrink-0 place-items-center rounded-md border-2 border-ink bg-sky text-xl">📖</span>
+				<span class="grid h-14 w-11 shrink-0 place-items-center rounded-md border-2 border-ink bg-sky text-xl"><BookOpen weight="duotone" /></span>
 				<span class="flex-1">
 					<span class="block text-[11px] font-extrabold uppercase tracking-widest text-pink">{i.t('today.reco')}</span>
 					<span class="block font-extrabold">{pick.title}</span>
 					<span class="block text-sm text-ink/60">{pick.by}</span>
 				</span>
-				<span class="text-xl">↗</span>
+				<span class="text-xl"><ArrowUpRight /></span>
 			</a>
 			<p class="-mt-4 text-center text-[11px] text-ink/50">{i.t('today.reco.disclosure')}</p>
 		{/if}

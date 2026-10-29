@@ -1,10 +1,11 @@
 <script lang="ts">
+	import CatIcon from '#lib/components/CatIcon.svelte';
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
 	import PhraseText from '../PhraseText.svelte';
 	import Smiley from '../Smiley.svelte';
-	import { CATEGORY_EMOJI, CATEGORY_IDS, type CategoryId } from '#lib/data/categories.ts';
+	import { CATEGORY_IDS, type CategoryId } from '#lib/data/categories.ts';
 	import { PHRASES } from '#lib/data/phrases.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { track } from '#lib/analytics.ts';
@@ -40,7 +41,7 @@
 	<div class="mt-10 flex flex-wrap gap-3" use:reveal={{ children: true, stagger: 0.05, y: 20 }}>
 		{#each CATEGORY_IDS as c (c)}
 			<button class="chip px-5 py-3 text-base hover:-translate-y-0.5" aria-pressed={cat === c} onclick={() => pick(c)}>
-				{CATEGORY_EMOJI[c]} {i.cat(c)}
+				<CatIcon cat={c} /> {i.cat(c)}
 			</button>
 		{/each}
 	</div>
@@ -50,7 +51,7 @@
 			<div class="mb-6 flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-ink/60">
 				<span class="grid h-9 w-9 place-items-center rounded-xl bg-ink"><Smiley size={24} /></span>
 				GoodPush · {i.cat(cat)}
-				<span class="ml-auto hidden sm:inline">{CATEGORY_EMOJI[cat]}</span>
+				<span class="ml-auto hidden sm:inline"><CatIcon cat={cat} /></span>
 			</div>
 			{#key phrase.id + i.lang}
 				<p class="display text-[clamp(2.8rem,8vw,6.5rem)]" in:fly={{ y: 60, duration: 700, easing: backOut }}>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Check, Crown, Sparkle } from '#lib/icons.ts';
 	import Smiley from '../Smiley.svelte';
 	import { PUBLIC_PREMIUM_PRICE } from '$app/env/public';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
@@ -25,19 +26,19 @@
 			<p class="mt-3"><span class="display text-7xl">0 €</span></p>
 			<ul class="mt-8 flex-1 space-y-3 text-lg font-semibold">
 				{#each ['f1', 'f2', 'f3'] as k (k)}
-					<li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full border-2 border-ink">✓</span>{i.t(`premium.${k}` as 'premium.f1')}</li>
+					<li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full border-2 border-ink"><Check size={14} /></span>{i.t(`premium.${k}` as 'premium.f1')}</li>
 				{/each}
 			</ul>
 			<button class="btn-ghost mt-8 w-full py-4" onclick={onfree}>{i.t('pricing.free.cta')}</button>
 		</article>
 
 		<article class="relative flex flex-col rounded-3xl border-[3px] border-ink bg-ink p-8 text-white" style="box-shadow: 8px 8px 0 #FF2E88">
-			<span class="sticker absolute -top-5 right-6 rotate-6 bg-sun text-ink">{i.t('pricing.popular')} ✦</span>
+			<span class="sticker absolute -top-5 right-6 rotate-6 bg-sun text-ink">{i.t('pricing.popular')} <Crown weight="fill" class="inline" /></span>
 			<h3 class="display text-4xl text-sun">{i.t('premium.pro')}</h3>
 			<p class="mt-3"><span class="display text-7xl">{PUBLIC_PREMIUM_PRICE}</span><span class="font-bold text-white/70">{i.t('premium.month')}</span></p>
 			<ul class="mt-8 flex-1 space-y-3 text-lg font-semibold">
 				{#each ['f2', 'f3', 'p1', 'p2', 'p3', 'p4'] as k (k)}
-					<li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-pink">✦</span>{i.t(`premium.${k}` as 'premium.p1')}</li>
+					<li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-pink"><Sparkle size={14} weight="fill" /></span>{i.t(`premium.${k}` as 'premium.p1')}</li>
 				{/each}
 			</ul>
 			<span use:magnetic={0.2} class="mt-8 block">

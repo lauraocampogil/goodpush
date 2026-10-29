@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ArrowRight, X } from '#lib/icons.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { install } from '#lib/install.svelte.ts';
 	import { isAndroid, isInAppBrowser, isIOS } from '#lib/platform.ts';
@@ -35,7 +36,7 @@
 		<div class="mb-6"><Stepper current={0} /></div>
 		<div class="mb-1 flex items-start justify-between gap-4">
 			<h2 class="display text-3xl sm:text-4xl">{i.t('install.title')}</h2>
-			<button class="chip shrink-0" onclick={() => (open = false)} aria-label={i.t('install.close')}>✕</button>
+			<button class="chip shrink-0" onclick={() => (open = false)} aria-label={i.t('install.close')}><X size={16} /></button>
 		</div>
 
 		{#if ios}
@@ -70,7 +71,7 @@
 					<button class="btn" onclick={installAndroid}>{i.t('install.android.cta')}</button>
 				{/if}
 				<button class={android && install.event ? 'btn-ghost' : 'btn'} onclick={oncontinue}>
-					{i.t('install.continue')} →
+					{i.t('install.continue')} <ArrowRight />
 				</button>
 			</div>
 		{/if}

@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { Fire, Heart, ShareFat, Sparkle, Translate } from '#lib/icons.ts';
 	import { onMount } from 'svelte';
+	import CurvedMarquee from './CurvedMarquee.svelte';
 	import NotifCard from '../NotifCard.svelte';
 	import PhraseText from '../PhraseText.svelte';
 	import Smiley from '../Smiley.svelte';
@@ -54,7 +56,10 @@
 	});
 </script>
 
-<section bind:this={root} class="bg-ink py-24 text-white lg:py-32">
+<section bind:this={root} class="overflow-hidden bg-ink pb-24 pt-10 text-white lg:pb-32">
+	<div class="-mx-[5%] mb-6 w-[110%]">
+		<CurvedMarquee text={i.t('marquee.curved')} />
+	</div>
 	<div class="container-site">
 		<p class="kicker !text-ink">{i.t('bento.kicker')}</p>
 		<h2 use:splitReveal={{ scroll: true }} class="display mt-5 text-6xl text-sun sm:text-7xl">{i.t('feat.title')}</h2>
@@ -62,7 +67,7 @@
 		<div class="mt-12 grid gap-4 md:grid-cols-6" use:reveal={{ children: true, stagger: 0.1 }}>
 			<!-- Streak -->
 			<article class="relative overflow-hidden rounded-[2rem] border-[3px] border-white/10 bg-sun p-7 text-ink md:col-span-3">
-				<p class="text-sm font-extrabold uppercase tracking-widest">🔥 {i.t('feat.streak.t')}</p>
+				<p class="flex items-center gap-2 text-sm font-extrabold uppercase tracking-widest"><Fire size={18} weight="duotone" /> {i.t('feat.streak.t')}</p>
 				<p class="display mt-3 text-[7rem] leading-none tabular-nums">{streak}</p>
 				<p class="text-lg font-bold">{i.t('today.streak')}</p>
 				<div class="mt-6 flex gap-1.5">
@@ -77,13 +82,13 @@
 			<!-- Favorites -->
 			<article class="group relative overflow-hidden rounded-[2rem] border-[3px] border-white/10 bg-white p-7 text-ink md:col-span-3">
 				<div class="flex items-start justify-between">
-					<p class="text-sm font-extrabold uppercase tracking-widest">♥ {i.t('feat.fav.t')}</p>
-					<button class="grid h-14 w-14 place-items-center rounded-full border-[3px] border-ink bg-pink text-2xl text-white transition hover:scale-110 active:scale-90" aria-label="♥" onclick={(e) => burst(e.currentTarget)}>♥</button>
+					<p class="flex items-center gap-2 text-sm font-extrabold uppercase tracking-widest"><Heart size={18} weight="duotone" /> {i.t('feat.fav.t')}</p>
+					<button class="grid h-14 w-14 place-items-center rounded-full border-[3px] border-ink bg-pink text-2xl text-white transition hover:scale-110 active:scale-90" aria-label="Like" onclick={(e) => burst(e.currentTarget)}><Heart size={26} weight="fill" /></button>
 				</div>
 				<div class="relative mt-6 h-72">
 					{#each fav as p, n (p.id)}
 						<div class="absolute inset-x-0 transition-all duration-500 group-hover:translate-y-0" style="top:{n * 70}px; transform: rotate({(n - 1) * 3}deg); z-index:{n}">
-							<NotifCard label={i.cat(p.cat)} time="♥" class="!p-3">
+							<NotifCard label={i.cat(p.cat)} time="" class="!p-3">
 								<p class="display text-xl"><PhraseText text={p[i.lang]} /></p>
 							</NotifCard>
 						</div>
@@ -94,7 +99,7 @@
 
 			<!-- Share -->
 			<article class="group relative overflow-hidden rounded-[2rem] border-[3px] border-white/10 bg-[#1d1d1d] p-7 md:col-span-2">
-				<p class="text-sm font-extrabold uppercase tracking-widest">↗ {i.t('feat.share.t')}</p>
+				<p class="flex items-center gap-2 text-sm font-extrabold uppercase tracking-widest"><ShareFat size={18} weight="duotone" /> {i.t('feat.share.t')}</p>
 				<div class="relative mx-auto mt-6 h-64 w-40">
 					{#each share as p, n (p.id)}
 						<div
@@ -112,7 +117,7 @@
 
 			<!-- Personal -->
 			<article class="relative overflow-hidden rounded-[2rem] border-[3px] border-white/10 bg-pink p-7 md:col-span-2">
-				<p class="text-sm font-extrabold uppercase tracking-widest">✦ {i.t('feat.name.t')}</p>
+				<p class="flex items-center gap-2 text-sm font-extrabold uppercase tracking-widest"><Sparkle size={18} weight="duotone" /> {i.t('feat.name.t')}</p>
 				<p class="display mt-8 text-5xl">
 					<span class="soft block text-5xl text-white">{typed}<span class="animate-pulse">|</span>,</span>
 					<span class="text-ink">{you[i.lang].replace(/\*/g, '')}</span>
@@ -122,7 +127,7 @@
 
 			<!-- Languages -->
 			<article class="relative overflow-hidden rounded-[2rem] border-[3px] border-white/10 bg-sky p-7 text-ink md:col-span-2">
-				<p class="text-sm font-extrabold uppercase tracking-widest">🌍 EN · ES · FR</p>
+				<p class="flex items-center gap-2 text-sm font-extrabold uppercase tracking-widest"><Translate size={18} weight="duotone" /> EN · ES · FR</p>
 				<div class="mt-8 h-28 overflow-hidden">
 					<div class="transition-transform duration-700 ease-[cubic-bezier(.2,.9,.3,1.2)]" style="transform: translateY(-{helloIdx * 7}rem)">
 						{#each hello as w (w)}

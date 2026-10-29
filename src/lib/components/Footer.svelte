@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ChatDots, Instagram, TikTok } from '#lib/icons.ts';
 	import { PUBLIC_INSTAGRAM_URL, PUBLIC_TIKTOK_URL } from '$app/env/public';
 	import Smiley from './Smiley.svelte';
 	import { LANGS } from '#lib/data/categories.ts';
@@ -26,9 +27,9 @@
 			<a href="/terms" class="hover:text-pink">{i.t('footer.terms')}</a>
 		</nav>
 		<nav class="flex flex-col gap-2 font-bold">
-			<a href={PUBLIC_TIKTOK_URL} target="_blank" rel="noopener" class="hover:text-pink">TikTok ↗</a>
-			<a href={PUBLIC_INSTAGRAM_URL} target="_blank" rel="noopener" class="hover:text-pink">Instagram ↗</a>
-			<a href={PUBLIC_INSTAGRAM_URL} target="_blank" rel="noopener" class="hover:text-pink">{i.t('footer.feedback')} ↗</a>
+			<a href={PUBLIC_TIKTOK_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 hover:text-pink"><TikTok size={18} /> TikTok</a>
+			<a href={PUBLIC_INSTAGRAM_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 hover:text-pink"><Instagram size={18} /> Instagram</a>
+			<a href={PUBLIC_INSTAGRAM_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 hover:text-pink"><ChatDots size={18} /> {i.t('footer.feedback')}</a>
 		</nav>
 	</div>
 	<div class="container-site" aria-hidden="true">

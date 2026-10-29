@@ -1,4 +1,6 @@
 <script lang="ts">
+	import CatIcon from '#lib/components/CatIcon.svelte';
+	import { ArrowLeft, ArrowRight, Crown, Sparkle } from '#lib/icons.ts';
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
@@ -8,7 +10,7 @@
 	import PhraseText from '#lib/components/PhraseText.svelte';
 	import Smiley from '#lib/components/Smiley.svelte';
 	import Stepper from '#lib/components/Stepper.svelte';
-	import { CATEGORY_EMOJI, CATEGORY_IDS, SEND_HOURS, type CategoryId } from '#lib/data/categories.ts';
+	import { CATEGORY_IDS, SEND_HOURS, type CategoryId } from '#lib/data/categories.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { confetti } from '#lib/motion.ts';
 	import { dayKey, phraseForDay } from '#lib/phrase.ts';
@@ -70,7 +72,7 @@
 
 <div class="flex flex-1 flex-col">
 	<div class="flex items-center gap-3 py-4">
-		<button class="chip shrink-0 px-3 {step > 1 ? '' : 'invisible'}" onclick={() => go(step - 1)} aria-label={i.t('ob.back')}>←</button>
+		<button class="chip shrink-0 px-3 {step > 1 ? '' : 'invisible'}" onclick={() => go(step - 1)} aria-label={i.t('ob.back')}><ArrowLeft /></button>
 		<Stepper current={step} />
 	</div>
 
@@ -90,7 +92,7 @@
 						onkeydown={(e) => e.key === 'Enter' && go(2)}
 					/>
 					{#if p.name}
-						<p class="soft mt-4 text-3xl" in:fly={{ y: 10 }}>{p.name}, <span class="display not-italic">{i.t('sticker.you').toUpperCase()}</span> ✦</p>
+						<p class="soft mt-4 text-3xl" in:fly={{ y: 10 }}>{p.name}, <span class="display not-italic">{i.t('sticker.you').toUpperCase()}</span> <Sparkle weight="fill" class="inline text-pink" /></p>
 					{/if}
 				{:else if step === 2}
 					<h1 class="display text-5xl sm:text-6xl">{i.t('ob.cats.t')}</h1>
@@ -103,7 +105,7 @@
 								onclick={() => toggle(c)}
 								in:fly={{ y: 20, delay: 60 * k, duration: 400, easing: backOut }}
 							>
-								{CATEGORY_EMOJI[c]} {i.cat(c)}
+								<CatIcon cat={c} /> {i.cat(c)}
 							</button>
 						{/each}
 					</div>
@@ -117,7 +119,7 @@
 							</button>
 						{/each}
 					</div>
-					<p class="mt-6 text-sm font-semibold text-ink/60">✦ {i.t('ob.time.extra')}</p>
+					<p class="mt-6 flex items-center gap-2 text-sm font-semibold text-ink/60"><Crown weight="fill" class="text-pink" /> {i.t('ob.time.extra')}</p>
 				{:else}
 					<h1 class="display text-5xl sm:text-6xl">{i.t('ob.notif.t')}</h1>
 					<p class="soft mt-2 text-2xl">{i.t('ob.notif.d')}</p>
@@ -141,7 +143,7 @@
 
 	<div class="sticky bottom-0 flex flex-col gap-3 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
 		{#if step < 4}
-			<button class="btn w-full py-4 text-lg" disabled={!canNext} onclick={() => go(step + 1)}>{i.t('ob.next')} →</button>
+			<button class="btn w-full py-4 text-lg" disabled={!canNext} onclick={() => go(step + 1)}>{i.t('ob.next')} <ArrowRight /></button>
 		{:else}
 			<button class="btn w-full py-4 text-lg" disabled={busy} onclick={enable}>
 				<Smiley size={24} /> {i.t('ob.notif.cta')}

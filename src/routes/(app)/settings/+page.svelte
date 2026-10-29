@@ -1,8 +1,10 @@
 <script lang="ts">
+	import CatIcon from '#lib/components/CatIcon.svelte';
+	import { ChatDots, Crown, Lock } from '#lib/icons.ts';
 	import { goto } from '$app/navigation';
 	import { PUBLIC_INSTAGRAM_URL } from '$app/env/public';
 	import { setPerson, track } from '#lib/analytics.ts';
-	import { CATEGORY_EMOJI, CATEGORY_IDS, LANGS, SEND_HOURS, type CategoryId, type Lang } from '#lib/data/categories.ts';
+	import { CATEGORY_IDS, LANGS, SEND_HOURS, type CategoryId, type Lang } from '#lib/data/categories.ts';
 	import { LANG_LABEL } from '#lib/i18n/dict.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { dayKey, phraseForDay, pushBody } from '#lib/phrase.ts';
@@ -124,7 +126,7 @@
 		<h2 class="mb-3 text-sm font-extrabold uppercase tracking-wider">{i.t('settings.cats')}</h2>
 		<div class="flex flex-wrap gap-2">
 			{#each CATEGORY_IDS as c (c)}
-				<button class="chip" aria-pressed={p.categories.includes(c)} onclick={() => toggleCat(c)}>{CATEGORY_EMOJI[c]} {i.cat(c)}</button>
+				<button class="chip" aria-pressed={p.categories.includes(c)} onclick={() => toggleCat(c)}><CatIcon cat={c} /> {i.cat(c)}</button>
 			{/each}
 		</div>
 	</section>
@@ -137,12 +139,12 @@
 			{/each}
 		</div>
 		<h2 class="mb-3 mt-6 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider">
-			{i.t('settings.extra')} <span class="rounded-full bg-ink px-2 py-0.5 text-[10px] text-sun">✦ {i.t('premium.locked')}</span>
+			{i.t('settings.extra')} <span class="inline-flex items-center gap-1 rounded-full bg-ink px-2 py-0.5 text-[10px] text-sun"><Crown weight="fill" /> {i.t('premium.locked')}</span>
 		</h2>
 		<div class="flex flex-wrap gap-2 {app.premium ? '' : 'opacity-50'}">
 			{#each SEND_HOURS.filter((h) => h !== p.hour) as h (h)}
 				<button class="chip tabular-nums" aria-pressed={p.extraHours.includes(h)} onclick={() => toggleExtra(h)}>
-					{app.premium ? '' : '🔒 '}{String(h).padStart(2, '0')}:00
+					{#if !app.premium}<Lock />{/if}{String(h).padStart(2, '0')}:00
 				</button>
 			{/each}
 		</div>
@@ -150,7 +152,7 @@
 
 	<section class="card p-5">
 		<h2 class="mb-3 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider">
-			{i.t('settings.theme')} <span class="rounded-full bg-ink px-2 py-0.5 text-[10px] text-sun">✦ {i.t('premium.locked')}</span>
+			{i.t('settings.theme')} <span class="inline-flex items-center gap-1 rounded-full bg-ink px-2 py-0.5 text-[10px] text-sun"><Crown weight="fill" /> {i.t('premium.locked')}</span>
 		</h2>
 		<div class="grid grid-cols-4 gap-3">
 			{#each THEMES as t (t.id)}
@@ -162,7 +164,7 @@
 					onclick={() => setTheme(t.id)}
 				>
 					<span class="display text-2xl" style="color:{t.fg}">Aa</span>
-					{#if t.id !== 'cream' && !app.premium}<span class="absolute right-1.5 top-1.5 text-xs">🔒</span>{/if}
+					{#if t.id !== 'cream' && !app.premium}<span class="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full bg-white/90 text-ink"><Lock size={12} /></span>{/if}
 				</button>
 			{/each}
 		</div>
@@ -198,10 +200,10 @@
 			<button class="btn-ghost !text-ink" onclick={manage} disabled={busy}>{i.t('premium.manage')}</button>
 		</section>
 	{:else}
-		<a href="/premium" class="btn w-full py-4" onclick={() => track('premium_click', { from: 'settings' })}>✦ {i.t('settings.premium')}</a>
+		<a href="/premium" class="btn w-full py-4" onclick={() => track('premium_click', { from: 'settings' })}><Crown weight="fill" class="text-sun" /> {i.t('settings.premium')}</a>
 	{/if}
 
-	<a class="btn-ghost w-full" href={PUBLIC_INSTAGRAM_URL} target="_blank" rel="noopener" onclick={() => track('feedback_click')}>💬 {i.t('settings.feedback')}</a>
+	<a class="btn-ghost w-full" href={PUBLIC_INSTAGRAM_URL} target="_blank" rel="noopener" onclick={() => track('feedback_click')}><ChatDots weight="duotone" /> {i.t('settings.feedback')}</a>
 
 	<div class="flex flex-col items-center gap-3 pt-4 text-sm">
 		<button class="font-bold underline {confirmDelete ? 'text-pink' : 'text-ink/60'}" onclick={deleteAll}>

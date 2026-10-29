@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Trash } from '#lib/icons.ts';
 	import NotifCard from '#lib/components/NotifCard.svelte';
 	import PhraseText from '#lib/components/PhraseText.svelte';
 	import { PHRASE_BY_ID } from '#lib/data/phrases.ts';
@@ -16,10 +17,10 @@
 {:else}
 	<div class="space-y-4">
 		{#each items as p (p.id)}
-			<NotifCard label={i.cat(p.cat)} time="♥">
+			<NotifCard label={i.cat(p.cat)} time="">
 				<p class="display text-3xl"><PhraseText text={p[i.lang]} /></p>
 				<div class="mt-4 flex gap-2">
-					<button class="chip" onclick={() => app.toggleFavorite(p.id)}>✕</button>
+					<button class="chip" aria-label="Remove" onclick={() => app.toggleFavorite(p.id)}><Trash /></button>
 					<ShareButton phrase={p} class="chip" />
 				</div>
 			</NotifCard>

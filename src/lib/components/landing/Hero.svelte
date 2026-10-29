@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ArrowDown, ArrowRight, Sparkle } from '#lib/icons.ts';
 	import { onMount } from 'svelte';
 	import PhoneDemo from './PhoneDemo.svelte';
 	import Smiley from '../Smiley.svelte';
@@ -61,10 +62,10 @@
 				<span use:magnetic>
 					<button class="btn group px-8 py-4 text-lg" onclick={onstart}>
 						{cta}
-						<span class="transition-transform group-hover:translate-x-1">→</span>
+						<span class="transition-transform group-hover:translate-x-1"><ArrowRight /></span>
 					</button>
 				</span>
-				<a href="#how" class="btn-ghost px-6 py-4">{i.t('hero.secondary')} ↓</a>
+				<a href="#how" class="btn-ghost px-6 py-4">{i.t('hero.secondary')} <ArrowDown /></a>
 			</div>
 			<ul class="mt-10 flex flex-wrap justify-center gap-3 lg:justify-start" data-hero-fade>
 				{#each [['1', 'hero.stat.1'], ['0', 'hero.stat.2'], ['0 €', 'hero.stat.3']] as [num, key] (key)}
@@ -83,7 +84,7 @@
 			<span data-sticker data-depth="1.6" class="sticker absolute -left-2 top-16 -rotate-12 bg-pink text-white sm:-left-10">{i.t('sticker.focus')}</span>
 			<span data-sticker data-depth="1.2" class="sticker absolute -right-2 top-1/2 rotate-6 bg-sun sm:-right-8">{i.t('sticker.keep')}</span>
 			<span data-sticker data-depth="2" class="absolute -right-3 top-6 sm:right-2"><Smiley size={64} wink /></span>
-			<span data-sticker data-depth="0.8" class="sticker absolute -bottom-4 left-4 -rotate-3 bg-white">{i.t('sticker.you')} ✦</span>
+			<span data-sticker data-depth="0.8" class="sticker absolute -bottom-4 left-4 -rotate-3 bg-white">{i.t('sticker.you')} <Sparkle weight="fill" class="inline text-pink" /></span>
 		</div>
 	</div>
 </section>

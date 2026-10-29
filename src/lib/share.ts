@@ -1,4 +1,5 @@
 import { segments } from './phrase';
+import { smileyDataUrl } from './smiley';
 
 const C = { ink: '#111111', cream: '#FFF6EC', pink: '#FF2E88', sun: '#FFE14D', white: '#FFFFFF' };
 
@@ -17,26 +18,25 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 	ctx.roundRect(x, y, w, h, r);
 }
 
-function smiley(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number) {
-	ctx.save();
-	ctx.fillStyle = C.sun;
-	ctx.strokeStyle = C.ink;
-	ctx.lineWidth = r * 0.13;
-	ctx.beginPath();
-	ctx.arc(cx, cy, r, 0, Math.PI * 2);
-	ctx.fill();
-	ctx.stroke();
-	ctx.fillStyle = C.ink;
-	for (const dx of [-0.3, 0.3]) {
-		ctx.beginPath();
-		ctx.arc(cx + dx * r, cy - 0.22 * r, r * 0.11, 0, Math.PI * 2);
-		ctx.fill();
-	}
-	ctx.beginPath();
-	ctx.lineCap = 'round';
-	ctx.arc(cx, cy + 0.02 * r, r * 0.48, 0.18 * Math.PI, 0.82 * Math.PI);
-	ctx.stroke();
-	ctx.restore();
+let FACES: Record<'smile' | 'wink', HTMLImageElement> | null = null;
+
+async function loadFaces() {
+	if (FACES) return FACES;
+	const load = (mood: 'smile' | 'wink') =>
+		new Promise<HTMLImageElement>((resolve, reject) => {
+			const img = new Image();
+			img.onload = () => resolve(img);
+			img.onerror = reject;
+			img.src = smileyDataUrl(mood, `share-${mood}`);
+		});
+	FACES = { smile: await load('smile'), wink: await load('wink') };
+	return FACES;
+}
+
+/** Draws the 3D GoodPush smiley (same SVG as the app). */
+function smiley(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, wink = false) {
+	const img = FACES?.[wink ? 'wink' : 'smile'];
+	if (img) ctx.drawImage(img, cx - r * 1.14, cy - r * 1.14, r * 2.28, r * 2.28);
 }
 
 type Word = { text: string; hl: boolean; w: number };
@@ -46,7 +46,8 @@ export async function renderShareCard(o: Opts): Promise<Blob> {
 	await Promise.all([
 		document.fonts.load('120px Anton'),
 		document.fonts.load('italic 90px "Instrument Serif"'),
-		document.fonts.load('700 40px "Bricolage Grotesque Variable"')
+		document.fonts.load('700 40px "Bricolage Grotesque Variable"'),
+		loadFaces()
 	]).catch(() => {});
 
 	const W = 1080;
@@ -80,7 +81,7 @@ export async function renderShareCard(o: Opts): Promise<Blob> {
 	x += parts[0];
 	smiley(ctx, x + o1 / 2 + 3, base - 36, o1 / 2);
 	x += parts[1];
-	smiley(ctx, x + o1 / 2 + 3, base - 36, o1 / 2);
+	smiley(ctx, x + o1 / 2 + 3, base - 36, o1 / 2, true);
 	x += parts[2];
 	ctx.fillText('D', x, base);
 	x += parts[3];
@@ -183,7 +184,7 @@ export async function renderShareCard(o: Opts): Promise<Blob> {
 	}
 
 	// Footer
-	smiley(ctx, W / 2, H - 330, 56);
+	smiley(ctx, W / 2, H - 330, 56, true);
 	ctx.textAlign = 'center';
 	ctx.fillStyle = T.fg;
 	ctx.font = '700 44px "Bricolage Grotesque Variable", sans-serif';

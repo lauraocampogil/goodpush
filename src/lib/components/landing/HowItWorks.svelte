@@ -1,11 +1,13 @@
 <script lang="ts">
+	import CatIcon from '#lib/components/CatIcon.svelte';
+	import { SealCheck } from '#lib/icons.ts';
 	import { onMount } from 'svelte';
 	import { fly, scale } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
 	import NotifCard from '../NotifCard.svelte';
 	import PhraseText from '../PhraseText.svelte';
 	import Smiley from '../Smiley.svelte';
-	import { CATEGORY_EMOJI, CATEGORY_IDS } from '#lib/data/categories.ts';
+	import { CATEGORY_IDS } from '#lib/data/categories.ts';
 	import { PHRASES } from '#lib/data/phrases.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { motion, reduced, reveal, splitReveal } from '#lib/motion.ts';
@@ -75,13 +77,13 @@
 										<Smiley size={34} wink />
 									</span>
 								</div>
-								<p class="mt-6 text-sm font-bold">GoodPush ✓</p>
+								<p class="mt-6 inline-flex items-center gap-1 text-sm font-bold">GoodPush <SealCheck weight="fill" class="text-pink" /></p>
 							{:else if active === 1}
 								<p class="display mb-4 text-3xl">{i.t('ob.cats.t')}</p>
 								<div class="flex flex-wrap justify-center gap-2">
 									{#each CATEGORY_IDS as c, k (c)}
 										<span class="chip text-xs" aria-pressed={k % 3 === 0} in:scale={{ delay: k * 70, duration: 400, easing: backOut }}>
-											{CATEGORY_EMOJI[c]} {i.cat(c)}
+											<CatIcon cat={c} /> {i.cat(c)}
 										</span>
 									{/each}
 								</div>

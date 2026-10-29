@@ -180,6 +180,7 @@ const en = {
 	'settings.theme': 'Share-card theme',
 	'settings.extra': 'Extra pushes',
 	'error.back': 'Back to home',
+	'marquee.curved': 'Get inspired · Every single day',
 	'common.back': 'Back'
 };
 
@@ -350,6 +351,7 @@ const es: Dict = {
 	'settings.theme': 'Diseño para compartir',
 	'settings.extra': 'Pushes extra',
 	'error.back': 'Volver al inicio',
+	'marquee.curved': 'Inspírate · Cada día',
 	'common.back': 'Atrás'
 };
 
@@ -517,6 +519,7 @@ const fr: Dict = {
 	'settings.theme': 'Thème de partage',
 	'settings.extra': 'Push en plus',
 	'error.back': 'Retour à l’accueil',
+	'marquee.curved': 'Inspire-toi · Chaque jour',
 	'common.back': 'Retour'
 };
 

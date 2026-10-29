@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ArrowRight } from '#lib/icons.ts';
 	import Smiley from '../Smiley.svelte';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { magnetic } from '#lib/motion.ts';
@@ -18,7 +19,7 @@
 	<div class="container-site mt-10 text-center">
 		<h2 class="display text-4xl text-white sm:text-6xl">{i.t('final.title')}</h2>
 		<span use:magnetic class="mt-10 inline-block">
-			<button class="btn bg-white px-10 py-5 text-xl !text-ink" style="box-shadow: 6px 6px 0 #111" onclick={onstart}>{cta} →</button>
+			<button class="btn bg-white px-10 py-5 text-xl !text-ink" style="box-shadow: 6px 6px 0 #111" onclick={onstart}>{cta} <ArrowRight /></button>
 		</span>
 	</div>
 </section>
