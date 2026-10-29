@@ -210,3 +210,15 @@ supabase/                   → SQL schema + cron
 ---
 
 Made in Brussels by [Unix Creative Studio](https://github.com/lauraocampogil).
+
+## 13. "In the news" quotes (automatic)
+
+Every day at 03:00 UTC, `/api/cron/quotes` takes the most-followed sub-topics (`topics_popularity`,
+max `QUOTES_MAX_TOPICS`) and asks Claude (with web search) for ONE real, recent, uplifting quote per topic.
+A quote is published only if its exact words are found in the source article (or in the passage Claude cited).
+Nothing is invented: if no verified quote is found, people simply get their usual phrase.
+
+- Key: `ANTHROPIC_API_KEY` in Vercel. Cost ≈ 0.05–0.10 $ per topic per day — set a monthly limit in the Anthropic console.
+- Schedule: second block in `supabase/cron.sql`.
+- Test one topic: `curl -H "Authorization: Bearer $CRON_SECRET" "https://YOUR_SITE/api/cron/quotes?topic=football&dry"`
+- Remove a bad quote: Supabase → `quotes` → untick `approved`.

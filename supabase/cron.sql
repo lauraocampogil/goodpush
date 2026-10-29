@@ -16,3 +16,18 @@ select cron.schedule(
 
 -- To check runs:   select * from cron.job_run_details order by start_time desc limit 20;
 -- To remove:       select cron.unschedule('goodpush-hourly-send');
+
+-- Daily "in the news" quotes: Claude finds real quotes for the most-followed sub-topics.
+-- Runs at 03:00 UTC, before the first morning pushes. Needs ANTHROPIC_API_KEY in Vercel.
+select cron.schedule(
+  'goodpush-daily-quotes',
+  '0 3 * * *',
+  $$
+  select net.http_get(
+    url     := 'https://YOUR_SITE/api/cron/quotes',
+    headers := jsonb_build_object('Authorization', 'Bearer YOUR_CRON_SECRET'),
+    timeout_milliseconds := 300000
+  );
+  $$
+);
+-- Remove: select cron.unschedule('goodpush-daily-quotes');

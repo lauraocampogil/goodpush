@@ -65,5 +65,14 @@ export const variables = defineEnvVars({
 	POSTHOG_SERVER_KEY: { description: 'PostHog project key for server events (defaults to the public key)', schema: optional },
 	STRIPE_SECRET_KEY: { description: 'Stripe secret key (sk_live_… / sk_test_…)', schema: optional },
 	STRIPE_PRICE_ID: { description: 'Stripe recurring Price ID for Premium (price_…)', schema: optional },
-	STRIPE_WEBHOOK_SECRET: { description: 'Stripe webhook signing secret (whsec_…)', schema: optional }
+	STRIPE_WEBHOOK_SECRET: { description: 'Stripe webhook signing secret (whsec_…)', schema: optional },
+	ANTHROPIC_API_KEY: { description: 'Claude API key — finds real "in the news" quotes every morning', schema: optional },
+	QUOTES_MODEL: {
+		description: 'Claude model for the quote finder',
+		schema: (v) => optional(v) ?? 'claude-sonnet-5-5'
+	},
+	QUOTES_MAX_TOPICS: {
+		description: 'Max sub-topics searched per day (cost control, ~0.05–0.10 $ each)',
+		schema: (v) => Math.max(0, Math.min(26, Number(optional(v) ?? 4) || 0))
+	}
 });
