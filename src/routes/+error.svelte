@@ -18,11 +18,11 @@
 
 <svelte:head><title>{page.status} · GoodPush</title></svelte:head>
 
-<main class="dots grid min-h-dvh place-items-center px-4 text-center">
+<main class="grid min-h-dvh place-items-center px-4 text-center">
 	<div>
 		<div class="flex items-center justify-center gap-2">
 			<span class="display text-[clamp(6rem,25vw,14rem)] leading-none">{String(page.status).charAt(0)}</span>
-			<Smiley size={0} wink class="h-[clamp(5rem,20vw,11rem)] w-[clamp(5rem,20vw,11rem)] animate-wobble" />
+			<Smiley size={0} wink class="h-[clamp(5rem,20vw,11rem)] w-[clamp(5rem,20vw,11rem)] animate-float" />
 			<span class="display text-[clamp(6rem,25vw,14rem)] leading-none">{String(page.status).slice(2)}</span>
 		</div>
 		<p class="soft mt-4 text-4xl">{message}</p>

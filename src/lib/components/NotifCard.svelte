@@ -2,6 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import Smiley from './Smiley.svelte';
 
+	/** iOS-style notification — the signature element of GoodPush. */
 	let {
 		label = 'GoodPush',
 		time = 'now',
@@ -10,11 +11,11 @@
 	}: { label?: string; time?: string; class?: string; children: Snippet } = $props();
 </script>
 
-<div class="card p-4 text-left sm:p-5 {cls}">
-	<div class="mb-2 flex items-center gap-2 text-xs font-semibold text-ink/70">
-		<span class="grid h-6 w-6 place-items-center rounded-md bg-ink"><Smiley size={16} /></span>
-		<span class="uppercase tracking-wide">{label}</span>
-		<span class="ml-auto">{time}</span>
+<div class="rounded-[22px] bg-white/95 p-4 text-left text-ink shadow-[var(--shadow-soft)] backdrop-blur sm:p-5 {cls}">
+	<div class="mb-2 flex items-center gap-2 text-[11px] font-semibold tracking-wide text-ink/50 uppercase">
+		<Smiley size={20} color="ink" />
+		<span>GoodPush · {label}</span>
+		<span class="ml-auto normal-case">{time}</span>
 	</div>
 	{@render children()}
 </div>

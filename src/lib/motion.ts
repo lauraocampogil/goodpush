@@ -1,14 +1,15 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
+import { Draggable } from 'gsap/Draggable';
 
 let registered = false;
 export function motion() {
 	if (!registered && typeof window !== 'undefined') {
-		gsap.registerPlugin(ScrollTrigger, SplitText);
+		gsap.registerPlugin(ScrollTrigger, SplitText, Draggable);
 		registered = true;
 	}
-	return { gsap, ScrollTrigger, SplitText };
+	return { gsap, ScrollTrigger, SplitText, Draggable };
 }
 
 export const reduced = () =>
@@ -104,7 +105,7 @@ export function burst(from: HTMLElement, glyphs = ['♥', '✦', '♥', '★', '
 	glyphs.forEach((g, i) => {
 		const el = document.createElement('span');
 		el.textContent = g;
-		el.style.cssText = `position:fixed;left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;pointer-events:none;z-index:60;font-size:${18 + Math.random() * 14}px;color:${i % 2 ? '#FF2E88' : '#FFE14D'};-webkit-text-stroke:1px #111;font-weight:900`;
+		el.style.cssText = `position:fixed;left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;pointer-events:none;z-index:60;font-size:${18 + Math.random() * 14}px;color:${['#FF5B1F', '#F7A6C9', '#FFB81C', '#6C4DA6'][i % 4]};font-weight:900`;
 		document.body.appendChild(el);
 		const a = (Math.PI * 2 * i) / glyphs.length + Math.random() * 0.4;
 		gsap.fromTo(el, { x: 0, y: 0, scale: 0.3 }, {
@@ -124,12 +125,12 @@ export function burst(from: HTMLElement, glyphs = ['♥', '✦', '♥', '★', '
 export function confetti(count = 60) {
 	if (reduced()) return;
 	const { gsap } = motion();
-	const colors = ['#FF2E88', '#FFE14D', '#7FB2FF', '#111111'];
+	const colors = ['#FF5B1F', '#FFB81C', '#2F7D4A', '#F7A6C9', '#6C4DA6', '#9FDBBE'];
 	for (let i = 0; i < count; i++) {
 		const el = document.createElement('span');
 		const smile = i % 6 === 0;
 		el.textContent = smile ? '☺' : '';
-		el.style.cssText = `position:fixed;top:-20px;left:${Math.random() * 100}vw;width:${smile ? 'auto' : '10px'};height:${smile ? 'auto' : '18px'};background:${smile ? 'none' : colors[i % 4]};font-size:28px;z-index:60;pointer-events:none;border:${smile ? 0 : 2}px solid #111`;
+		el.style.cssText = `position:fixed;top:-20px;left:${Math.random() * 100}vw;width:${smile ? 'auto' : '10px'};height:${smile ? 'auto' : '18px'};background:${smile ? 'none' : colors[i % colors.length]};font-size:28px;z-index:60;pointer-events:none;border-radius:${i % 3 ? 2 : 99}px`;
 		document.body.appendChild(el);
 		gsap.to(el, {
 			y: innerHeight + 60,

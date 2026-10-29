@@ -3,7 +3,7 @@
 	import '@fontsource/anton';
 	import '@fontsource/instrument-serif/400.css';
 	import '@fontsource/instrument-serif/400-italic.css';
-	import '@fontsource-variable/bricolage-grotesque';
+	import '@fontsource-variable/inter';
 	import './layout.css';
 	import { onMount } from 'svelte';
 	import IconContext from 'phosphor-svelte/lib/IconContext';

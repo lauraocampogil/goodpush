@@ -5,6 +5,7 @@
 	import type { Phrase } from '#lib/data/phrases.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { renderShareCard, shareImage } from '#lib/share.ts';
+	import { CATEGORY_COLOR } from '#lib/smiley.ts';
 	import { app } from '#lib/store.svelte.ts';
 
 	let {
@@ -28,7 +29,8 @@
 				category: i.cat(phrase.cat),
 				time: `${String(app.profile.hour).padStart(2, '0')}:00`,
 				site,
-				theme
+				theme,
+				badge: CATEGORY_COLOR[phrase.cat]
 			});
 			const link = `${PUBLIC_SITE_URL}/?utm_source=share&utm_campaign=${phrase.id}`;
 			const res = await shareImage(blob, i.t('share.text'), link);
@@ -46,5 +48,5 @@
 <!-- `highlight` (from the notification "Share" action) only highlights: browsers require a tap to share. -->
 <button class="{cls} transition-transform active:scale-90 {highlight ? 'animate-bounce bg-sun' : ''}" onclick={share} disabled={busy}><ShareFat weight="duotone" /> {i.t('today.share')}</button>
 {#if toast}
-	<p class="fixed inset-x-4 bottom-28 z-30 mx-auto max-w-sm rounded-2xl border-2 border-ink bg-sun p-3 text-center font-bold" role="status">{toast}</p>
+	<p class="fixed inset-x-4 bottom-28 z-30 mx-auto max-w-sm rounded-2xl ring-1 ring-ink/10 bg-sun p-3 text-center font-bold" role="status">{toast}</p>
 {/if}

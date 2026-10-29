@@ -181,6 +181,20 @@ const en = {
 	'settings.extra': 'Extra pushes',
 	'error.back': 'Back to home',
 	'marquee.curved': 'Get inspired · Every single day',
+	'real.kicker': 'Let’s be real',
+	'real.title': 'Small words. Big days.',
+	'real.sub': 'No feed. No noise. Just the push you need, at the time you choose.',
+	'dark.title': 'Don’t miss out. Get your push.',
+	'f1.title': '3 steps. 30 seconds.',
+	'f2.title': 'Show up. Every day.',
+	'f3.title': 'Share it. Own it.',
+	'vibe.pile.title': 'Pick your vibe',
+	'vibe.pile.sub': 'Tap a sticker. Drag them around.',
+	'poster.1': 'Things are going to',
+	'poster.2': 'happen.',
+	'poster.3': 'Grow from it.',
+	'poster.small': 'Don’t let fear hold you back',
+	'nav.get': 'Get the push',
 	'common.back': 'Back'
 };
 
@@ -352,6 +366,20 @@ const es: Dict = {
 	'settings.extra': 'Pushes extra',
 	'error.back': 'Volver al inicio',
 	'marquee.curved': 'Inspírate · Cada día',
+	'real.kicker': 'Seamos sinceros',
+	'real.title': 'Palabras pequeñas. Días grandes.',
+	'real.sub': 'Sin feed. Sin ruido. Solo el empujón que necesitas, a la hora que eliges.',
+	'dark.title': 'No te lo pierdas. Recibe tu push.',
+	'f1.title': '3 pasos. 30 segundos.',
+	'f2.title': 'Aparece. Cada día.',
+	'f3.title': 'Compártela. Hazla tuya.',
+	'vibe.pile.title': 'Elige tu vibe',
+	'vibe.pile.sub': 'Toca un sticker. Muévelos como quieras.',
+	'poster.1': 'Las cosas van a',
+	'poster.2': 'pasar.',
+	'poster.3': 'Crece con ellas.',
+	'poster.small': 'Que el miedo no te frene',
+	'nav.get': 'Quiero mi push',
 	'common.back': 'Atrás'
 };
 
@@ -520,6 +548,20 @@ const fr: Dict = {
 	'settings.extra': 'Push en plus',
 	'error.back': 'Retour à l’accueil',
 	'marquee.curved': 'Inspire-toi · Chaque jour',
+	'real.kicker': 'Soyons honnêtes',
+	'real.title': 'Petits mots. Grands jours.',
+	'real.sub': 'Pas de feed. Pas de bruit. Juste le push qu’il te faut, à l’heure que tu choisis.',
+	'dark.title': 'Ne rate rien. Reçois ton push.',
+	'f1.title': '3 étapes. 30 secondes.',
+	'f2.title': 'Sois là. Chaque jour.',
+	'f3.title': 'Partage-la. Fais-la tienne.',
+	'vibe.pile.title': 'Choisis ton mood',
+	'vibe.pile.sub': 'Touche un sticker. Déplace-les.',
+	'poster.1': 'Les choses vont',
+	'poster.2': 'arriver.',
+	'poster.3': 'Grandis avec.',
+	'poster.small': 'Ne laisse pas la peur te retenir',
+	'nav.get': 'Je veux mon push',
 	'common.back': 'Retour'
 };
 

@@ -22,7 +22,7 @@
 				<span class="w-16 shrink-0 text-xs font-bold uppercase text-ink/60">{fmt.format(new Date(h.day + 'T12:00:00'))}</span>
 				<p class="display flex-1 text-2xl"><PhraseText text={h.p![i.lang]} /></p>
 				<button class="self-start text-xl" aria-label="favorite" onclick={() => app.toggleFavorite(h.id)}>
-					<Heart weight={app.favorites.includes(h.id) ? 'fill' : 'regular'} class={app.favorites.includes(h.id) ? 'text-pink' : ''} />
+					<Heart weight={app.favorites.includes(h.id) ? 'fill' : 'regular'} class={app.favorites.includes(h.id) ? 'text-orange' : ''} />
 				</button>
 			</li>
 		{/each}

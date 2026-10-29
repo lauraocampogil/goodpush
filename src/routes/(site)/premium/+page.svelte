@@ -40,24 +40,24 @@
 
 <Seo title="GoodPush Premium" description={i.t('premium.sub')} />
 
-<div class="grain">
+<div>
 	<Nav onstart={() => goto(app.profile.onboarded ? '/today' : '/')} cta={i.t('nav.open')} />
-	<main class="dots pt-28">
-		<section class="container-site relative pt-10 text-center">
-			<Smiley size={96} wink class="mx-auto animate-wobble" />
+	<main>
+		<section class="bg-sun pt-36 pb-24 text-center"><div class="container-site">
+			<Smiley size={96} color="orange" wink class="mx-auto animate-float" />
 			<h1 use:splitReveal class="display mx-auto mt-6 max-w-4xl text-[clamp(3.2rem,10vw,7rem)]">{i.t('premium.title')}</h1>
 			<p class="soft mx-auto mt-4 max-w-2xl text-3xl">{i.t('premium.sub')}</p>
 			{#if app.premium}
-				<p class="sticker mt-8 rotate-[-2deg] bg-sun">{i.t('premium.active')}</p>
+				<p class="pill mt-8 bg-ink px-4 py-2 text-sun">{i.t('premium.active')}</p>
 			{/if}
 			{#if page.url.searchParams.has('canceled')}
-				<p class="mx-auto mt-6 max-w-md rounded-2xl border-2 border-ink bg-white p-3 font-semibold">No worries — you can come back anytime.</p>
+				<p class="mx-auto mt-6 max-w-md rounded-2xl ring-1 ring-ink/10 bg-white p-3 font-semibold">No worries — you can come back anytime.</p>
 			{/if}
-		</section>
+		</div></section>
 
 		<Pricing heading={false} {busy} onfree={() => goto(app.profile.onboarded ? '/today' : '/')} onpremium={buy} />
 
-		{#if err}<p class="container-site -mt-16 mb-10 text-center font-bold text-pink" role="alert">{err}</p>{/if}
+		{#if err}<p class="container-site -mt-16 mb-10 text-center font-bold text-orange" role="alert">{err}</p>{/if}
 		<p class="container-site -mt-14 pb-20 text-center text-sm text-ink/60">
 			{i.t('premium.restore')} <a class="underline" href="mailto:{PUBLIC_CONTACT_EMAIL}">{PUBLIC_CONTACT_EMAIL}</a>
 		</p>

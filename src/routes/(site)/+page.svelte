@@ -6,15 +6,14 @@
 	import Footer from '#lib/components/Footer.svelte';
 	import InstallSheet from '#lib/components/InstallSheet.svelte';
 	import Seo from '#lib/components/Seo.svelte';
-	import Bento from '#lib/components/landing/Bento.svelte';
+	import DarkFeatures from '#lib/components/landing/DarkFeatures.svelte';
 	import Faq from '#lib/components/landing/Faq.svelte';
-	import FinalCta from '#lib/components/landing/FinalCta.svelte';
 	import Hero from '#lib/components/landing/Hero.svelte';
-	import HowItWorks from '#lib/components/landing/HowItWorks.svelte';
-	import Marquee from '#lib/components/landing/Marquee.svelte';
 	import Nav from '#lib/components/landing/Nav.svelte';
+	import PhoneRow from '#lib/components/landing/PhoneRow.svelte';
+	import Poster from '#lib/components/landing/Poster.svelte';
 	import Pricing from '#lib/components/landing/Pricing.svelte';
-	import VibePicker from '#lib/components/landing/VibePicker.svelte';
+	import StickerPile from '#lib/components/landing/StickerPile.svelte';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { isIOS, isStandalone } from '#lib/platform.ts';
 	import { app } from '#lib/store.svelte.ts';
@@ -53,19 +52,16 @@
 	{@html `<script type="application/ld+json">${jsonLd}</script>`}
 </svelte:head>
 
-<div class="grain">
-	<Nav onstart={() => start('nav')} {cta} />
-	<main>
-		<Hero onstart={() => start('hero')} {cta} />
-		<Marquee />
-		<HowItWorks />
-		<VibePicker />
-		<Bento />
-		<Pricing onfree={() => start('pricing')} onpremium={() => { track('premium_click', { from: 'landing' }); goto('/premium'); }} />
-		<Faq />
-		<FinalCta onstart={() => start('final')} {cta} />
-	</main>
-	<Footer />
-</div>
+<Nav onstart={() => start('nav')} cta={onboarded ? i.t('nav.open') : i.t('nav.get')} />
+<main>
+	<Hero onstart={() => start('hero')} {cta} />
+	<PhoneRow />
+	<DarkFeatures onstart={() => start('dark')} {cta} />
+	<StickerPile />
+	<Poster onstart={() => start('poster')} {cta} />
+	<Pricing onfree={() => start('pricing')} onpremium={() => { track('premium_click', { from: 'landing' }); goto('/premium'); }} />
+	<Faq />
+</main>
+<Footer />
 
 <InstallSheet bind:open={sheet} oncontinue={() => goto('/start')} />

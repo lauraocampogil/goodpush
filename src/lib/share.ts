@@ -1,54 +1,36 @@
 import { segments } from './phrase';
-import { smileyDataUrl } from './smiley';
-
-const C = { ink: '#111111', cream: '#FFF6EC', pink: '#FF2E88', sun: '#FFE14D', white: '#FFFFFF' };
+import { smileyDataUrl, type StickerColor } from './smiley';
 
 export type Theme = 'cream' | 'sky' | 'ink' | 'pink';
-const THEMES: Record<Theme, { bg: string; fg: string; accent: string }> = {
-	cream: { bg: '#FFF6EC', fg: '#111111', accent: '#FF2E88' },
-	sky: { bg: '#7FB2FF', fg: '#111111', accent: '#FF2E88' },
-	ink: { bg: '#111111', fg: '#FFFFFF', accent: '#FFE14D' },
-	pink: { bg: '#FF2E88', fg: '#111111', accent: '#FFFFFF' }
+const THEMES: Record<Theme, { bg: string; fg: string; marker: string; markerText: string; badge: StickerColor }> = {
+	cream: { bg: '#F6E36B', fg: '#141414', marker: '#FFFFFF', markerText: '#141414', badge: 'orange' },
+	sky: { bg: '#C7B5F2', fg: '#141414', marker: '#F6E36B', markerText: '#141414', badge: 'pink' },
+	ink: { bg: '#141414', fg: '#FBF8F1', marker: '#F6E36B', markerText: '#141414', badge: 'yellow' },
+	pink: { bg: '#F7A6C9', fg: '#141414', marker: '#FFFFFF', markerText: '#141414', badge: 'purple' }
 };
 
-type Opts = { text: string; name?: string; category: string; time: string; site: string; theme?: Theme };
+type Opts = { text: string; name?: string; category: string; time: string; site: string; theme?: Theme; badge?: StickerColor };
 
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
-	ctx.beginPath();
-	ctx.roundRect(x, y, w, h, r);
-}
-
-let FACES: Record<'smile' | 'wink', HTMLImageElement> | null = null;
-
-async function loadFaces() {
-	if (FACES) return FACES;
-	const load = (mood: 'smile' | 'wink') =>
-		new Promise<HTMLImageElement>((resolve, reject) => {
-			const img = new Image();
-			img.onload = () => resolve(img);
-			img.onerror = reject;
-			img.src = smileyDataUrl(mood, `share-${mood}`);
-		});
-	FACES = { smile: await load('smile'), wink: await load('wink') };
-	return FACES;
-}
-
-/** Draws the 3D GoodPush smiley (same SVG as the app). */
-function smiley(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, wink = false) {
-	const img = FACES?.[wink ? 'wink' : 'smile'];
-	if (img) ctx.drawImage(img, cx - r * 1.14, cy - r * 1.14, r * 2.28, r * 2.28);
-}
+const loadImg = (src: string) =>
+	new Promise<HTMLImageElement>((resolve, reject) => {
+		const img = new Image();
+		img.onload = () => resolve(img);
+		img.onerror = reject;
+		img.src = src;
+	});
 
 type Word = { text: string; hl: boolean; w: number };
 
-/** Draws a 1080×1920 Story image in the GoodPush style and returns a PNG blob. */
+/** Draws a clean 1080×1920 Story image (flat color, big type, sticker) and returns a PNG blob. */
 export async function renderShareCard(o: Opts): Promise<Blob> {
-	await Promise.all([
+	const T = THEMES[o.theme ?? 'cream'];
+	const [logo, badge] = await Promise.all([
+		loadImg(smileyDataUrl('smile', T.fg === '#141414' ? 'ink' : 'sun')),
+		loadImg(smileyDataUrl('wink', o.badge ?? T.badge)),
 		document.fonts.load('120px Anton'),
 		document.fonts.load('italic 90px "Instrument Serif"'),
-		document.fonts.load('700 40px "Bricolage Grotesque Variable"'),
-		loadFaces()
-	]).catch(() => {});
+		document.fonts.load('600 40px "Inter Variable"')
+	]).catch(() => [null, null] as const) as [HTMLImageElement | null, HTMLImageElement | null];
 
 	const W = 1080;
 	const H = 1920;
@@ -56,52 +38,37 @@ export async function renderShareCard(o: Opts): Promise<Blob> {
 	canvas.width = W;
 	canvas.height = H;
 	const ctx = canvas.getContext('2d')!;
-
-	const T = THEMES[o.theme ?? 'cream'];
 	ctx.fillStyle = T.bg;
 	ctx.fillRect(0, 0, W, H);
-	// subtle dot grid
-	ctx.fillStyle = T.fg === '#FFFFFF' ? 'rgba(255,255,255,.08)' : 'rgba(17,17,17,.08)';
-	for (let gx = 20; gx < W; gx += 44) for (let gy = 20; gy < H; gy += 44) {
-		ctx.beginPath();
-		ctx.arc(gx, gy, 2.4, 0, Math.PI * 2);
-		ctx.fill();
-	}
 
-	// Wordmark: G ☺ ☺ D PUSH
+	// Logo: badge + GOODPUSH
 	ctx.textBaseline = 'alphabetic';
-	ctx.font = '96px Anton';
-	ctx.textAlign = 'left';
-	const o1 = 64; // smiley diameter
-	const parts = [ctx.measureText('G').width, o1 + 6, o1 + 6, ctx.measureText('D').width, ctx.measureText('PUSH').width];
-	let x = (W - parts.reduce((a, b) => a + b, 0)) / 2;
-	const base = 230;
+	ctx.font = '64px Anton';
+	const label = 'GOODPUSH';
+	const lw = ctx.measureText(label).width;
+	const lx = (W - (64 + 18 + lw)) / 2;
+	if (logo) ctx.drawImage(logo, lx, 150, 64, 64);
 	ctx.fillStyle = T.fg;
-	ctx.fillText('G', x, base);
-	x += parts[0];
-	smiley(ctx, x + o1 / 2 + 3, base - 36, o1 / 2);
-	x += parts[1];
-	smiley(ctx, x + o1 / 2 + 3, base - 36, o1 / 2, true);
-	x += parts[2];
-	ctx.fillText('D', x, base);
-	x += parts[3];
-	ctx.fillStyle = T.accent;
-	ctx.fillText('PUSH', x, base);
+	ctx.fillText(label, lx + 82, 206);
 
-	// Layout phrase words
-	const cardX = 90;
-	const cardW = W - 180;
-	const pad = 64;
-	const maxW = cardW - pad * 2;
-	let size = 128;
+	// Category · time
+	ctx.font = '600 30px "Inter Variable", sans-serif';
+	ctx.textAlign = 'center';
+	ctx.globalAlpha = 0.6;
+	ctx.fillText(`${o.category.toUpperCase()}  ·  ${o.time}`, W / 2, 300);
+	ctx.globalAlpha = 1;
+	ctx.textAlign = 'left';
+
+	// Phrase layout (centered lines)
+	const maxW = W - 160;
+	let size = 150;
 	let lines: Word[][] = [];
 	const words: { text: string; hl: boolean }[] = [];
-	for (const s of segments(o.text)) {
-		for (const w of s.text.split(/\s+/).filter(Boolean)) words.push({ text: w.toUpperCase(), hl: s.hl });
-	}
+	for (const s of segments(o.text)) for (const w of s.text.split(/\s+/).filter(Boolean)) words.push({ text: w.toUpperCase(), hl: s.hl });
+	let space = 0;
 	const layout = () => {
 		ctx.font = `${size}px Anton`;
-		const space = ctx.measureText(' ').width;
+		space = ctx.measureText(' ').width;
 		lines = [[]];
 		let lineW = 0;
 		for (const w of words) {
@@ -113,84 +80,61 @@ export async function renderShareCard(o: Opts): Promise<Blob> {
 			} else lineW += add;
 			lines[lines.length - 1].push({ ...w, w: ww });
 		}
-		return space;
 	};
-	let space = layout();
-	while (lines.length > 6 && size > 70) {
-		size -= 8;
-		space = layout();
+	layout();
+	while (lines.length > 6 && size > 80) {
+		size -= 10;
+		layout();
 	}
-	const lineH = size * 1.02;
-	const nameSize = 88;
-	const headerH = 90;
-	const textH = lines.length * lineH + (o.name ? nameSize * 1.1 : 0);
-	// top padding (56) + header + gap (60) + text + bottom padding
-	const cardH = 56 + headerH + 60 + textH + pad * 0.9;
-	const cardY = Math.max(340, (H - cardH) / 2 - 40);
+	const lineH = size * 0.98;
+	const nameSize = 110;
+	const blockH = lines.length * lineH + (o.name ? nameSize : 0);
+	let y = (H - blockH) / 2 - 60;
 
-	// Card shadow + body
-	ctx.fillStyle = o.theme === 'ink' ? C.pink : C.ink;
-	roundRect(ctx, cardX + 14, cardY + 14, cardW, cardH, 56);
-	ctx.fill();
-	ctx.fillStyle = C.white;
-	roundRect(ctx, cardX, cardY, cardW, cardH, 56);
-	ctx.fill();
-	ctx.lineWidth = 8;
-	ctx.strokeStyle = C.ink;
-	ctx.stroke();
-
-	// Header: app icon + label + time
-	const hx = cardX + pad;
-	const hy = cardY + 56;
-	ctx.fillStyle = C.ink;
-	roundRect(ctx, hx, hy, 60, 60, 16);
-	ctx.fill();
-	smiley(ctx, hx + 30, hy + 30, 20);
-	ctx.font = '700 34px "Bricolage Grotesque Variable", sans-serif';
-	ctx.fillStyle = 'rgba(17,17,17,.75)';
-	ctx.fillText(`GOODPUSH · ${o.category.toUpperCase()}`, hx + 80, hy + 42);
-	ctx.textAlign = 'right';
-	ctx.fillText(o.time, cardX + cardW - pad, hy + 42);
-	ctx.textAlign = 'left';
-
-	// Name (soft serif)
-	let y = hy + headerH + 60;
 	if (o.name) {
 		ctx.font = `italic ${nameSize}px "Instrument Serif", serif`;
-		ctx.fillStyle = C.ink;
-		ctx.fillText(`${o.name},`, hx, y + nameSize * 0.6);
-		y += nameSize * 1.1;
+		ctx.fillStyle = T.fg;
+		ctx.textAlign = 'center';
+		ctx.fillText(`${o.name},`, W / 2, y + nameSize * 0.75);
+		ctx.textAlign = 'left';
+		y += nameSize;
 	}
 
-	// Phrase (loud Anton + pink tape)
 	ctx.font = `${size}px Anton`;
 	for (const line of lines) {
 		y += lineH;
-		let lx = hx;
+		const total = line.reduce((a, w) => a + w.w, 0) + space * (line.length - 1);
+		let x = (W - total) / 2;
 		line.forEach((w, i) => {
 			if (w.hl) {
 				const extend = line[i + 1]?.hl ? space : 0;
-				ctx.save();
-				ctx.translate(lx + w.w / 2, y - size * 0.36);
-				ctx.rotate(-0.025);
-				ctx.fillStyle = C.pink;
-				ctx.fillRect(-w.w / 2 - 14, -size * 0.52, w.w + 28 + extend, size * 0.98);
-				ctx.restore();
+				ctx.fillStyle = T.marker;
+				ctx.beginPath();
+				ctx.roundRect(x - 14, y - size * 0.86, w.w + 28 + extend, size * 0.98, 18);
+				ctx.fill();
 			}
-			ctx.fillStyle = w.hl ? C.white : C.ink;
-			ctx.fillText(w.text, lx, y);
-			lx += w.w + space;
+			ctx.fillStyle = w.hl ? T.markerText : T.fg;
+			ctx.fillText(w.text, x, y);
+			x += w.w + space;
 		});
 	}
 
-	// Footer
-	smiley(ctx, W / 2, H - 330, 56, true);
+	// Sticker + footer
+	if (badge) {
+		ctx.save();
+		ctx.translate(W / 2, H - 420);
+		ctx.rotate(-0.12);
+		ctx.drawImage(badge, -110, -110, 220, 220);
+		ctx.restore();
+	}
 	ctx.textAlign = 'center';
 	ctx.fillStyle = T.fg;
-	ctx.font = '700 44px "Bricolage Grotesque Variable", sans-serif';
-	ctx.fillText(o.site, W / 2, H - 210);
-	ctx.font = 'italic 52px "Instrument Serif", serif';
-	ctx.fillText('A good push. Every day.', W / 2, H - 140);
+	ctx.font = 'italic 56px "Instrument Serif", serif';
+	ctx.fillText('A good push. Every day.', W / 2, H - 200);
+	ctx.font = '600 32px "Inter Variable", sans-serif';
+	ctx.globalAlpha = 0.6;
+	ctx.fillText(o.site, W / 2, H - 140);
+	ctx.globalAlpha = 1;
 
 	return new Promise((resolve, reject) =>
 		canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob failed'))), 'image/png')

@@ -17,6 +17,7 @@ export { default as ChatDots } from 'phosphor-svelte/lib/ChatCircleDotsIcon';
 export { default as Check } from 'phosphor-svelte/lib/CheckIcon';
 export { default as Clock } from 'phosphor-svelte/lib/ClockCounterClockwiseIcon';
 export { default as Crown } from 'phosphor-svelte/lib/CrownSimpleIcon';
+export { default as DeviceMobile } from 'phosphor-svelte/lib/DeviceMobileIcon';
 export { default as Export } from 'phosphor-svelte/lib/ExportIcon';
 export { default as Fire } from 'phosphor-svelte/lib/FireIcon';
 export { default as Gear } from 'phosphor-svelte/lib/GearSixIcon';

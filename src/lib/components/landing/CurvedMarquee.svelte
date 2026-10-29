@@ -7,7 +7,7 @@
 	const uid = $props.id();
 	let tp: SVGTextPathElement;
 	let txt: SVGTextElement;
-	const unit = $derived(`${text.toUpperCase()}  ✺  `);
+	const unit = $derived(`${text.toUpperCase()}   ✺   `);
 
 	onMount(() => {
 		if (reduced()) return;

@@ -79,12 +79,12 @@
 	<section class="relative flex flex-1 flex-col justify-center overflow-hidden py-6">
 		{#key step}
 			<div in:fly={{ x: 80 * dir, duration: 550, easing: backOut }}>
-				<p class="display text-7xl text-pink">0{step + 1}</p>
+				<p class="display text-7xl text-orange">0{step + 1}</p>
 				{#if step === 1}
 					<h1 class="display text-5xl sm:text-6xl">{i.t('ob.name.t')}</h1>
 					<p class="soft mt-2 text-2xl">{i.t('ob.name.d')}</p>
 					<input
-						class="mt-8 w-full rounded-2xl border-[3px] border-ink bg-white px-5 py-4 text-2xl font-semibold outline-none transition focus:shadow-[5px_5px_0_#FF2E88]"
+						class="mt-8 field"
 						bind:value={p.name}
 						maxlength="30"
 						autocomplete="given-name"
@@ -92,7 +92,7 @@
 						onkeydown={(e) => e.key === 'Enter' && go(2)}
 					/>
 					{#if p.name}
-						<p class="soft mt-4 text-3xl" in:fly={{ y: 10 }}>{p.name}, <span class="display not-italic">{i.t('sticker.you').toUpperCase()}</span> <Sparkle weight="fill" class="inline text-pink" /></p>
+						<p class="soft mt-4 text-3xl" in:fly={{ y: 10 }}>{p.name}, <span class="display not-italic">{i.t('sticker.you').toUpperCase()}</span> <Sparkle weight="fill" class="inline text-orange" /></p>
 					{/if}
 				{:else if step === 2}
 					<h1 class="display text-5xl sm:text-6xl">{i.t('ob.cats.t')}</h1>
@@ -119,7 +119,7 @@
 							</button>
 						{/each}
 					</div>
-					<p class="mt-6 flex items-center gap-2 text-sm font-semibold text-ink/60"><Crown weight="fill" class="text-pink" /> {i.t('ob.time.extra')}</p>
+					<p class="mt-6 flex items-center gap-2 text-sm font-semibold text-ink/60"><Crown weight="fill" class="text-orange" /> {i.t('ob.time.extra')}</p>
 				{:else}
 					<h1 class="display text-5xl sm:text-6xl">{i.t('ob.notif.t')}</h1>
 					<p class="soft mt-2 text-2xl">{i.t('ob.notif.d')}</p>
@@ -132,9 +132,9 @@
 						</NotifCard>
 					</div>
 					{#if result === 'denied'}
-						<p class="mt-6 rounded-2xl border-2 border-ink bg-sun p-4 font-semibold">{i.t('ob.notif.denied')}</p>
+						<p class="mt-6 rounded-2xl ring-1 ring-ink/10 bg-sun p-4 font-semibold">{i.t('ob.notif.denied')}</p>
 					{:else if result === 'unsupported' || result === 'error'}
-						<p class="mt-6 rounded-2xl border-2 border-ink bg-sun p-4 font-semibold">{i.t('ob.notif.unsupported')}</p>
+						<p class="mt-6 rounded-2xl ring-1 ring-ink/10 bg-sun p-4 font-semibold">{i.t('ob.notif.unsupported')}</p>
 					{/if}
 				{/if}
 			</div>

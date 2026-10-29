@@ -20,10 +20,10 @@
 	let timer: ReturnType<typeof setTimeout>;
 
 	const THEMES: { id: ShareTheme; bg: string; fg: string }[] = [
-		{ id: 'cream', bg: '#FFF6EC', fg: '#111' },
-		{ id: 'sky', bg: '#7FB2FF', fg: '#111' },
-		{ id: 'ink', bg: '#111111', fg: '#FFE14D' },
-		{ id: 'pink', bg: '#FF2E88', fg: '#fff' }
+		{ id: 'cream', bg: '#F6E36B', fg: '#141414' },
+		{ id: 'sky', bg: '#C7B5F2', fg: '#141414' },
+		{ id: 'ink', bg: '#141414', fg: '#F6E36B' },
+		{ id: 'pink', bg: '#F7A6C9', fg: '#141414' }
 	];
 
 	/** Debounced: save locally + update the server so the push follows the new settings. */
@@ -119,7 +119,7 @@
 <div class="space-y-5">
 	<section class="card p-5">
 		<label for="name" class="mb-2 block text-sm font-extrabold uppercase tracking-wider">{i.t('settings.name')}</label>
-		<input id="name" class="w-full rounded-xl border-2 border-ink px-4 py-3 text-lg font-semibold outline-none focus:shadow-[3px_3px_0_#FF2E88]" bind:value={p.name} maxlength="30" oninput={() => persist()} />
+		<input id="name" class="field" bind:value={p.name} maxlength="30" oninput={() => persist()} />
 	</section>
 
 	<section class="card p-5">
@@ -157,7 +157,7 @@
 		<div class="grid grid-cols-4 gap-3">
 			{#each THEMES as t (t.id)}
 				<button
-					class="relative grid aspect-[9/14] place-items-center rounded-2xl border-[3px] transition-transform hover:-translate-y-1 {p.theme === t.id ? 'border-ink shadow-[4px_4px_0_#111]' : 'border-ink/20'}"
+					class="relative grid aspect-[9/14] place-items-center rounded-2xl transition hover:-translate-y-1 {p.theme === t.id ? 'ring-2 ring-ink ring-offset-2 ring-offset-white' : 'ring-1 ring-ink/10'}"
 					style="background:{t.bg}"
 					aria-pressed={p.theme === t.id}
 					aria-label={t.id}
@@ -190,12 +190,12 @@
 			</button>
 		</div>
 		{#if p.pushEnabled}
-			<button class="mt-4 text-sm font-bold text-pink underline" onclick={test}>{i.t('settings.notif.test')}</button>
+			<button class="mt-4 text-sm font-bold text-orange underline" onclick={test}>{i.t('settings.notif.test')}</button>
 		{/if}
 	</section>
 
 	{#if app.premium}
-		<section class="flex items-center justify-between gap-4 rounded-3xl border-[3px] border-ink bg-ink p-5 text-white shadow-[4px_4px_0_#FF2E88]">
+		<section class="flex items-center justify-between gap-4 rounded-3xl bg-ink p-5 text-white shadow-[var(--shadow-soft)]">
 			<p class="display text-2xl text-sun">{i.t('premium.active')}</p>
 			<button class="btn-ghost !text-ink" onclick={manage} disabled={busy}>{i.t('premium.manage')}</button>
 		</section>
@@ -206,7 +206,7 @@
 	<a class="btn-ghost w-full" href={PUBLIC_INSTAGRAM_URL} target="_blank" rel="noopener" onclick={() => track('feedback_click')}><ChatDots weight="duotone" /> {i.t('settings.feedback')}</a>
 
 	<div class="flex flex-col items-center gap-3 pt-4 text-sm">
-		<button class="font-bold underline {confirmDelete ? 'text-pink' : 'text-ink/60'}" onclick={deleteAll}>
+		<button class="font-bold underline {confirmDelete ? 'text-orange' : 'text-ink/60'}" onclick={deleteAll}>
 			{confirmDelete ? i.t('settings.delete.confirm') : i.t('settings.delete')}
 		</button>
 		<div class="flex gap-4 text-ink/50">
