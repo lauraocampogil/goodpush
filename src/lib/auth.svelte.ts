@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
+import * as Sentry from '@sentry/sveltekit';
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$app/env/public';
 import { setPerson, track } from './analytics.ts';
 import { app } from './store.svelte.ts';
@@ -59,7 +60,8 @@ class Auth {
 			app.mergeData(acc.data);
 			await this.sync();
 			await app.refreshPremium();
-			setPerson({ signed_in: true, provider: this.user?.app_metadata?.provider });
+			setPerson({ signed_in: true, provider: this.user?.app_metadata?.provider, user_id: this.user?.id });
+			Sentry.setUser({ id: app.profile.deviceId, user_id: this.user?.id });
 			track('signed_in', { provider: this.user?.app_metadata?.provider });
 			// Pending marketing choice made before signing in
 			const pending = sessionStorage.getItem('goodpush:marketing');

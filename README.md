@@ -104,11 +104,51 @@ Sign in with Apple is intentionally not used.
 
 What accounts do: sync streak / favorites / history across phones, Premium follows the account, turn notifications off for any phone, email-marketing consent (view `marketing_audience` → export to Brevo/Resend/MailerLite), delete account (also cancels Premium).
 
+### 8. Feedback (Sentry User Feedback)
+
+The in-app sheet (smiley rating + Idea / Problem / Love + message) sends every message to:
+**Sentry → User Feedback** (needs `PUBLIC_SENTRY_DSN`), the Supabase table **`feedback`** (view `feedback_summary`), and PostHog (`feedback_sent`).
+Opened from Settings, the footer, and a one-time rating prompt after a 5-day streak. Run `0004_feedback_pause_email.sql`.
+
+### 9. Analytics — PostHog dashboard recipe
+
+Create these insights in PostHog (EU):
+
+| Insight | Type | Events |
+| --- | --- | --- |
+| Acquisition funnel | Funnel | `$pageview` (/) → `cta_click` → `onboarding_step` (step 4) → `push_enabled` |
+| Installs (“downloads”) | Trend | `app_installed` by `platform` |
+| Daily engagement | Trend | `phrase_viewed` (unique users) · `push_sent` (server) |
+| Retention | Retention | `push_enabled` → `phrase_viewed` |
+| Virality | Trend | `share` by `theme` · `$pageview` with `utm_source = share` |
+| Money | Trend | `checkout_started`, `premium_active` (server, `amount`), `affiliate_click` |
+| Happiness | Trend | `feedback_sent` avg `rating` · `streak_milestone` |
+| Churn signals | Trend | `push_paused`, `push_disabled`, `marketing_opt_out`, `account_deleted` |
+
+Server events (`push_sent`, `cron_run`, `premium_active/inactive`, `account_deleted`, `newsletter_signup`, `marketing_opt_in/out`) are sent from the backend. Errors in Sentry carry the device id, language and release.
+
+### 10. Notification control
+
+People can turn notifications off, **pause** them (1 day / 1 week / 1 month), and choose **which weekdays** they get a push — in Settings, or for any phone from their account. The cron respects `paused_until` and `days`.
+
+### 11. Email marketing — Brevo (EU)
+
+1. Create a Brevo account → **Contacts → Lists** → new list “GoodPush” → id → `BREVO_LIST_ID`.
+2. **Contacts → Settings → Attributes**: add `LANGUAGE` (text), `CATEGORIES` (text), `PREMIUM` (boolean), `SOURCE` (text).
+3. **SMTP & API → API keys** → `BREVO_API_KEY`.
+4. **Templates** → a *Double opt-in* template (“Confirm your subscription”) → id → `BREVO_DOI_TEMPLATE_ID`.
+5. **Webhooks (marketing)** → `https://goodpush.app/api/email/webhook?token=…` (events: unsubscribed, hard bounce, spam) → same token in `BREVO_WEBHOOK_SECRET`.
+6. Optional: Supabase → Auth → SMTP → use Brevo SMTP so login codes come from your domain.
+
+Who gets emails: account users who ticked the box, and footer newsletter sign-ups (double opt-in). Segment by `LANGUAGE` and `CATEGORIES`.
+
+Starter campaigns: **Welcome** (automation on list join: what GoodPush is + “turn on notifications”), **Weekly letter** (5 best phrases of the week + one tip + link to share), **Streak rescue** (no `phrase_viewed` for 3 days), **Premium nudge** (after 14 days, free users only).
+
 ### Streaks — the rule
 
 Open GoodPush (or tap the push) at least once per calendar day → +1. Miss a full day → back to 0 (best streak is kept). Stored on the phone, synced to the account when signed in.
 
-### 8. Optional
+### 12. Optional
 
 - **Amazon Associates** → `PUBLIC_AMAZON_TAG`. Edit picks in `src/lib/data/picks.ts`.
 

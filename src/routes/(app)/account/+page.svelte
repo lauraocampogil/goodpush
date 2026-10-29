@@ -11,7 +11,7 @@
 	import { app } from '#lib/store.svelte.ts';
 	import { track } from '#lib/analytics.ts';
 
-	type Device = { id: string; hour: number; extra_hours: number[]; categories: CategoryId[]; active: boolean; updated_at: string };
+	type Device = { id: string; hour: number; extra_hours: number[]; categories: CategoryId[]; active: boolean; paused_until: string | null; updated_at: string };
 	type Account = { email: string; provider: string; marketing: boolean; devices: Device[]; premium: boolean };
 
 	const i = getI18n();
@@ -55,6 +55,20 @@
 		marketing = v;
 		await auth.api('POST', { action: 'marketing', optIn: v }).catch(() => {});
 		track('marketing_consent', { optIn: v });
+	}
+
+	const isPaused = (d: Device) => !!d.paused_until && new Date(d.paused_until) > new Date();
+	const fmtDate = (iso: string) => new Intl.DateTimeFormat(i.lang, { day: 'numeric', month: 'short' }).format(new Date(iso));
+
+	async function pauseDevice(d: Device, days: number) {
+		const until = days ? new Date(Date.now() + days * 86_400_000).toISOString() : null;
+		await run(() => auth.api('POST', { action: 'device', deviceId: d.id, pausedUntil: until }));
+		if (d.id === app.profile.deviceId) {
+			app.profile.pausedUntil = until;
+			app.save();
+		}
+		track(days ? 'push_paused' : 'push_resumed', { days, from: 'account' });
+		await load();
 	}
 
 	async function toggleDevice(d: Device) {
@@ -114,8 +128,17 @@
 								<p class="text-sm font-semibold">
 									{d.id === app.profile.deviceId ? i.t('acc.device.this') : `📱 ${d.id.slice(0, 6)}`} · {String(d.hour).padStart(2, '0')}:00
 								</p>
-								<p class="text-xs {d.active ? 'text-green' : 'text-ink/40'}">{d.active ? i.t('acc.device.on') : i.t('acc.device.off')}</p>
+								{#if d.active && isPaused(d)}
+									<p class="text-xs text-orange">{i.t('acc.device.paused')} {fmtDate(d.paused_until!)}</p>
+								{:else}
+									<p class="text-xs {d.active ? 'text-green' : 'text-ink/40'}">{d.active ? i.t('acc.device.on') : i.t('acc.device.off')}</p>
+								{/if}
 							</div>
+							{#if d.active}
+								<button class="chip px-3 py-1.5 text-xs" disabled={busy} onclick={() => pauseDevice(d, isPaused(d) ? 0 : 7)}>
+									{isPaused(d) ? i.t('pause.resume') : i.t('pause.1w')}
+								</button>
+							{/if}
 							<button class="chip px-3 py-1.5 text-xs" disabled={busy} onclick={() => toggleDevice(d)}>
 								{d.active ? i.t('acc.device.turnoff') : i.t('acc.device.turnon')}
 							</button>

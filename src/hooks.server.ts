@@ -2,10 +2,11 @@ import * as Sentry from '@sentry/sveltekit';
 import { sequence } from '@sveltejs/kit/hooks';
 import type { Handle, HandleServerError } from '@sveltejs/kit/hooks';
 import { PUBLIC_SENTRY_DSN } from '$app/env/public';
+import { dev, version } from '$app/env';
 import { pickLang } from '#lib/i18n/index.svelte.ts';
 
 if (PUBLIC_SENTRY_DSN) {
-	Sentry.init({ dsn: PUBLIC_SENTRY_DSN, tracesSampleRate: 0.1 });
+	Sentry.init({ dsn: PUBLIC_SENTRY_DSN, tracesSampleRate: 0.1, release: `goodpush@${version}`, environment: dev ? 'development' : 'production' });
 }
 
 const app: Handle = async ({ event, resolve }) => {

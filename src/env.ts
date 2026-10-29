@@ -58,6 +58,11 @@ export const variables = defineEnvVars({
 		schema: (v) => optional(v) ?? 'mailto:hello@goodpush.app'
 	},
 	CRON_SECRET: { description: 'Shared secret for /api/cron/send', schema: optional },
+	BREVO_API_KEY: { description: 'Brevo API key (email marketing)', schema: optional },
+	BREVO_LIST_ID: { description: 'Brevo list id for GoodPush subscribers', schema: optional },
+	BREVO_DOI_TEMPLATE_ID: { description: 'Brevo double opt-in template id (newsletter form)', schema: optional },
+	BREVO_WEBHOOK_SECRET: { description: 'Secret token for /api/email/webhook', schema: optional },
+	POSTHOG_SERVER_KEY: { description: 'PostHog project key for server events (defaults to the public key)', schema: optional },
 	STRIPE_SECRET_KEY: { description: 'Stripe secret key (sk_live_… / sk_test_…)', schema: optional },
 	STRIPE_PRICE_ID: { description: 'Stripe recurring Price ID for Premium (price_…)', schema: optional },
 	STRIPE_WEBHOOK_SECRET: { description: 'Stripe webhook signing secret (whsec_…)', schema: optional }

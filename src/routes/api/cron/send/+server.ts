@@ -4,6 +4,7 @@ import type { CategoryId, Lang } from '#lib/data/categories.ts';
 import { dayKey, localHour, phraseForDay, pushBody } from '#lib/phrase.ts';
 import { db } from '#lib/server/supabase.ts';
 import { pushReady, sendPush } from '#lib/server/webpush.ts';
+import { captureServer } from '#lib/server/analytics.ts';
 import type { RequestHandler } from './$types';
 
 type Row = {
@@ -20,6 +21,8 @@ type Row = {
 	extra_hours: number[] | null;
 	sent_slots: number[] | null;
 	user_id: string | null;
+	paused_until: string | null;
+	days: number[] | null;
 };
 
 /**
@@ -42,11 +45,12 @@ export const GET: RequestHandler = async ({ request, url }) => {
 	let sent = 0;
 	let removed = 0;
 	let checked = 0;
+	const events: { event: string; distinct_id: string; properties: Record<string, unknown> }[] = [];
 
 	for (let from = 0; ; from += 1000) {
 		const { data, error: e } = await supabase
 			.from('subscribers')
-			.select('id,name,categories,hour,time_zone,lang,endpoint,p256dh,auth,last_sent_on,extra_hours,sent_slots,user_id')
+			.select('id,name,categories,hour,time_zone,lang,endpoint,p256dh,auth,last_sent_on,extra_hours,sent_slots,user_id,paused_until,days')
 			.eq('active', true)
 			.order('id')
 			.range(from, from + 999);
@@ -56,6 +60,10 @@ export const GET: RequestHandler = async ({ request, url }) => {
 		await Promise.all(
 			rows.map(async (r) => {
 				checked++;
+				// Respect the person's choice: paused, or not a day they want a push
+				if (r.paused_until && new Date(r.paused_until) > now) return;
+				const weekday = new Date(`${dayKey(now, r.time_zone)}T12:00:00Z`).getUTCDay();
+				if (r.days && r.days.length && !r.days.includes(weekday)) return;
 				const today = dayKey(now, r.time_zone);
 				const premium = premiumIds.has(r.id) || (!!r.user_id && premiumUsers.has(r.user_id));
 				// Slot 0 = free daily push; slots 1–2 = Premium extra pushes
@@ -75,6 +83,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
 						url: `/today?utm_source=push&slot=${slot}`
 					});
 					sent++;
+					events.push({ event: 'push_sent', distinct_id: r.id, properties: { slot, category: phrase.cat, phrase: phrase.id, lang: r.lang, premium } });
 					await supabase
 						.from('subscribers')
 						.update({ last_sent_on: today, sent_slots: [...sentToday, slot] })
@@ -91,5 +100,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
 		if (rows.length < 1000) break;
 	}
 
+	events.push({ event: 'cron_run', distinct_id: 'goodpush-cron', properties: { checked, sent, removed, dryRun } });
+	if (!dryRun) await captureServer(events);
 	return json({ ok: true, checked, sent, removed, dryRun });
 };

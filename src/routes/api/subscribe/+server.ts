@@ -23,6 +23,10 @@ export const POST: RequestHandler = async ({ request }) => {
 	const extraHours = (Array.isArray(body.extraHours) ? body.extraHours : [])
 		.filter((h: unknown) => Number.isInteger(h) && (h as number) >= 0 && (h as number) <= 23 && h !== hour)
 		.slice(0, 2);
+	const days = (Array.isArray(body.days) ? body.days : [0, 1, 2, 3, 4, 5, 6]).filter(
+		(d: unknown) => Number.isInteger(d) && (d as number) >= 0 && (d as number) <= 6
+	);
+	const pausedUntil = typeof body.pausedUntil === 'string' && !Number.isNaN(Date.parse(body.pausedUntil)) ? new Date(body.pausedUntil).toISOString() : null;
 	let timeZone = 'UTC';
 	try {
 		timeZone = new Intl.DateTimeFormat('en', { timeZone: body.timeZone }).resolvedOptions().timeZone;
@@ -42,6 +46,8 @@ export const POST: RequestHandler = async ({ request }) => {
 			categories,
 			hour,
 			extra_hours: [...new Set(extraHours)],
+			days: days.length ? [...new Set(days)] : [0, 1, 2, 3, 4, 5, 6],
+			paused_until: pausedUntil,
 			time_zone: timeZone,
 			lang: LANGS.includes(body.lang) ? body.lang : 'en',
 			source: typeof body.source === 'string' ? body.source.slice(0, 80) : null,

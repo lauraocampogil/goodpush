@@ -13,6 +13,10 @@ export type Profile = {
 	extraHours: number[];
 	/** Share-card theme (cream is free, the rest are Premium). */
 	theme: ShareTheme;
+	/** Pause notifications until this ISO date (null = not paused). */
+	pausedUntil: string | null;
+	/** Local weekdays to receive the push (0 = Sunday … 6 = Saturday). */
+	days: number[];
 };
 
 export type ShareTheme = 'cream' | 'sky' | 'ink' | 'pink';
@@ -49,8 +53,15 @@ class AppStore {
 		onboarded: false,
 		pushEnabled: false,
 		extraHours: [],
-		theme: 'cream'
+		theme: 'cream',
+		pausedUntil: null,
+		days: [0, 1, 2, 3, 4, 5, 6]
 	});
+
+	/** Is the push currently paused? */
+	get paused(): boolean {
+		return !!this.profile.pausedUntil && new Date(this.profile.pausedUntil) > new Date();
+	}
 	/** Premium status — source of truth is the server (Stripe webhook), cached here. */
 	premium = $state(false);
 	favorites = $state<string[]>([]);

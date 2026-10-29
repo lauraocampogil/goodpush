@@ -5,7 +5,7 @@ import type { CategoryId } from './data/categories';
  * the UI, the share-card canvas, app icons and the OG image).
  * Colored disc · thick ink ring · pill eyes · U smile · little "shine" ticks.
  */
-export type SmileyMood = 'smile' | 'wink' | 'calm';
+export type SmileyMood = 'smile' | 'wink' | 'calm' | 'meh' | 'sad';
 
 /** Sticker palette — one color per category. */
 export const STICKER = {
@@ -31,6 +31,12 @@ export const CATEGORY_COLOR: Record<CategoryId, StickerColor> = {
 	selflove: 'pink'
 };
 
+const MOUTH: Partial<Record<SmileyMood, string>> = {
+	smile: 'M33 57.5c3.6 9.4 9.8 13.8 17 13.8s13.4-4.4 17-13.8',
+	meh: 'M36 64h28',
+	sad: 'M35 69c3.4-6.4 8.8-9.4 15-9.4s11.6 3 15 9.4'
+};
+
 export function smileySvg(mood: SmileyMood = 'smile', color: StickerColor | string = 'yellow'): string {
 	const bg = (STICKER as Record<string, string>)[color] ?? color;
 	const line = bg === STICKER.ink ? STICKER.cream : STICKER.ink;
@@ -46,7 +52,7 @@ export function smileySvg(mood: SmileyMood = 'smile', color: StickerColor | stri
 	<circle cx="50" cy="50" r="50" fill="${bg}"/>
 	<circle cx="50" cy="50" r="33" fill="none" stroke="${line}" stroke-width="7"/>
 	${eyes}
-	<path d="M33 57.5c3.6 9.4 9.8 13.8 17 13.8s13.4-4.4 17-13.8" fill="none" stroke="${line}" stroke-width="7" stroke-linecap="round"/>
+	<path d="${MOUTH[mood] ?? MOUTH.smile}" fill="none" stroke="${line}" stroke-width="7" stroke-linecap="round"/>
 	<path d="M29.5 41.5h4.5M29 49.5h3.5${mood === 'smile' ? 'M66 41.5h4.5' : ''}" stroke="${line}" stroke-width="3" stroke-linecap="round" opacity=".9"/>
 </svg>`;
 }

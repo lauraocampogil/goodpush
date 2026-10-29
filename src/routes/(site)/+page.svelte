@@ -19,6 +19,7 @@
 
 	const i = getI18n();
 	let sheet = $state(false);
+	let toast = $state('');
 	let onboarded = $state(false);
 	const cta = $derived(onboarded ? i.t('nav.open') : i.t('hero.cta'));
 
@@ -26,6 +27,11 @@
 		onboarded = app.profile.onboarded;
 		// Opened from the home-screen icon → straight into the app
 		if (isStandalone()) goto(onboarded ? '/today' : '/start', { replaceState: true });
+		if (new URL(location.href).searchParams.get('newsletter') === 'confirmed') {
+			toast = i.t('nl.confirmed');
+			track('newsletter_confirmed');
+			setTimeout(() => (toast = ''), 4000);
+		}
 	});
 
 	function start(from = 'hero') {
@@ -63,3 +69,7 @@
 <Footer onstart={() => start('footer')} />
 
 <InstallSheet bind:open={sheet} oncontinue={() => goto('/start')} />
+
+{#if toast}
+	<button class="fixed inset-x-4 bottom-6 z-50 mx-auto max-w-sm rounded-2xl bg-ink p-4 text-center font-semibold text-paper shadow-[var(--shadow-float)]" onclick={() => (toast = '')}>{toast}</button>
+{/if}

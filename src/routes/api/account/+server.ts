@@ -3,6 +3,8 @@ import { LANGS } from '#lib/data/categories.ts';
 import { getUser, isPremium } from '#lib/server/auth.ts';
 import { ACTIVE, isDeviceId, stripe } from '#lib/server/stripe.ts';
 import { db } from '#lib/server/supabase.ts';
+import { captureServer } from '#lib/server/analytics.ts';
+import { deleteContact, subscribeContact, unsubscribeContact } from '#lib/server/brevo.ts';
 import type { RequestHandler } from './$types';
 
 async function requireUser(request: Request) {
@@ -22,7 +24,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
 		supabase.from('profiles').select('data,lang,marketing_opt_in').eq('user_id', user.id).maybeSingle(),
 		supabase
 			.from('subscribers')
-			.select('id,hour,extra_hours,categories,time_zone,active,created_at,updated_at')
+			.select('id,hour,extra_hours,categories,time_zone,active,paused_until,days,created_at,updated_at')
 			.eq('user_id', user.id)
 			.order('updated_at', { ascending: false })
 	]);
@@ -42,7 +44,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
  *  { action: 'link', deviceId }            → attach this phone (+ its Premium) to the account
  *  { action: 'sync', data, lang }          → save favorites / history / streak / settings
  *  { action: 'marketing', optIn }          → email marketing consent (explicit, GDPR)
- *  { action: 'device', deviceId, active }  → turn notifications on/off for one of my phones
+ *  { action: 'device', deviceId, active?, pausedUntil? } → on/off or pause one of my phones
  */
 export const POST: RequestHandler = async ({ request }) => {
 	const { supabase, user } = await requireUser(request);
@@ -88,13 +90,35 @@ export const POST: RequestHandler = async ({ request }) => {
 				},
 				{ onConflict: 'user_id' }
 			);
+			// Sync with the email platform (Brevo)
+			if (user.email) {
+				try {
+					if (optIn) {
+						const { data: prof } = await supabase.from('profiles').select('lang,data').eq('user_id', user.id).maybeSingle();
+						await subscribeContact(user.email, {
+							lang: prof?.lang ?? 'en',
+							categories: prof?.data?.profile?.categories ?? [],
+							premium: await isPremium(null, user.id),
+							source: 'account'
+						});
+					} else await unsubscribeContact(user.email);
+					await supabase.from('profiles').update({ brevo_synced_at: now }).eq('user_id', user.id);
+				} catch (err) {
+					console.error('[account] brevo sync', err);
+				}
+			}
+			await captureServer({ event: optIn ? 'marketing_opt_in' : 'marketing_opt_out', distinct_id: user.id });
 			return json({ ok: true, optIn });
 		}
 		case 'device': {
 			if (!isDeviceId(body.deviceId)) error(400, 'Invalid device');
+			const patch: Record<string, unknown> = {};
+			if (typeof body.active === 'boolean') patch.active = body.active;
+			if (body.pausedUntil === null || (typeof body.pausedUntil === 'string' && !Number.isNaN(Date.parse(body.pausedUntil))))
+				patch.paused_until = body.pausedUntil ? new Date(body.pausedUntil).toISOString() : null;
 			const { error: e } = await supabase
 				.from('subscribers')
-				.update({ active: body.active === true })
+				.update(patch)
 				.eq('id', body.deviceId)
 				.eq('user_id', user.id);
 			if (e) error(500, e.message);
@@ -119,6 +143,8 @@ export const DELETE: RequestHandler = async ({ request }) => {
 	}
 	await supabase.from('subscribers').delete().eq('user_id', user.id);
 	await supabase.from('profiles').delete().eq('user_id', user.id);
+	if (user.email) await deleteContact(user.email).catch(() => {});
 	await supabase.auth.admin.deleteUser(user.id);
+	await captureServer({ event: 'account_deleted', distinct_id: user.id });
 	return json({ ok: true });
 };

@@ -2,10 +2,12 @@
 	import { PUBLIC_INSTAGRAM_URL, PUBLIC_TIKTOK_URL } from '$app/env/public';
 	import Logo from './Logo.svelte';
 	import Smiley from './Smiley.svelte';
+	import NewsletterForm from './NewsletterForm.svelte';
 	import { LANGS } from '#lib/data/categories.ts';
 	import { LANG_LABEL } from '#lib/i18n/dict.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { track } from '#lib/analytics.ts';
+	import { feedback } from '#lib/feedback.svelte.ts';
 	import { ArrowRight, ChatDots, Instagram, TikTok } from '#lib/icons.ts';
 
 	let { onstart }: { onstart?: () => void } = $props();
@@ -29,6 +31,17 @@
 				<Smiley size={120} color="pink" wink class="-mr-8 animate-float [animation-delay:-1.2s]" />
 				<Smiley size={120} color="mint" mood="calm" class="animate-float [animation-delay:-2.4s]" />
 			</div>
+		</div>
+	</div>
+
+	<!-- Newsletter -->
+	<div class="container-site pb-12">
+		<div class="grid items-center gap-6 rounded-[28px] bg-white/50 p-6 sm:p-8 lg:grid-cols-2">
+			<div>
+				<p class="display text-xl sm:text-2xl">{i.t('nl.title')}</p>
+				<p class="mt-1 text-sm text-ink/60">{i.t('nl.sub')}</p>
+			</div>
+			<NewsletterForm />
 		</div>
 	</div>
 
@@ -60,7 +73,7 @@
 			<ul class="mt-4 space-y-2.5 text-sm font-semibold">
 				<li><a href={PUBLIC_TIKTOK_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 hover:opacity-60"><TikTok size={16} /> TikTok</a></li>
 				<li><a href={PUBLIC_INSTAGRAM_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 hover:opacity-60"><Instagram size={16} /> Instagram</a></li>
-				<li><a href={PUBLIC_INSTAGRAM_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 hover:opacity-60"><ChatDots size={16} /> {i.t('footer.feedback')}</a></li>
+				<li><button class="inline-flex items-center gap-2 hover:opacity-60" onclick={() => feedback.show('footer')}><ChatDots size={16} /> {i.t('footer.feedback')}</button></li>
 			</ul>
 		</nav>
 		<nav>

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { ArrowRight, ArrowUpRight, Bell, BookOpen, Clock, Crown, Fire, Heart, Info, UserCircle } from '#lib/icons.ts';
 	import { auth } from '#lib/auth.svelte.ts';
+	import { feedback } from '#lib/feedback.svelte.ts';
+	import { fly } from 'svelte/transition';
 	import { onMount, tick } from 'svelte';
 	import { goto, replaceState } from '$app/navigation';
 	import { page } from '$app/state';
@@ -33,6 +35,14 @@
 	const hourLabel = $derived(`${String(app.profile.hour).padStart(2, '0')}:00`);
 	let highlightShare = $state(false);
 	let showRules = $state(false);
+	let askRating = $state(false);
+	const RATE = [
+		{ r: 1, mood: 'sad', color: 'purple' },
+		{ r: 2, mood: 'meh', color: 'mint' },
+		{ r: 3, mood: 'calm', color: 'cream' },
+		{ r: 4, mood: 'smile', color: 'yellow' },
+		{ r: 5, mood: 'wink', color: 'orange' }
+	] as const;
 	let busy = $state(false);
 	let toast = $state('');
 	let card: HTMLElement;
@@ -69,6 +79,7 @@
 			setTimeout(() => confetti(70), 900);
 			track('streak_milestone', { days: app.streak.count });
 		}
+		askRating = feedback.shouldAsk(app.currentStreak);
 		animateIn();
 	});
 
@@ -166,6 +177,20 @@
 				<a href="/account" class="btn-ghost mt-4 w-full py-2.5 text-sm"><UserCircle weight="duotone" /> {i.t('acc.cta')}</a>
 			{/if}
 		</div>
+
+		{#if askRating}
+			<div class="card p-5" out:fly={{ y: 10, duration: 250 }}>
+				<p class="text-sm font-semibold">{i.t('fb.ask')}</p>
+				<div class="mt-4 flex justify-between gap-2">
+					{#each RATE as f (f.r)}
+						<button class="rounded-full transition hover:scale-110" aria-label="{f.r}/5" onclick={() => { askRating = false; feedback.show('streak_prompt', f.r); }}>
+							<Smiley size={46} color={f.color} mood={f.mood} />
+						</button>
+					{/each}
+				</div>
+				<button class="mt-3 w-full text-center text-xs font-semibold text-ink/40 underline" onclick={() => { askRating = false; feedback.dismissAsk(); }}>{i.t('fb.later')}</button>
+			</div>
+		{/if}
 
 		{#each extras as x (x.h)}
 			<div class="rounded-[28px] bg-ink p-5 text-white shadow-[var(--shadow-soft)]" style="--hl:#F6E36B">

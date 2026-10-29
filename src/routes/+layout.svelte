@@ -6,6 +6,7 @@
 	import '@fontsource-variable/inter';
 	import './layout.css';
 	import { onMount } from 'svelte';
+	import * as Sentry from '@sentry/sveltekit';
 	import IconContext from 'phosphor-svelte/lib/IconContext';
 	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
@@ -15,6 +16,7 @@
 	import { isAndroid, isIOS, isStandalone } from '#lib/platform.ts';
 	import { app } from '#lib/store.svelte.ts';
 	import { auth } from '#lib/auth.svelte.ts';
+	import FeedbackSheet from '#lib/components/FeedbackSheet.svelte';
 	import type { LayoutProps } from './$types';
 
 	let { data, children }: LayoutProps = $props();
@@ -28,6 +30,9 @@
 		auth.init();
 
 		const standalone = isStandalone();
+		// Errors in Sentry are linked to the (anonymous) device and its context
+		Sentry.setUser({ id: app.profile.deviceId });
+		Sentry.setTags({ lang: i.lang, standalone: String(standalone), premium: String(app.premium) });
 		initAnalytics(app.profile.deviceId, {
 			lang: i.lang,
 			standalone,
@@ -65,4 +70,5 @@
 
 <IconContext values={{ weight: 'bold' }}>
 	{@render children()}
+	<FeedbackSheet />
 </IconContext>

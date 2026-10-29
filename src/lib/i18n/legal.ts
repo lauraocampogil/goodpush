@@ -42,7 +42,8 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
 				html: `<ul>
 <li>Supabase (database and sign-in, EU region) and Vercel (hosting).</li>
 <li>Your browser’s push service (Apple, Google or Mozilla) delivers the notifications.</li>
-<li>PostHog (EU) for usage statistics · Sentry for error reports.</li>
+<li>PostHog (EU) for usage statistics · Sentry for error reports and feedback.</li>
+<li>Brevo (EU) for marketing emails — only if you opted in.</li>
 <li>Stripe for Premium payments — we never see your card.</li>
 </ul>`
 			},
@@ -89,7 +90,8 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
 				html: `<ul>
 <li>Supabase (base de datos e inicio de sesión, región UE) y Vercel (alojamiento).</li>
 <li>El servicio push de tu navegador (Apple, Google o Mozilla) entrega las notificaciones.</li>
-<li>PostHog (UE) para estadísticas · Sentry para informes de errores.</li>
+<li>PostHog (UE) para estadísticas · Sentry para informes de errores y opiniones.</li>
+<li>Brevo (UE) para los emails de marketing, solo si aceptaste recibirlos.</li>
 <li>Stripe para los pagos Premium: nunca vemos tu tarjeta.</li>
 </ul>`
 			},
@@ -136,7 +138,8 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
 				html: `<ul>
 <li>Supabase (base de données et connexion, région UE) et Vercel (hébergement).</li>
 <li>Le service push de ton navigateur (Apple, Google ou Mozilla) livre les notifications.</li>
-<li>PostHog (UE) pour les statistiques · Sentry pour les rapports d’erreurs.</li>
+<li>PostHog (UE) pour les statistiques · Sentry pour les rapports d’erreurs et les avis.</li>
+<li>Brevo (UE) pour les emails marketing — uniquement si tu as accepté.</li>
 <li>Stripe pour les paiements Premium — nous ne voyons jamais ta carte.</li>
 </ul>`
 			},

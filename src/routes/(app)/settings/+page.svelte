@@ -2,6 +2,7 @@
 	import CatIcon from '#lib/components/CatIcon.svelte';
 	import { ArrowRight, ChatDots, Crown, Lock, UserCircle } from '#lib/icons.ts';
 	import { auth } from '#lib/auth.svelte.ts';
+	import { feedback } from '#lib/feedback.svelte.ts';
 	import { goto } from '$app/navigation';
 	import { PUBLIC_INSTAGRAM_URL } from '$app/env/public';
 	import { setPerson, track } from '#lib/analytics.ts';
@@ -86,6 +87,24 @@
 		}
 		busy = false;
 		app.save();
+	}
+
+	const WEEK = [1, 2, 3, 4, 5, 6, 0];
+	const dayLabel = (d: number) =>
+		new Intl.DateTimeFormat(i.lang, { weekday: 'narrow' }).format(new Date(Date.UTC(2024, 0, 7 + d, 12)));
+	const fmtDate = (iso: string) => new Intl.DateTimeFormat(i.lang, { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(iso));
+
+	function toggleDay(d: number) {
+		const on = !p.days.includes(d);
+		const next = on ? [...p.days, d] : p.days.filter((x) => x !== d);
+		if (!next.length) return; // at least one day
+		p.days = next.sort();
+		persist('days_changed', { days: next.length });
+	}
+
+	function pause(daysCount: number) {
+		p.pausedUntil = daysCount ? new Date(Date.now() + daysCount * 86_400_000).toISOString() : null;
+		persist(daysCount ? 'push_paused' : 'push_resumed', { days: daysCount });
 	}
 
 	async function test() {
@@ -193,15 +212,40 @@
 		<div class="flex items-center justify-between gap-4">
 			<div>
 				<h2 class="text-sm font-extrabold uppercase tracking-wider">{i.t('settings.notif')}</h2>
-				<p class="text-ink/60">{p.pushEnabled ? i.t('settings.notif.on') : i.t('settings.notif.off')}</p>
+				<p class="text-sm text-ink/60">
+					{#if p.pushEnabled && app.paused}
+						{i.t('pause.until')} {fmtDate(p.pausedUntil!)}
+					{:else}
+						{p.pushEnabled ? i.t('settings.notif.on') : i.t('settings.notif.off')}
+					{/if}
+				</p>
 			</div>
 			<button class={p.pushEnabled ? 'btn-ghost' : 'btn'} onclick={togglePush} disabled={busy}>
 				{p.pushEnabled ? i.t('settings.notif.disable') : i.t('settings.notif.enable')}
 			</button>
 		</div>
+
 		{#if p.pushEnabled}
-			<button class="mt-4 text-sm font-bold text-orange underline" onclick={test}>{i.t('settings.notif.test')}</button>
+			<p class="mt-6 mb-3 text-sm font-semibold">{i.t('days.title')}</p>
+			<div class="grid grid-cols-7 gap-1.5">
+				{#each WEEK as d (d)}
+					<button class="chip justify-center px-0 py-2 text-xs" aria-pressed={p.days.includes(d)} onclick={() => toggleDay(d)}>{dayLabel(d)}</button>
+				{/each}
+			</div>
+
+			<p class="mt-6 mb-3 text-sm font-semibold">{i.t('pause.title')}</p>
+			{#if app.paused}
+				<button class="btn w-full" onclick={() => pause(0)}>{i.t('pause.resume')}</button>
+			{:else}
+				<div class="grid grid-cols-3 gap-2">
+					<button class="chip justify-center text-xs" onclick={() => pause(1)}>{i.t('pause.1d')}</button>
+					<button class="chip justify-center text-xs" onclick={() => pause(7)}>{i.t('pause.1w')}</button>
+					<button class="chip justify-center text-xs" onclick={() => pause(30)}>{i.t('pause.1m')}</button>
+				</div>
+			{/if}
+			<button class="mt-5 text-sm font-bold text-orange underline" onclick={test}>{i.t('settings.notif.test')}</button>
 		{/if}
+		<p class="mt-4 text-xs text-ink/45">{i.t('notif.off.hint')}</p>
 	</section>
 
 	{#if app.premium}
@@ -213,7 +257,7 @@
 		<a href="/premium" class="btn w-full py-4" onclick={() => track('premium_click', { from: 'settings' })}><Crown weight="fill" class="text-sun" /> {i.t('settings.premium')}</a>
 	{/if}
 
-	<a class="btn-ghost w-full" href={PUBLIC_INSTAGRAM_URL} target="_blank" rel="noopener" onclick={() => track('feedback_click')}><ChatDots weight="duotone" /> {i.t('settings.feedback')}</a>
+	<button class="btn-ghost w-full" onclick={() => feedback.show('settings')}><ChatDots weight="duotone" /> {i.t('fb.open')}</button>
 
 	<div class="flex flex-col items-center gap-3 pt-4 text-sm">
 		<button class="font-bold underline {confirmDelete ? 'text-orange' : 'text-ink/60'}" onclick={deleteAll}>

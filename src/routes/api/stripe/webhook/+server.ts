@@ -3,6 +3,7 @@ import type Stripe from 'stripe';
 import { STRIPE_WEBHOOK_SECRET } from '$app/env/private';
 import { db } from '#lib/server/supabase.ts';
 import { ACTIVE, stripe } from '#lib/server/stripe.ts';
+import { captureServer } from '#lib/server/analytics.ts';
 import type { RequestHandler } from './$types';
 
 /**
@@ -43,6 +44,12 @@ export const POST: RequestHandler = async ({ request }) => {
 			},
 			{ onConflict: 'device_id' }
 		);
+		const price = sub.items.data[0]?.price;
+		await captureServer({
+			event: ACTIVE.includes(sub.status) ? 'premium_active' : 'premium_inactive',
+			distinct_id: id,
+			properties: { status: sub.status, amount: (price?.unit_amount ?? 0) / 100, currency: price?.currency, user_id: sub.metadata?.userId ?? null }
+		});
 		// Lost Premium → drop the extra pushes
 		if (!ACTIVE.includes(sub.status)) {
 			await supabase.from('subscribers').update({ extra_hours: [] }).eq('id', id);
