@@ -85,8 +85,22 @@ export function phraseText(p: Phrase, lang: Lang): string {
 }
 
 /** Notification body, personalised with the name when there is one. */
-export function pushBody(p: Phrase, lang: Lang, name?: string | null): string {
+/** Notification text: just the phrase (no name), or “quote” — author. */
+export function pushBody(p: Phrase, lang: Lang): string {
 	const t = plain(phraseText(p, lang));
-	if (p.author) return `“${t}” — ${p.author}`;
-	return name ? `${name}, ${t.charAt(0).toLowerCase()}${t.slice(1)}` : t;
+	return p.author ? `“${t}” — ${p.author}` : t;
+}
+
+const STREAK_WORD: Record<Lang, [string, string]> = { en: ['day streak', 'day streak'], es: ['día seguido', 'días seguidos'], fr: ['jour d’affilée', 'jours d’affilée'] };
+/** Notification title: the streak when there is one (🔥 12 días seguidos), else the vibe. Never "GoodPush" (the phone already shows the app name). */
+export function pushTitle(o: { lang: Lang; streak: number; label: string; kind: 'daily' | 'extra' | 'news' | 'movie' }): string {
+	const icon = { daily: '', extra: '✦ ', news: '🗞 ', movie: '🎬 ' }[o.kind];
+	if (o.streak > 0 && o.kind === 'daily') return `🔥 ${o.streak} ${STREAK_WORD[o.lang][o.streak === 1 ? 0 : 1]}`;
+	return `${icon}${o.label}`;
+}
+
+/** Streak as it stands on `today` given the last visit day (alive if visited today or yesterday). */
+export function liveStreak(count: number | null, last: string | null, today: string): number {
+	if (!count || !last) return 0;
+	return last === today || last === shiftDay(today, -1) ? count : 0;
 }

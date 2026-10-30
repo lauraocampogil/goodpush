@@ -58,6 +58,7 @@ export async function syncProfile(
 				name: profile.name,
 				categories: profile.categories,
 				topics: profile.topics,
+				streak: { count: app.streak.count, last: app.streak.last },
 				hour: profile.hour,
 				extraHours: profile.extraHours,
 				pausedUntil: profile.pausedUntil,

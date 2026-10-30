@@ -1,7 +1,8 @@
 import { error, json } from '@sveltejs/kit';
 import { CRON_SECRET } from '$app/env/private';
 import type { CategoryId, Lang } from '#lib/data/categories.ts';
-import { dayKey, localHour, phraseForDay, pushBody, shiftDay } from '#lib/phrase.ts';
+import { dayKey, liveStreak, localHour, phraseForDay, pushBody, pushTitle, shiftDay } from '#lib/phrase.ts';
+import { CATEGORY_LABEL } from '#lib/i18n/dict.ts';
 import { pickQuote, quoteToPhrase, type QuoteRow } from '#lib/quotes.ts';
 import type { Phrase } from '#lib/data/phrases.ts';
 import { isMovieTopic, type TopicId } from '#lib/data/topics.ts';
@@ -27,7 +28,11 @@ type Row = {
 	user_id: string | null;
 	paused_until: string | null;
 	days: number[] | null;
+	streak_count: number | null;
+	streak_last: string | null;
 };
+
+const ACTIONS = { en: ['♥ Save', '↗ Share'], es: ['♥ Guardar', '↗ Compartir'], fr: ['♥ Garder', '↗ Partager'] } as const;
 
 /**
  * Called every hour (Supabase pg_cron or Vercel Cron).
@@ -67,7 +72,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
 	for (let from = 0; ; from += 1000) {
 		const { data, error: e } = await supabase
 			.from('subscribers')
-			.select('id,name,categories,topics,hour,time_zone,lang,endpoint,p256dh,auth,last_sent_on,extra_hours,sent_slots,user_id,paused_until,days')
+			.select('id,name,categories,topics,hour,time_zone,lang,endpoint,p256dh,auth,last_sent_on,extra_hours,sent_slots,user_id,paused_until,days,streak_count,streak_last')
 			.eq('active', true)
 			.order('id')
 			.range(from, from + 999);
@@ -92,13 +97,21 @@ export const GET: RequestHandler = async ({ request, url }) => {
 
 				const topics = r.topics ?? [];
 				const news = slot === 0 ? pickQuote(quotesByDay.get(today) ?? [], topics, today, r.categories) : null;
+				const streak = liveStreak(r.streak_count, r.streak_last, today);
 				const phrase = news ?? phraseForDay(r.categories, today, { slot, premium, topics });
 				if (dryRun) return void sent++;
 				try {
 					await sendPush(r, {
-						title: news ? (news.topic && isMovieTopic(news.topic) ? 'GoodPush · 🎬' : 'GoodPush · 🗞') : slot === 0 ? 'GoodPush' : 'GoodPush ✦',
-						body: pushBody(phrase, r.lang, r.name),
+						title: pushTitle({
+							lang: r.lang,
+							streak,
+							label: CATEGORY_LABEL[r.lang]?.[phrase.cat] ?? 'GoodPush',
+							kind: news ? (news.topic && isMovieTopic(news.topic) ? 'movie' : 'news') : slot === 0 ? 'daily' : 'extra'
+						}),
+						body: pushBody(phrase, r.lang),
 						id: phrase.id,
+						streak,
+						actions: ACTIONS[r.lang] ?? ACTIONS.en,
 						url: `/today?utm_source=push&slot=${slot}`
 					});
 					sent++;

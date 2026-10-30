@@ -15,7 +15,7 @@
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { burst, confetti, motion, reduced } from '#lib/motion.ts';
 	import { dayKey, phraseForDay } from '#lib/phrase.ts';
-	import { enablePush } from '#lib/push.ts';
+	import { enablePush, syncProfile } from '#lib/push.ts';
 	import { app } from '#lib/store.svelte.ts';
 	import ShareButton from '../ShareButton.svelte';
 	import { todaysQuote } from '#lib/quotes.ts';
@@ -74,7 +74,11 @@
 		ready = true;
 		const before = app.streak.count;
 		app.visit(phrase.id);
-		navigator.clearAppBadge?.().catch(() => {});
+		// App icon badge = your current streak (like a mini widget)
+		const s = app.currentStreak;
+		(s > 0 ? navigator.setAppBadge?.(s) : navigator.clearAppBadge?.())?.catch(() => {});
+		// Tell the server, so tomorrow's notification shows 🔥 + your streak
+		if (app.profile.pushEnabled) syncProfile(app.profile, i.lang, app.source);
 
 		const url = new URL(page.url.href);
 		const favId = url.searchParams.get('fav');

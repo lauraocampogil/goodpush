@@ -56,7 +56,7 @@ self.addEventListener('fetch', (event) => {
 	);
 });
 
-type PushData = { title?: string; body?: string; id?: string; url?: string };
+type PushData = { title?: string; body?: string; id?: string; url?: string; streak?: number; actions?: [string, string] };
 
 self.addEventListener('push', (event) => {
 	let data: PushData = {};
@@ -68,7 +68,7 @@ self.addEventListener('push', (event) => {
 	const url = data.url ?? '/today';
 	event.waitUntil(
 		Promise.all([
-			self.registration.showNotification(data.title ?? 'GoodPush', {
+			self.registration.showNotification(data.title ?? '🔥', {
 				body: data.body ?? '',
 				icon: '/icons/icon-192.png',
 				badge: '/icons/badge-96.png',
@@ -76,11 +76,12 @@ self.addEventListener('push', (event) => {
 				data: { url, id: data.id },
 				// Shown on Android / desktop; iOS ignores actions.
 				actions: [
-					{ action: 'save', title: '♥ Save' },
-					{ action: 'share', title: '↗ Share' }
+					{ action: 'save', title: data.actions?.[0] ?? '♥ Save' },
+					{ action: 'share', title: data.actions?.[1] ?? '↗ Share' }
 				]
 			} as NotificationOptions),
-			self.navigator.setAppBadge?.(1)
+			// The icon shows your streak number (or a dot when there's none yet)
+			self.navigator.setAppBadge?.(data.streak && data.streak > 0 ? data.streak : undefined)
 		])
 	);
 });

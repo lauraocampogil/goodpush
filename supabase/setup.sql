@@ -1,4 +1,4 @@
--- GoodPush — full database setup (0001 → 0007). Paste in Supabase → SQL Editor → Run.
+-- GoodPush — full database setup (0001 → 0008). Paste in Supabase → SQL Editor → Run.
 
 -- ===== supabase/migrations/0001_init.sql =====
 -- GoodPush — initial schema
@@ -206,3 +206,8 @@ create table if not exists public.newsletter_issues (
   sent_at    timestamptz not null default now()
 );
 alter table public.newsletter_issues enable row level security;  -- server only
+
+-- ===== supabase/migrations/0008_streaks.sql =====
+-- GoodPush — streak on the server, so the notification can say "🔥 12 days"
+alter table public.subscribers add column if not exists streak_count int not null default 0;
+alter table public.subscribers add column if not exists streak_last date;

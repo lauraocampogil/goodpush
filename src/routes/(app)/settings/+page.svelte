@@ -11,7 +11,7 @@
 	import { CATEGORY_IDS, LANGS, SEND_HOURS, type CategoryId, type Lang } from '#lib/data/categories.ts';
 	import { LANG_LABEL } from '#lib/i18n/dict.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
-	import { dayKey, phraseForDay, pushBody } from '#lib/phrase.ts';
+	import { dayKey, phraseForDay, pushBody, pushTitle } from '#lib/phrase.ts';
 	import { openPortal } from '#lib/premium.ts';
 	import { disablePush, enablePush, syncProfile, testNotification } from '#lib/push.ts';
 	import { app, type ShareTheme } from '#lib/store.svelte.ts';
@@ -119,7 +119,7 @@
 
 	async function test() {
 		const ph = phraseForDay(p.categories, dayKey(), { topics: p.topics });
-		await testNotification('GoodPush', pushBody(ph, i.lang, p.name));
+		await testNotification(pushTitle({ lang: i.lang, streak: app.currentStreak, label: i.cat(ph.cat), kind: 'daily' }), pushBody(ph, i.lang));
 		track('push_test');
 	}
 
