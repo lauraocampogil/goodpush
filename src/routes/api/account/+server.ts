@@ -99,7 +99,8 @@ export const POST: RequestHandler = async ({ request }) => {
 							lang: prof?.lang ?? 'en',
 							categories: prof?.data?.profile?.categories ?? [],
 							premium: await isPremium(null, user.id),
-							source: 'account'
+							source: 'account',
+							name: prof?.data?.profile?.name || undefined
 						});
 					} else await unsubscribeContact(user.email);
 					await supabase.from('profiles').update({ brevo_synced_at: now }).eq('user_id', user.id);

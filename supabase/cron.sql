@@ -31,3 +31,16 @@ select cron.schedule(
   $$
 );
 -- Remove: select cron.unschedule('goodpush-daily-quotes');
+
+-- Weekly newsletter "The Good Weekly": Sundays 08:00 UTC (09:00/10:00 Brussels). Needs BREVO_API_KEY + BREVO_LIST_ID.
+select cron.schedule(
+  'goodpush-weekly-newsletter',
+  '0 8 * * 0',
+  $$
+  select net.http_get(
+    url     := 'https://YOUR_SITE/api/cron/newsletter',
+    headers := jsonb_build_object('Authorization', 'Bearer YOUR_CRON_SECRET'),
+    timeout_milliseconds := 120000
+  );
+  $$
+);

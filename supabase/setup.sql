@@ -1,4 +1,4 @@
--- GoodPush — full database setup (0001 → 0006). Paste in Supabase → SQL Editor → Run.
+-- GoodPush — full database setup (0001 → 0007). Paste in Supabase → SQL Editor → Run.
 
 -- ===== supabase/migrations/0001_init.sql =====
 -- GoodPush — initial schema
@@ -195,3 +195,14 @@ from public.subscribers, unnest(topics) t
 where active
 group by 1 order by 2 desc;
 revoke all on public.topics_popularity from anon, authenticated;
+
+-- ===== supabase/migrations/0007_newsletter.sql =====
+-- GoodPush — "The Good Weekly" log (one row per week, prevents double sends)
+create table if not exists public.newsletter_issues (
+  week       date primary key,
+  number     int not null,
+  phrase_id  text,
+  campaigns  jsonb not null default '{}'::jsonb,
+  sent_at    timestamptz not null default now()
+);
+alter table public.newsletter_issues enable row level security;  -- server only

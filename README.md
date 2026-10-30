@@ -223,3 +223,12 @@ Nothing is invented: if no verified quote is found, people simply get their usua
 - Test one topic: `curl -H "Authorization: Bearer $CRON_SECRET" "https://YOUR_SITE/api/cron/quotes?topic=football&dry"`
 - Remove a bad quote: Supabase → `quotes` → untick `approved`.
 - Movie mode: every theme has a `<theme>_movies` sub-topic (on by default when a theme is picked) → famous film lines that fit the theme, checked against Wikiquote/IMDb/articles.
+
+## 14. "The Good Weekly" newsletter (automatic)
+
+Every Sunday `/api/cron/newsletter` builds the issue and sends one Brevo campaign per language
+(lists "GoodPush EN/ES/FR" are created automatically; contacts join their language list when they opt in).
+Content changes every week: phrase of the week (library), intro + 30-second habit (Claude if `ANTHROPIC_API_KEY`, else tip bank),
+the latest verified movie line + news quote (cards hidden if none), and a rotating affiliate pick.
+Preview: `curl -H "Authorization: Bearer $CRON_SECRET" "https://YOUR_SITE/api/cron/newsletter?preview=es"`.
+Needs `BREVO_API_KEY` + `BREVO_LIST_ID`, table `newsletter_issues` (0007) and the third block of `supabase/cron.sql`.
