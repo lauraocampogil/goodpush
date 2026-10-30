@@ -46,8 +46,9 @@
 	function toggle(c: CategoryId) {
 		const on = !p.categories.includes(c);
 		p.categories = on ? [...p.categories, c] : p.categories.filter((x) => x !== c);
-		// Drop sub-topics of a category that was removed
+		// Drop sub-topics of a category that was removed; a new theme comes with its movie mode on
 		p.topics = p.topics.filter((t) => p.categories.includes(TOPIC_CAT[t]));
+		if (on) p.topics = [...p.topics, `${c}_movies` as TopicId];
 		track('category_toggled', { category: c, on });
 	}
 

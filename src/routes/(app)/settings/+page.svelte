@@ -49,6 +49,7 @@
 		if (next.length === 0) return; // keep at least one
 		p.categories = next;
 		p.topics = p.topics.filter((t) => next.includes(TOPIC_CAT[t]));
+		if (on) p.topics = [...p.topics, `${c}_movies` as TopicId];
 		persist('category_toggled', { category: c, on, from: 'settings' });
 	}
 

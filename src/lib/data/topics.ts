@@ -6,14 +6,13 @@ import type { CategoryId, Lang } from './categories';
  * Keep ids stable forever — they are stored on devices and in the database.
  */
 export const TOPICS = {
-	discipline: ['habits', 'mornings', 'focus'],
-	calm: ['anxiety', 'sleep', 'mindfulness'],
-	sport: ['football', 'basketball', 'tennis', 'running', 'gym', 'combat', 'cycling', 'f1'],
-	study: ['exams', 'languages', 'university'],
-	build: ['startup', 'creator', 'career'],
-	faith: ['gratitude', 'hope', 'prayer'],
-	selflove: ['confidence', 'body', 'heartbreak'],
-	movies: ['classics', 'animation', 'sportsfilms', 'superheroes']
+	discipline: ['discipline_movies', 'habits', 'mornings', 'focus'],
+	calm: ['calm_movies', 'anxiety', 'sleep', 'mindfulness'],
+	sport: ['sport_movies', 'football', 'basketball', 'tennis', 'running', 'gym', 'combat', 'cycling', 'f1'],
+	study: ['study_movies', 'exams', 'languages', 'university'],
+	build: ['build_movies', 'startup', 'creator', 'career'],
+	faith: ['faith_movies', 'gratitude', 'hope', 'prayer'],
+	selflove: ['selflove_movies', 'confidence', 'body', 'heartbreak']
 } as const satisfies Record<CategoryId, readonly string[]>;
 
 export type TopicId = (typeof TOPICS)[CategoryId][number];
@@ -24,9 +23,19 @@ export const TOPIC_CAT = Object.fromEntries(
 	(Object.entries(TOPICS) as [CategoryId, readonly TopicId[]][]).flatMap(([c, ts]) => ts.map((t) => [t, c]))
 ) as Record<TopicId, CategoryId>;
 
+/** The "movie" mode of each theme: famous film lines that fit that theme. */
+export const isMovieTopic = (t: string) => t.endsWith('_movies');
+
 export const isTopic = (v: unknown): v is TopicId => typeof v === 'string' && (ALL_TOPICS as string[]).includes(v);
 
 export const TOPIC_EMOJI: Record<TopicId, string> = {
+	discipline_movies: '🎬',
+	calm_movies: '🎬',
+	sport_movies: '🎬',
+	study_movies: '🎬',
+	build_movies: '🎬',
+	faith_movies: '🎬',
+	selflove_movies: '🎬',
 	habits: '🔁',
 	mornings: '🌅',
 	focus: '🎯',
@@ -45,22 +54,25 @@ export const TOPIC_EMOJI: Record<TopicId, string> = {
 	languages: '🗣️',
 	university: '🎓',
 	startup: '🚀',
-	creator: '🎬',
+	creator: '📱',
 	career: '💼',
 	gratitude: '🌻',
 	hope: '🌈',
 	prayer: '🙏',
 	confidence: '💪',
 	body: '🫶',
-	heartbreak: '💔',
-	classics: '🎞️',
-	animation: '🧸',
-	sportsfilms: '🥇',
-	superheroes: '🦸'
+	heartbreak: '💔'
 };
 
 export const TOPIC_LABEL: Record<Lang, Record<TopicId, string>> = {
 	en: {
+		discipline_movies: 'Movie quotes',
+		calm_movies: 'Movie quotes',
+		sport_movies: 'Movie quotes',
+		study_movies: 'Movie quotes',
+		build_movies: 'Movie quotes',
+		faith_movies: 'Movie quotes',
+		selflove_movies: 'Movie quotes',
 		habits: 'Habits',
 		mornings: 'Mornings',
 		focus: 'Focus',
@@ -86,13 +98,16 @@ export const TOPIC_LABEL: Record<Lang, Record<TopicId, string>> = {
 		prayer: 'Prayer',
 		confidence: 'Confidence',
 		body: 'Body image',
-		heartbreak: 'Heartbreak',
-		classics: 'Classics',
-		animation: 'Animation',
-		sportsfilms: 'Sports movies',
-		superheroes: 'Superheroes'
+		heartbreak: 'Heartbreak'
 	},
 	es: {
+		discipline_movies: 'Frases de películas',
+		calm_movies: 'Frases de películas',
+		sport_movies: 'Frases de películas',
+		study_movies: 'Frases de películas',
+		build_movies: 'Frases de películas',
+		faith_movies: 'Frases de películas',
+		selflove_movies: 'Frases de películas',
 		habits: 'Hábitos',
 		mornings: 'Mañanas',
 		focus: 'Concentración',
@@ -118,13 +133,16 @@ export const TOPIC_LABEL: Record<Lang, Record<TopicId, string>> = {
 		prayer: 'Oración',
 		confidence: 'Confianza',
 		body: 'Mi cuerpo',
-		heartbreak: 'Ruptura',
-		classics: 'Clásicos',
-		animation: 'Animación',
-		sportsfilms: 'Pelis de deporte',
-		superheroes: 'Superhéroes'
+		heartbreak: 'Ruptura'
 	},
 	fr: {
+		discipline_movies: 'Répliques de films',
+		calm_movies: 'Répliques de films',
+		sport_movies: 'Répliques de films',
+		study_movies: 'Répliques de films',
+		build_movies: 'Répliques de films',
+		faith_movies: 'Répliques de films',
+		selflove_movies: 'Répliques de films',
 		habits: 'Habitudes',
 		mornings: 'Matins',
 		focus: 'Concentration',
@@ -150,10 +168,6 @@ export const TOPIC_LABEL: Record<Lang, Record<TopicId, string>> = {
 		prayer: 'Prière',
 		confidence: 'Confiance',
 		body: 'Image de soi',
-		heartbreak: 'Rupture',
-		classics: 'Classiques',
-		animation: 'Animation',
-		sportsfilms: 'Films de sport',
-		superheroes: 'Super-héros'
+		heartbreak: 'Rupture'
 	}
 };

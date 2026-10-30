@@ -186,15 +186,12 @@ group by 1 order by 2 desc;
 revoke all on public.topics_popularity from anon, authenticated;
 
 -- ===== supabase/migrations/0006_movies.sql =====
--- GoodPush — Movies category: fans without a movie sub-topic count as "classics"
+-- GoodPush — movie mode inside every theme (topics like 'sport_movies', 'calm_movies'…)
+-- No schema change needed: they are normal sub-topics. This file only documents it and
+-- refreshes the popularity view (used to choose which topics the quote finder searches).
 create or replace view public.topics_popularity as
-select topic, count(*) as subscribers
-from (
-  select unnest(topics) as topic from public.subscribers where active
-  union all
-  select 'classics' from public.subscribers
-  where active and 'movies' = any(categories)
-    and not (topics && array['classics','animation','sportsfilms','superheroes'])
-) t
+select t as topic, count(*) as subscribers
+from public.subscribers, unnest(topics) t
+where active
 group by 1 order by 2 desc;
 revoke all on public.topics_popularity from anon, authenticated;

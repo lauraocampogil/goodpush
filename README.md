@@ -222,4 +222,4 @@ Nothing is invented: if no verified quote is found, people simply get their usua
 - Schedule: second block in `supabase/cron.sql`.
 - Test one topic: `curl -H "Authorization: Bearer $CRON_SECRET" "https://YOUR_SITE/api/cron/quotes?topic=football&dry"`
 - Remove a bad quote: Supabase → `quotes` → untick `approved`.
-- Movies: the Movies category (and its sub-topics) gets famous film lines, checked against Wikiquote/IMDb/articles. Picking "Movies" alone is enough.
+- Movie mode: every theme has a `<theme>_movies` sub-topic (on by default when a theme is picked) → famous film lines that fit the theme, checked against Wikiquote/IMDb/articles.

@@ -4,7 +4,7 @@ import type { CategoryId, Lang } from '#lib/data/categories.ts';
 import { dayKey, localHour, phraseForDay, pushBody, shiftDay } from '#lib/phrase.ts';
 import { pickQuote, quoteToPhrase, type QuoteRow } from '#lib/quotes.ts';
 import type { Phrase } from '#lib/data/phrases.ts';
-import type { TopicId } from '#lib/data/topics.ts';
+import { isMovieTopic, type TopicId } from '#lib/data/topics.ts';
 import { db } from '#lib/server/supabase.ts';
 import { pushReady, sendPush } from '#lib/server/webpush.ts';
 import { captureServer } from '#lib/server/analytics.ts';
@@ -96,7 +96,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
 				if (dryRun) return void sent++;
 				try {
 					await sendPush(r, {
-						title: news ? (news.cat === 'movies' ? 'GoodPush · 🎬' : 'GoodPush · 🗞') : slot === 0 ? 'GoodPush' : 'GoodPush ✦',
+						title: news ? (news.topic && isMovieTopic(news.topic) ? 'GoodPush · 🎬' : 'GoodPush · 🗞') : slot === 0 ? 'GoodPush' : 'GoodPush ✦',
 						body: pushBody(phrase, r.lang, r.name),
 						id: phrase.id,
 						url: `/today?utm_source=push&slot=${slot}`

@@ -28,10 +28,9 @@
 		[44, 46, 36, -4],
 		[72, 40, 30, -14],
 		[24, 74, 30, 10],
-		[60, 72, 32, 4],
-		[4, 16, 24, -10]
+		[60, 72, 32, 4]
 	];
-	const moods = ['smile', 'calm', 'smile', 'wink', 'smile', 'calm', 'wink', 'smile'] as const;
+	const moods = ['smile', 'calm', 'smile', 'wink', 'smile', 'calm', 'wink'] as const;
 
 	// Floating label (rendered on top of the whole pile, so it's never hidden)
 	let label = $state<{ c: CategoryId; x: number; y: number } | null>(null);

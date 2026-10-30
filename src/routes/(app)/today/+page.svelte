@@ -20,7 +20,7 @@
 	import ShareButton from '../ShareButton.svelte';
 	import { todaysQuote } from '#lib/quotes.ts';
 	import type { Phrase } from '#lib/data/phrases.ts';
-	import { TOPIC_EMOJI } from '#lib/data/topics.ts';
+	import { TOPIC_EMOJI, isMovieTopic } from '#lib/data/topics.ts';
 
 	const i = getI18n();
 	const today = dayKey();
@@ -142,7 +142,7 @@
 		>
 			<div class="flex items-center justify-between text-xs font-semibold tracking-wider uppercase opacity-70">
 				{#if phrase.author && phrase.topic}
-					<span class="flex items-center gap-2">{TOPIC_EMOJI[phrase.topic]} {phrase.cat === 'movies' ? i.t('quote.movie') : i.t('quote.news')} · {i.topic(phrase.topic)}</span>
+					<span class="flex items-center gap-2">{TOPIC_EMOJI[phrase.topic]} {isMovieTopic(phrase.topic) ? i.t('quote.movie') : i.t('quote.news')} · {isMovieTopic(phrase.topic) ? i.cat(phrase.cat) : i.topic(phrase.topic)}</span>
 				{:else}
 					<span class="flex items-center gap-2"><CatIcon cat={phrase.cat} /> {i.cat(phrase.cat)}</span>
 				{/if}

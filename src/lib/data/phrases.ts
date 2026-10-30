@@ -102,22 +102,22 @@ export const PHRASES: Phrase[] = [
 	{ id: 'pf1', cat: 'faith', premium: true, en: 'Grace for *today*. That’s enough.', es: 'Gracia para *hoy*. Con eso basta.', fr: 'De la grâce pour *aujourd’hui*. Ça suffit.' },
 	{ id: 'pf2', cat: 'faith', premium: true, en: 'Your story isn’t *over*.', es: 'Tu historia no ha *terminado*.', fr: 'Ton histoire n’est pas *finie*.' },
 	{ id: 'pl1', cat: 'selflove', premium: true, en: 'Softness is *strength* too.', es: 'La suavidad también es *fuerza*.', fr: 'La douceur aussi, c’est de la *force*.' },
-	{ id: 'pl2', cat: 'selflove', premium: true, en: 'You’re allowed to *outgrow* things.', es: 'Tienes derecho a *dejar atrás* cosas.', fr: 'Tu as le droit de *dépasser* certaines choses.' },
-	// ---------- MOVIES (our own lines in a film mood — real film quotes come from the quote finder) ----------
-	{ id: 'm1', cat: 'movies', en: 'This is the part where the *hero* gets up.', es: 'Esta es la parte en la que el *héroe* se levanta.', fr: 'C’est le moment où le *héros* se relève.' },
-	{ id: 'm2', cat: 'movies', en: 'Every great story has a *hard* second act.', es: 'Toda gran historia tiene un segundo acto *difícil*.', fr: 'Toute grande histoire a un deuxième acte *difficile*.' },
-	{ id: 'm3', cat: 'movies', en: 'Cue the *training montage*.', es: 'Que empiece el *montaje de entrenamiento*.', fr: 'Lance le *montage d’entraînement*.' },
-	{ id: 'm4', cat: 'movies', en: 'You’re the *main character*. Act like it.', es: 'Eres el *protagonista*. Actúa como tal.', fr: 'Tu es le *personnage principal*. Agis comme tel.' },
-	{ id: 'm5', cat: 'movies', en: 'The plot twist is *you* not giving up.', es: 'El giro de guion es que *tú* no te rindes.', fr: 'Le rebondissement, c’est *toi* qui n’abandonnes pas.' },
-	{ id: 'm6', cat: 'movies', en: 'Not the end. Just a *scene change*.', es: 'No es el final. Solo un *cambio de escena*.', fr: 'Pas la fin. Juste un *changement de scène*.' },
-	{ id: 'm7', cat: 'movies', en: 'Write a day worth *rewatching*.', es: 'Escribe un día que valga la pena *volver a ver*.', fr: 'Écris une journée qui vaut d’être *revue*.' },
-	{ id: 'm8', cat: 'movies', en: 'Lights. Camera. *Go*.', es: 'Luces. Cámara. *Acción*.', fr: 'Lumière. Caméra. *Action*.' },
-	{ id: 'pm1', cat: 'movies', premium: true, en: 'Underdogs make the *best* endings.', es: 'Los que nadie esperaba tienen los *mejores* finales.', fr: 'Les outsiders ont les *meilleures* fins.' },
-	{ id: 'pm2', cat: 'movies', premium: true, en: 'Roll the credits on your *excuses*.', es: 'Pon los créditos finales a tus *excusas*.', fr: 'Lance le générique de fin de tes *excuses*.' }
+	{ id: 'pl2', cat: 'selflove', premium: true, en: 'You’re allowed to *outgrow* things.', es: 'Tienes derecho a *dejar atrás* cosas.', fr: 'Tu as le droit de *dépasser* certaines choses.' }
 ];
 
 /** Sub-topic phrases: only people who picked that sub-topic get them (mixed with their vibe's phrases). */
 export const TOPIC_PHRASES: Phrase[] = [
+	// movie mode (our own lines in a film mood; real film lines come from the quote finder)
+	{ id: 'm1', cat: 'sport', topic: 'sport_movies', en: 'This is the part where the *hero* gets up.', es: 'Esta es la parte en la que el *héroe* se levanta.', fr: 'C’est le moment où le *héros* se relève.' },
+	{ id: 'm2', cat: 'build', topic: 'build_movies', en: 'Every great story has a *hard* second act.', es: 'Toda gran historia tiene un segundo acto *difícil*.', fr: 'Toute grande histoire a un deuxième acte *difficile*.' },
+	{ id: 'm3', cat: 'discipline', topic: 'discipline_movies', en: 'Cue the *training montage*.', es: 'Que empiece el *montaje de entrenamiento*.', fr: 'Lance le *montage d’entraînement*.' },
+	{ id: 'm4', cat: 'selflove', topic: 'selflove_movies', en: 'You’re the *main character*. Act like it.', es: 'Eres el *protagonista*. Actúa como tal.', fr: 'Tu es le *personnage principal*. Agis comme tel.' },
+	{ id: 'm5', cat: 'faith', topic: 'faith_movies', en: 'The plot twist is *you* not giving up.', es: 'El giro de guion es que *tú* no te rindes.', fr: 'Le rebondissement, c’est *toi* qui n’abandonnes pas.' },
+	{ id: 'm6', cat: 'calm', topic: 'calm_movies', en: 'Not the end. Just a *scene change*.', es: 'No es el final. Solo un *cambio de escena*.', fr: 'Pas la fin. Juste un *changement de scène*.' },
+	{ id: 'm7', cat: 'study', topic: 'study_movies', en: 'Write a day worth *rewatching*.', es: 'Escribe un día que valga la pena *volver a ver*.', fr: 'Écris une journée qui vaut d’être *revue*.' },
+	{ id: 'm8', cat: 'sport', topic: 'sport_movies', en: 'Lights. Camera. *Go*.', es: 'Luces. Cámara. *Acción*.', fr: 'Lumière. Caméra. *Action*.' },
+	{ id: 'pm1', cat: 'selflove', topic: 'selflove_movies', en: 'Underdogs make the *best* endings.', es: 'Los que nadie esperaba tienen los *mejores* finales.', fr: 'Les outsiders ont les *meilleures* fins.' },
+	{ id: 'pm2', cat: 'discipline', topic: 'discipline_movies', en: 'Roll the credits on your *excuses*.', es: 'Pon los créditos finales a tus *excusas*.', fr: 'Lance le générique de fin de tes *excuses*.' },
 	// discipline
 	{ id: 'th1', cat: 'discipline', topic: 'habits', en: 'Make it so small you *can’t* say no.', es: 'Hazlo tan pequeño que *no puedas* decir que no.', fr: 'Rends-le si petit que tu *ne peux pas* dire non.' },
 	{ id: 'th2', cat: 'discipline', topic: 'habits', en: 'Don’t break the *chain* today.', es: 'Hoy no rompas la *cadena*.', fr: 'Ne casse pas la *chaîne* aujourd’hui.' },

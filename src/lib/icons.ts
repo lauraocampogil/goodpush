@@ -49,7 +49,6 @@ import BookOpenTextIcon from 'phosphor-svelte/lib/BookOpenTextIcon';
 import RocketLaunchIcon from 'phosphor-svelte/lib/RocketLaunchIcon';
 import HandsPrayingIcon from 'phosphor-svelte/lib/HandsPrayingIcon';
 import HeartIcon from 'phosphor-svelte/lib/HeartIcon';
-import FilmSlateIcon from 'phosphor-svelte/lib/FilmSlateIcon';
 
 export const CATEGORY_ICON: // eslint-disable-next-line @typescript-eslint/no-explicit-any
 Record<CategoryId, Component<any>> = {
@@ -59,6 +58,5 @@ Record<CategoryId, Component<any>> = {
 	study: BookOpenTextIcon,
 	build: RocketLaunchIcon,
 	faith: HandsPrayingIcon,
-	selflove: HeartIcon,
-	movies: FilmSlateIcon
+	selflove: HeartIcon
 };

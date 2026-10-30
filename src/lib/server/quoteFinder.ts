@@ -1,5 +1,6 @@
 import { ANTHROPIC_API_KEY, QUOTES_MODEL } from '$app/env/private';
-import { TOPIC_CAT, TOPIC_LABEL, type TopicId } from '#lib/data/topics.ts';
+import { TOPIC_CAT, TOPIC_LABEL, isMovieTopic, type TopicId } from '#lib/data/topics.ts';
+import { CATEGORY_LABEL } from '#lib/i18n/dict.ts';
 
 /**
  * Finds ONE real, recent, uplifting quote for a sub-topic with Claude + web search,
@@ -30,10 +31,10 @@ const JSON_SHAPE = `{"found": true, "author": "Full Name", "original": "exact wo
 or {"found": false}`;
 
 function moviePrompt(topic: TopicId, today: string, avoid: string[]) {
-	const genre = { classics: 'classic or iconic films', animation: 'animated films (Pixar, Disney, Ghibli, DreamWorks…)', sportsfilms: 'sports films', superheroes: 'superhero films' }[topic as string] ?? 'films';
-	return `Today is ${today}. You curate GoodPush, an app that sends one uplifting line per day.
+	const theme = CATEGORY_LABEL.en[TOPIC_CAT[topic]].toLowerCase();
+	return `Today is ${today}. You curate GoodPush, an app that sends one uplifting line per day. This person follows the theme "${theme}".
 
-Find ONE famous, motivating line of dialogue from ${genre} — the kind of line people quote to push themselves.
+Find ONE famous line of dialogue from a well-known film (any era, live action or animation) that fits the theme "${theme}" — the kind of line people quote to push themselves.
 
 Hard rules:
 - EXACT dialogue as written on a reliable quote page (Wikiquote, IMDb quotes, or a reputable article) that you found with search. Never paraphrase or invent.
@@ -46,7 +47,7 @@ ${JSON_SHAPE}`;
 }
 
 function prompt(topic: TopicId, today: string, avoid: string[] = []) {
-	if (TOPIC_CAT[topic] === 'movies') return moviePrompt(topic, today, avoid);
+	if (isMovieTopic(topic)) return moviePrompt(topic, today, avoid);
 	const name = TOPIC_LABEL.en[topic];
 	return `Today is ${today}. You curate GoodPush, an app that sends one uplifting line per day.
 

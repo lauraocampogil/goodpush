@@ -77,7 +77,7 @@ const en = {
 	'ob.cats.t': 'What push do you need?',
 	'ob.cats.d': 'Pick one or more.',
 	'ob.topics.t': 'Get specific (optional)',
-	'ob.topics.d': 'Pick what you’re into. You’ll also get real quotes from the news — like what a player said after last night’s game.',
+	'ob.topics.d': 'Pick what you’re into. 🎬 Movie quotes are on for every theme: real film lines that fit your vibe. You’ll also get real quotes from the news — like what a player said after last night’s game.',
 	'settings.topics': 'Your specific interests',
 	'quote.news': 'In the news',
 	'quote.movie': 'From the movies',
@@ -355,7 +355,7 @@ const es: Dict = {
 	'ob.cats.t': '¿Qué empujón necesitas?',
 	'ob.cats.d': 'Elige una o varias.',
 	'ob.topics.t': 'Más concreto (opcional)',
-	'ob.topics.d': 'Elige lo que te gusta. También recibirás frases reales de la actualidad — como lo que dijo un jugador después del partido.',
+	'ob.topics.d': 'Elige lo que te gusta. 🎬 Las frases de películas vienen activadas en cada tema: frases reales de pelis que van con tu vibe. También recibirás frases reales de la actualidad — como lo que dijo un jugador después del partido.',
 	'settings.topics': 'Tus intereses',
 	'quote.news': 'De actualidad',
 	'quote.movie': 'De película',
@@ -624,7 +624,7 @@ const fr: Dict = {
 	'ob.cats.t': 'De quel push as-tu besoin ?',
 	'ob.cats.d': 'Choisis-en un ou plusieurs.',
 	'ob.topics.t': 'Plus précis (optionnel)',
-	'ob.topics.d': 'Choisis ce qui te parle. Tu recevras aussi de vraies citations de l’actu — comme ce qu’un joueur a dit après le match.',
+	'ob.topics.d': 'Choisis ce qui te parle. 🎬 Les répliques de films sont activées pour chaque thème : de vraies répliques qui collent à ton vibe. Tu recevras aussi de vraies citations de l’actu — comme ce qu’un joueur a dit après le match.',
 	'settings.topics': 'Tes centres d’intérêt',
 	'quote.news': 'Dans l’actu',
 	'quote.movie': 'Réplique de film',
@@ -829,9 +829,9 @@ const fr: Dict = {
 export const DICTS: Record<Lang, Dict> = { en, es, fr };
 
 export const CATEGORY_LABEL: Record<Lang, Record<CategoryId, string>> = {
-	en: { discipline: 'Discipline', calm: 'Calm', sport: 'Sport', study: 'Study', build: 'Build', faith: 'Faith', selflove: 'Self-love', movies: 'Movies' },
-	es: { discipline: 'Disciplina', calm: 'Calma', sport: 'Deporte', study: 'Estudios', build: 'Emprender', faith: 'Fe', selflove: 'Amor propio', movies: 'Cine' },
-	fr: { discipline: 'Discipline', calm: 'Calme', sport: 'Sport', study: 'Études', build: 'Entreprendre', faith: 'Foi', selflove: 'Amour de soi', movies: 'Cinéma' }
+	en: { discipline: 'Discipline', calm: 'Calm', sport: 'Sport', study: 'Study', build: 'Build', faith: 'Faith', selflove: 'Self-love' },
+	es: { discipline: 'Disciplina', calm: 'Calma', sport: 'Deporte', study: 'Estudios', build: 'Emprender', faith: 'Fe', selflove: 'Amor propio' },
+	fr: { discipline: 'Discipline', calm: 'Calme', sport: 'Sport', study: 'Études', build: 'Entreprendre', faith: 'Foi', selflove: 'Amour de soi' }
 };
 
 export const LANG_LABEL: Record<Lang, string> = { en: 'English', es: 'Español', fr: 'Français' };
