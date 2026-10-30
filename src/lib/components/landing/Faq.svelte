@@ -8,7 +8,7 @@
 </script>
 
 <section id="faq" class="container-site grid gap-10 pb-28 sm:pb-36 lg:grid-cols-[0.8fr_1.2fr]">
-	<h2 use:splitReveal={{ scroll: true }} class="display text-4xl sm:text-5xl">{i.t('faq.title')}</h2>
+	<h2 use:splitReveal={{ scroll: true, text: i.t('faq.title') }} class="display text-4xl sm:text-5xl">{i.t('faq.title')}</h2>
 	<div class="divide-y divide-ink/10 border-y border-ink/10" use:reveal={{ children: true }}>
 		{#each [1, 2, 3, 4] as n (n)}
 			<div>

@@ -33,11 +33,12 @@ export function reveal(node: HTMLElement, opts: { y?: number; stagger?: number; 
 }
 
 /** use:splitReveal — big headlines: characters rise from a mask. */
-export function splitReveal(node: HTMLElement, opts: { delay?: number; scroll?: boolean } = {}) {
+export function splitReveal(node: HTMLElement, opts: { delay?: number; scroll?: boolean; text?: string } = {}) {
 	if (reduced()) return;
 	const { gsap, SplitText } = motion();
 	let split: SplitText | undefined;
 	let tween: gsap.core.Tween | undefined;
+	let text = opts.text;
 	document.fonts.ready.then(() => {
 		split = SplitText.create(node, { type: 'words,chars', mask: 'words' });
 		tween = gsap.from(split.chars, {
@@ -50,7 +51,22 @@ export function splitReveal(node: HTMLElement, opts: { delay?: number; scroll?: 
 			scrollTrigger: opts.scroll ? { trigger: node, start: 'top 85%', once: true } : undefined
 		});
 	});
-	return { destroy: () => { tween?.kill(); split?.revert(); } };
+	return {
+		/** Language switch: put the new text back in and animate it in again. */
+		update(next: { delay?: number; scroll?: boolean; text?: string }) {
+			if (next.text === undefined || next.text === text) return;
+			text = next.text;
+			tween?.kill();
+			split?.revert();
+			node.textContent = next.text;
+			split = SplitText.create(node, { type: 'words,chars', mask: 'words' });
+			tween = gsap.from(split.chars, { yPercent: 110, duration: 0.6, ease: 'expo.out', stagger: 0.012 });
+		},
+		destroy: () => {
+			tween?.kill();
+			split?.revert();
+		}
+	};
 }
 
 /** use:magnetic — element follows the cursor a little (desktop only). */

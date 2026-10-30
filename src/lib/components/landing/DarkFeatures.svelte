@@ -21,7 +21,7 @@
 <section class="overflow-hidden bg-ink text-paper">
 	<!-- CTA -->
 	<div class="container-site pt-10 pb-6 text-center">
-		<h2 use:splitReveal={{ scroll: true }} class="display mx-auto max-w-2xl text-4xl sm:text-[2.6rem]">{i.t('dark.title')}</h2>
+		<h2 use:splitReveal={{ scroll: true, text: i.t('dark.title') }} class="display mx-auto max-w-2xl text-4xl sm:text-[2.6rem]">{i.t('dark.title')}</h2>
 		<div use:reveal><button class="btn mt-8 bg-sun text-ink hover:shadow-[0_12px_30px_-10px_rgb(246_227_107/0.5)]" onclick={onstart}>{cta} <ArrowRight /></button></div>
 	</div>
 
@@ -47,7 +47,7 @@
 				</IPhone>
 			</div>
 			<div>
-				<h3 use:splitReveal={{ scroll: true }} class="display text-4xl text-sun sm:text-[2.6rem]">{i.t('f1.title')}</h3>
+				<h3 use:splitReveal={{ scroll: true, text: i.t('f1.title') }} class="display text-4xl text-sun sm:text-[2.6rem]">{i.t('f1.title')}</h3>
 				<ul class="mt-8 space-y-6" use:reveal={{ children: true }}>
 					{#each [{ Icon: DeviceMobile, n: 1 }, { Icon: Palette, n: 2 }, { Icon: Bell, n: 3 }] as { Icon, n } (n)}
 						<li class="flex gap-4">
@@ -85,7 +85,7 @@
 				</div>
 			</div>
 			<div>
-				<h3 use:splitReveal={{ scroll: true }} class="display text-4xl text-sun sm:text-[2.6rem]">{i.t('f2.title')}</h3>
+				<h3 use:splitReveal={{ scroll: true, text: i.t('f2.title') }} class="display text-4xl text-sun sm:text-[2.6rem]">{i.t('f2.title')}</h3>
 				<ul class="mt-8 space-y-6" use:reveal={{ children: true }}>
 					{#each [{ Icon: Fire, k: 'streak' }, { Icon: Heart, k: 'fav' }] as { Icon, k } (k)}
 						<li class="flex gap-4">
@@ -112,7 +112,7 @@
 				</IPhone>
 			</div>
 			<div>
-				<h3 use:splitReveal={{ scroll: true }} class="display text-4xl text-sun sm:text-[2.6rem]">{i.t('f3.title')}</h3>
+				<h3 use:splitReveal={{ scroll: true, text: i.t('f3.title') }} class="display text-4xl text-sun sm:text-[2.6rem]">{i.t('f3.title')}</h3>
 				<ul class="mt-8 space-y-6" use:reveal={{ children: true }}>
 					{#each [{ Icon: ShareFat, k: 'share' }, { Icon: Translate, k: 'name' }] as { Icon, k } (k)}
 						<li class="flex gap-4">

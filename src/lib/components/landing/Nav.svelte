@@ -46,7 +46,7 @@
 		</ul>
 		<div class="flex items-center gap-2">
 			<select
-				class="hidden cursor-pointer appearance-none rounded-full bg-white px-3 py-2 text-xs font-bold uppercase ring-1 ring-ink/15 sm:block"
+				class="cursor-pointer appearance-none rounded-full bg-white px-3 py-2 text-xs font-bold uppercase ring-1 ring-ink/15"
 				value={i.lang}
 				aria-label="Language"
 				onchange={(e) => {
@@ -58,7 +58,7 @@
 				{#each LANGS as l (l)}<option value={l}>{l.toUpperCase()}</option>{/each}
 			</select>
 			<span use:magnetic={0.25} class="inline-block">
-				<button class="btn px-5 py-2.5 text-sm" onclick={onstart}>{cta}</button>
+				<button class="btn whitespace-nowrap px-4 py-2.5 text-sm sm:px-5" onclick={onstart}>{cta}</button>
 			</span>
 		</div>
 	</nav>

@@ -23,7 +23,7 @@
 <section class="overflow-hidden" style="background: linear-gradient(to bottom, var(--color-sun) 0 58%, var(--color-ink) 58% 100%)">
 	<div class="container-site pt-8 text-center sm:pt-16">
 		<p class="kicker">{i.t('real.kicker')}</p>
-		<h2 use:splitReveal={{ scroll: true }} class="display mx-auto mt-4 max-w-3xl text-4xl sm:text-5xl">{i.t('real.title')}</h2>
+		<h2 use:splitReveal={{ scroll: true, text: i.t('real.title') }} class="display mx-auto mt-4 max-w-3xl text-4xl sm:text-5xl">{i.t('real.title')}</h2>
 		<p use:reveal class="mx-auto mt-5 max-w-md text-[15px] text-ink/70">{i.t('real.sub')}</p>
 	</div>
 

@@ -26,7 +26,7 @@
 	<div class="container-site w-full">
 		<h1 class="display mx-auto max-w-5xl text-center text-[clamp(2.3rem,6.6vw,5.2rem)] leading-[0.98] uppercase">
 			<span class="flex flex-wrap items-center justify-center gap-x-[0.18em]">
-				<span use:splitReveal={{ delay: 0.05 }}>{i.t('hero.title.1')}</span>
+				<span use:splitReveal={{ delay: 0.05, text: i.t('hero.title.1') }}>{i.t('hero.title.1')}</span>
 				<span data-pop class="inline-block w-[0.8em]"><Smiley size={0} color="orange" class="h-[0.8em] w-[0.8em]" /></span>
 			</span>
 			<span class="flex flex-wrap items-center justify-center gap-x-[0.18em]">
@@ -35,9 +35,9 @@
 					<span data-pop class="inline-block"><Smiley size={0} color="purple" mood="calm" class="h-[0.72em] w-[0.72em] ring-[0.05em] ring-sun rounded-full" /></span>
 					<span data-pop class="inline-block"><Smiley size={0} color="green" class="h-[0.72em] w-[0.72em] ring-[0.05em] ring-sun rounded-full" /></span>
 				</span>
-				<span use:splitReveal={{ delay: 0.2 }}>{i.t('hero.title.hl')}</span>
+				<span use:splitReveal={{ delay: 0.2, text: i.t('hero.title.hl') }}>{i.t('hero.title.hl')}</span>
 			</span>
-			<span class="block" use:splitReveal={{ delay: 0.3 }}>{i.t('hero.title.2')}</span>
+			<span class="block" use:splitReveal={{ delay: 0.3, text: i.t('hero.title.2') }}>{i.t('hero.title.2')}</span>
 		</h1>
 
 		<div class="mx-auto mt-10 flex max-w-md flex-col items-center gap-6 text-center">

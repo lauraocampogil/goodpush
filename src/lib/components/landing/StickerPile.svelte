@@ -147,7 +147,7 @@
 <section id="vibes" class="overflow-hidden bg-ink pb-28 text-paper sm:pb-36">
 	<div class="container-site grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
 		<div>
-			<h2 use:splitReveal={{ scroll: true }} class="display text-[2.6rem] sm:text-5xl">{i.t('vibe.pile.title')}</h2>
+			<h2 use:splitReveal={{ scroll: true, text: i.t('vibe.pile.title') }} class="display text-[2.6rem] sm:text-5xl">{i.t('vibe.pile.title')}</h2>
 			<p class="mt-3 text-paper/60">{i.t('vibe.pile.sub')}</p>
 
 			<div bind:this={pile} class="relative mt-6 aspect-square w-full max-w-[560px] touch-none sm:aspect-[5/4]">

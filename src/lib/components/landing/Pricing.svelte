@@ -18,7 +18,7 @@
 	{#if heading}
 		<div class="text-center">
 			<p class="kicker">{i.t('pricing.kicker')}</p>
-			<h2 use:splitReveal={{ scroll: true }} class="display mx-auto mt-4 max-w-3xl text-4xl sm:text-5xl">{i.t('pricing.title')}</h2>
+			<h2 use:splitReveal={{ scroll: true, text: i.t('pricing.title') }} class="display mx-auto mt-4 max-w-3xl text-4xl sm:text-5xl">{i.t('pricing.title')}</h2>
 		</div>
 	{/if}
 
