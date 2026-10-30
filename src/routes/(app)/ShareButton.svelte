@@ -22,7 +22,7 @@
 		busy = true;
 		try {
 			const site = PUBLIC_SITE_URL.replace(/^https?:\/\//, '');
-			const theme = app.premium ? app.profile.theme : 'cream';
+			const theme = app.access ? app.profile.theme : 'cream';
 			const blob = await renderShareCard({
 				text: phrase.author ? `“${phrase[i.lang]}” — ${phrase.author}` : phrase[i.lang],
 				name: phrase.author ? undefined : app.profile.name || undefined,

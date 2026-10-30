@@ -1,7 +1,7 @@
 import { error, json } from '@sveltejs/kit';
 import { CRON_SECRET } from '$app/env/private';
 import type { CategoryId, Lang } from '#lib/data/categories.ts';
-import { dayKey, liveStreak, localHour, phraseForDay, pushBody, pushTitle, shiftDay } from '#lib/phrase.ts';
+import { dayKey, dayNumber, liveStreak, localHour, phraseForDay, pushBody, pushTitle, shiftDay } from '#lib/phrase.ts';
 import { CATEGORY_LABEL } from '#lib/i18n/dict.ts';
 import { pickQuote, quoteToPhrase, type QuoteRow } from '#lib/quotes.ts';
 import type { Phrase } from '#lib/data/phrases.ts';
@@ -30,7 +30,16 @@ type Row = {
 	days: number[] | null;
 	streak_count: number | null;
 	streak_last: string | null;
+	trial_started_at: string | null;
+	created_at: string;
 };
+
+const TRIAL_DAYS = 14;
+const TRIAL_TITLE = {
+	en: (n: number) => `⏳ ${n} free ${n === 1 ? 'day' : 'days'} left`,
+	es: (n: number) => `⏳ Te ${n === 1 ? 'queda 1 día' : `quedan ${n} días`} gratis`,
+	fr: (n: number) => `⏳ Plus que ${n} ${n === 1 ? 'jour' : 'jours'} gratuit${n === 1 ? '' : 's'}`
+} as const;
 
 const ACTIONS = { en: ['♥ Save', '↗ Share'], es: ['♥ Guardar', '↗ Compartir'], fr: ['♥ Garder', '↗ Partager'] } as const;
 
@@ -72,7 +81,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
 	for (let from = 0; ; from += 1000) {
 		const { data, error: e } = await supabase
 			.from('subscribers')
-			.select('id,name,categories,topics,hour,time_zone,lang,endpoint,p256dh,auth,last_sent_on,extra_hours,sent_slots,user_id,paused_until,days,streak_count,streak_last')
+			.select('id,name,categories,topics,hour,time_zone,lang,endpoint,p256dh,auth,last_sent_on,extra_hours,sent_slots,user_id,paused_until,days,streak_count,streak_last,trial_started_at,created_at')
 			.eq('active', true)
 			.order('id')
 			.range(from, from + 999);
@@ -88,8 +97,13 @@ export const GET: RequestHandler = async ({ request, url }) => {
 				if (r.days && r.days.length && !r.days.includes(weekday)) return;
 				const today = dayKey(now, r.time_zone);
 				const premium = premiumIds.has(r.id) || (!!r.user_id && premiumUsers.has(r.user_id));
+				// 14-day free trial, then only paid Pass holders get pushes
+				const trialStart = (r.trial_started_at ?? r.created_at).slice(0, 10);
+				const trialLeft = Math.max(0, TRIAL_DAYS - (dayNumber(today) - dayNumber(trialStart)));
+				if (!premium && trialLeft === 0) return;
+				const access = premium || trialLeft > 0;
 				// Slot 0 = free daily push; slots 1–2 = Premium extra pushes
-				const hours = [r.hour, ...(premium ? (r.extra_hours ?? []).slice(0, 2) : [])];
+				const hours = [r.hour, ...(access ? (r.extra_hours ?? []).slice(0, 2) : [])];
 				const sentToday = r.last_sent_on === today ? (r.sent_slots?.length ? r.sent_slots : [0]) : [];
 				const nowHour = localHour(now, r.time_zone);
 				const slot = hours.findIndex((h, k) => h <= nowHour && !sentToday.includes(k));
@@ -98,11 +112,11 @@ export const GET: RequestHandler = async ({ request, url }) => {
 				const topics = r.topics ?? [];
 				const news = slot === 0 ? pickQuote(quotesByDay.get(today) ?? [], topics, today, r.categories) : null;
 				const streak = liveStreak(r.streak_count, r.streak_last, today);
-				const phrase = news ?? phraseForDay(r.categories, today, { slot, premium, topics });
+				const phrase = news ?? phraseForDay(r.categories, today, { slot, premium: access, topics });
 				if (dryRun) return void sent++;
 				try {
 					await sendPush(r, {
-						title: pushTitle({
+						title: !premium && slot === 0 && trialLeft <= 2 ? (TRIAL_TITLE[r.lang] ?? TRIAL_TITLE.en)(trialLeft) : pushTitle({
 							lang: r.lang,
 							streak,
 							label: CATEGORY_LABEL[r.lang]?.[phrase.cat] ?? 'GoodPush',
@@ -112,7 +126,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
 						id: phrase.id,
 						streak,
 						actions: ACTIONS[r.lang] ?? ACTIONS.en,
-						url: `/today?utm_source=push&slot=${slot}`
+						url: !premium && slot === 0 && trialLeft <= 2 ? `/premium?utm_source=push_trial&left=${trialLeft}` : `/today?utm_source=push&slot=${slot}`
 					});
 					sent++;
 					events.push({ event: 'push_sent', distinct_id: r.id, properties: { slot, category: phrase.cat, topic: phrase.topic ?? null, phrase: phrase.id, news: !!news, lang: r.lang, premium } });

@@ -66,7 +66,7 @@
 	}
 
 	function toggleExtra(h: number) {
-		if (!app.premium) return goto('/premium');
+		if (!app.access) return goto('/premium');
 		if (h === p.hour) return;
 		const on = !p.extraHours.includes(h);
 		p.extraHours = on ? [...p.extraHours, h].slice(-2).sort((a, b) => a - b) : p.extraHours.filter((x) => x !== h);
@@ -74,7 +74,7 @@
 	}
 
 	function setTheme(t: ShareTheme) {
-		if (t !== 'cream' && !app.premium) return goto('/premium');
+		if (t !== 'cream' && !app.access) return goto('/premium');
 		p.theme = t;
 		persist('theme_changed', { theme: t });
 	}
@@ -183,10 +183,10 @@
 		<h2 class="mb-3 mt-6 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider">
 			{i.t('settings.extra')} <span class="inline-flex items-center gap-1 rounded-full bg-ink px-2 py-0.5 text-[10px] text-sun"><Crown weight="fill" /> {i.t('premium.locked')}</span>
 		</h2>
-		<div class="flex flex-wrap gap-2 {app.premium ? '' : 'opacity-50'}">
+		<div class="flex flex-wrap gap-2 {app.access ? '' : 'opacity-50'}">
 			{#each SEND_HOURS.filter((h) => h !== p.hour) as h (h)}
 				<button class="chip tabular-nums" aria-pressed={p.extraHours.includes(h)} onclick={() => toggleExtra(h)}>
-					{#if !app.premium}<Lock />{/if}{String(h).padStart(2, '0')}:00
+					{#if !app.access}<Lock />{/if}{String(h).padStart(2, '0')}:00
 				</button>
 			{/each}
 		</div>
@@ -206,7 +206,7 @@
 					onclick={() => setTheme(t.id)}
 				>
 					<span class="display text-xl" style="color:{t.fg}">Aa</span>
-					{#if t.id !== 'cream' && !app.premium}<span class="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full bg-white/90 text-ink"><Lock size={12} /></span>{/if}
+					{#if t.id !== 'cream' && !app.access}<span class="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full bg-white/90 text-ink"><Lock size={12} /></span>{/if}
 				</button>
 			{/each}
 		</div>

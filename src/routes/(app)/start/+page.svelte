@@ -65,6 +65,7 @@
 
 	async function enable() {
 		busy = true;
+		app.startTrial();
 		result = await enablePush(app.profile, i.lang, app.source);
 		busy = false;
 		track(result === 'granted' ? 'push_enabled' : 'push_failed', { result, categories: p.categories, hour: p.hour, lang: i.lang });
@@ -88,11 +89,13 @@
 
 	/** Before leaving for Google: mark onboarding done so the user lands in the app. */
 	function beforeGoogle() {
+		app.startTrial();
 		app.profile.onboarded = true;
 		app.save();
 	}
 
 	function finish() {
+		app.startTrial();
 		app.profile.onboarded = true;
 		app.save();
 		track('onboarding_done', { push: app.profile.pushEnabled, source: app.source, categories: p.categories.length, has_name: !!p.name });

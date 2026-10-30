@@ -1,7 +1,7 @@
 import type { CategoryId, Lang } from './data/categories';
 import { PHRASE_BY_ID, type Phrase } from './data/phrases';
 import type { TopicId } from './data/topics';
-import { dayKey, shiftDay } from './phrase';
+import { dayKey, dayNumber, shiftDay } from './phrase';
 
 export type Profile = {
 	deviceId: string;
@@ -21,7 +21,11 @@ export type Profile = {
 	pausedUntil: string | null;
 	/** Local weekdays to receive the push (0 = Sunday … 6 = Saturday). */
 	days: number[];
+	/** Day the 14-day free trial started (YYYY-MM-DD), set when onboarding ends. */
+	trialStart: string | null;
 };
+
+export const TRIAL_DAYS = 14;
 
 export type ShareTheme = 'cream' | 'sky' | 'ink' | 'pink';
 
@@ -60,12 +64,27 @@ class AppStore {
 		extraHours: [],
 		theme: 'cream',
 		pausedUntil: null,
-		days: [0, 1, 2, 3, 4, 5, 6]
+		days: [0, 1, 2, 3, 4, 5, 6],
+		trialStart: null
 	});
 
 	/** Is the push currently paused? */
 	get paused(): boolean {
 		return !!this.profile.pausedUntil && new Date(this.profile.pausedUntil) > new Date();
+	}
+	/** Free days left in the trial (0 when over or not started). */
+	get trialDaysLeft(): number {
+		const start = this.profile.trialStart;
+		if (!start) return TRIAL_DAYS;
+		const used = dayNumber(dayKey()) - dayNumber(start);
+		return Math.max(0, TRIAL_DAYS - used);
+	}
+	get inTrial(): boolean {
+		return this.trialDaysLeft > 0;
+	}
+	/** Everything unlocked: paid Pass, or still in the free trial. */
+	get access(): boolean {
+		return this.premium || this.inTrial;
 	}
 	/** Premium status — source of truth is the server (Stripe webhook), cached here. */
 	premium = $state(false);
@@ -96,9 +115,9 @@ class AppStore {
 
 	/** Snapshot that is synced to the account. */
 	exportData() {
-		const { name, categories, topics, hour, extraHours, theme } = this.profile;
+		const { name, categories, topics, hour, extraHours, theme, trialStart } = this.profile;
 		return {
-			profile: { name, categories, topics, hour, extraHours, theme },
+			profile: { name, categories, topics, hour, extraHours, theme, trialStart },
 			quotes: this.quotes,
 			favorites: this.favorites,
 			history: this.history,
@@ -110,6 +129,9 @@ class AppStore {
 	mergeData(remote: ReturnType<AppStore['exportData']> | null) {
 		if (!remote) return;
 		this.quotes = { ...(remote.quotes ?? {}), ...this.quotes };
+		// One trial per person: keep the earliest start across devices
+		const rs = remote.profile?.trialStart;
+		if (rs && (!this.profile.trialStart || rs < this.profile.trialStart)) this.profile.trialStart = rs;
 		this.favorites = [...new Set([...this.favorites, ...(remote.favorites ?? [])])];
 		const byDay = new Map<string, HistoryItem>();
 		for (const h of [...(remote.history ?? []), ...this.history]) byDay.set(h.day, h);
@@ -150,6 +172,8 @@ class AppStore {
 		this.premium = data.premium;
 		this.quotes = data.quotes ?? {};
 		if (!Array.isArray(this.profile.topics)) this.profile.topics = [];
+		// People who joined before the trial existed start their 14 days now
+		if (this.profile.onboarded && !this.profile.trialStart) this.profile.trialStart = dayKey();
 		this.loaded = true;
 		this.save();
 	}
@@ -199,6 +223,11 @@ class AppStore {
 		this.save();
 	}
 
+	/** The 14 free days start the first time someone finishes onboarding / turns on the push. */
+	startTrial() {
+		if (!this.profile.trialStart) this.profile.trialStart = dayKey();
+	}
+
 	/** Any phrase or saved quote by id. */
 	phrase(id: string): Phrase | undefined {
 		return PHRASE_BY_ID.get(id) ?? this.quotes[id];
@@ -226,7 +255,7 @@ class AppStore {
 			if (!res.ok) return this.premium;
 			const { premium } = (await res.json()) as { premium: boolean };
 			this.premium = premium;
-			if (!premium) {
+			if (!this.access) {
 				this.profile.extraHours = [];
 				this.profile.theme = 'cream';
 			}

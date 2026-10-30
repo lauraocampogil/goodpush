@@ -19,6 +19,7 @@
 	import { app } from '#lib/store.svelte.ts';
 	import ShareButton from '../ShareButton.svelte';
 	import { todaysQuote } from '#lib/quotes.ts';
+	import { PUBLIC_PREMIUM_PRICE } from '$app/env/public';
 	import type { Phrase } from '#lib/data/phrases.ts';
 	import { TOPIC_EMOJI, isMovieTopic } from '#lib/data/topics.ts';
 
@@ -30,7 +31,7 @@
 	const phrase = $derived(quote ?? phraseForDay(app.profile.categories, today, { topics: app.profile.topics }));
 	// Premium: today's extra drops (same phrases the extra pushes send)
 	const extras = $derived(
-		app.premium
+		app.access
 			? app.profile.extraHours.map((h, k) => ({ h, p: phraseForDay(app.profile.categories, today, { slot: k + 1, premium: true }) }))
 			: []
 	);
@@ -51,8 +52,8 @@
 	] as const;
 	let busy = $state(false);
 	let toast = $state('');
-	let card: HTMLElement;
-	let text: HTMLElement;
+	let card = $state<HTMLElement>();
+	let text = $state<HTMLElement>();
 
 	const MILESTONES = [3, 7, 14, 30, 50, 100, 365];
 
@@ -106,7 +107,7 @@
 
 	async function animateIn() {
 		await tick();
-		if (reduced() || !card) return;
+		if (reduced() || !card || !text) return;
 		const { gsap, SplitText } = motion();
 		await document.fonts.ready;
 		const split = SplitText.create(text.querySelectorAll('[data-words]'), { type: 'words', mask: 'words' });
@@ -138,7 +139,22 @@
 
 <section class="flex flex-1 flex-col justify-center gap-6 py-4">
 	<p class="kicker text-center">{i.t('today.kicker')}</p>
+	{#if !app.premium && app.inTrial && app.trialDaysLeft <= 7}
+		<a href="/premium" class="pill mx-auto -mt-3 bg-white text-xs shadow-[var(--shadow-soft)]" onclick={() => track('trial_pill_click', { left: app.trialDaysLeft })}>
+			⏳ {app.trialDaysLeft} {app.trialDaysLeft === 1 ? i.t('trial.left1') : i.t('trial.left')} · <span class="underline">{i.t('premium.cta')}</span>
+		</a>
+	{/if}
 
+	{#if !app.access}
+		<article class="flex min-h-[26rem] flex-col justify-between rounded-[32px] bg-ink p-7 text-paper shadow-[var(--shadow-float)] sm:p-9">
+			<Smiley size={64} color="sun" mood="calm" />
+			<div class="my-8">
+				<p class="display text-[clamp(1.8rem,7.5vw,3rem)] leading-[0.95]">{i.t('trial.ended.t')}</p>
+				<p class="mt-4 text-paper/70">{i.t('trial.ended.d')}</p>
+			</div>
+			<a href="/premium" class="btn w-full bg-sun py-4 text-ink" onclick={() => track('paywall_click')}>{i.t('trial.cta')} · {PUBLIC_PREMIUM_PRICE}{i.t('premium.month')}</a>
+		</article>
+	{:else}
 	<div bind:this={card} style:visibility={ready ? 'visible' : 'hidden'}>
 		<article
 			class="relative flex min-h-[26rem] flex-col justify-between overflow-hidden rounded-[32px] p-7 shadow-[var(--shadow-float)] sm:p-9"
@@ -173,13 +189,17 @@
 		</article>
 	</div>
 
+	{/if}
+
 	<div data-today-rest class="flex flex-col gap-6">
+		{#if app.access}
 		<div class="flex justify-center gap-3">
 			<button class="btn-ghost transition-transform active:scale-90 {fav ? '!bg-ink text-white' : ''}" onclick={toggleFav} aria-pressed={fav}>
 				<Heart weight={fav ? 'fill' : 'duotone'} /> {fav ? i.t('today.saved') : i.t('today.save')}
 			</button>
 			<ShareButton {phrase} highlight={highlightShare} />
 		</div>
+		{/if}
 
 		<div class="card p-5">
 			<div class="flex items-center gap-4">

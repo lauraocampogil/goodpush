@@ -22,6 +22,8 @@ export const POST: RequestHandler = async ({ request }) => {
 	const topics = [...new Set((Array.isArray(body.topics) ? body.topics : []).filter(isTopic))].slice(0, 30);
 	const streakCount = Number.isInteger(body.streak?.count) && body.streak.count >= 0 ? Math.min(body.streak.count, 100000) : null;
 	const streakLast = typeof body.streak?.last === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(body.streak.last) ? body.streak.last : null;
+	// Trial start (one per device; can't be in the future)
+	const trialStart = typeof body.trialStart === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(body.trialStart) && body.trialStart <= new Date().toISOString().slice(0, 10) ? body.trialStart : null;
 	const hour = Number.isInteger(body.hour) && body.hour >= 0 && body.hour <= 23 ? body.hour : 8;
 	// Premium extra pushes: max 2 distinct hours (enforced again by the cron)
 	const extraHours = (Array.isArray(body.extraHours) ? body.extraHours : [])
@@ -49,6 +51,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			name: typeof body.name === 'string' ? body.name.trim().slice(0, 40) : null,
 			categories,
 			topics,
+			...(trialStart ? { trial_started_at: trialStart } : {}),
 			...(streakCount !== null ? { streak_count: streakCount, streak_last: streakLast } : {}),
 			hour,
 			extra_hours: [...new Set(extraHours)],

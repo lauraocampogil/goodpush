@@ -26,8 +26,8 @@ export const variables = defineEnvVars({
 	PUBLIC_SENTRY_DSN: { public: true, description: 'Sentry DSN (optional)', schema: optional },
 	PUBLIC_PREMIUM_PRICE: {
 		public: true,
-		description: 'Price shown on the site, e.g. 2,99 €',
-		schema: (v) => optional(v) ?? '2,99 €'
+		description: 'Yearly price shown on the site, e.g. 4,99 €',
+		schema: (v) => optional(v) ?? '4,99 €'
 	},
 	PUBLIC_AMAZON_TAG: { public: true, description: 'Amazon Associates tag (optional)', schema: optional },
 	PUBLIC_INSTAGRAM_URL: {

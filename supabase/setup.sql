@@ -1,4 +1,4 @@
--- GoodPush — full database setup (0001 → 0008). Paste in Supabase → SQL Editor → Run.
+-- GoodPush — full database setup (0001 → 0009). Paste in Supabase → SQL Editor → Run.
 
 -- ===== supabase/migrations/0001_init.sql =====
 -- GoodPush — initial schema
@@ -211,3 +211,18 @@ alter table public.newsletter_issues enable row level security;  -- server only
 -- GoodPush — streak on the server, so the notification can say "🔥 12 days"
 alter table public.subscribers add column if not exists streak_count int not null default 0;
 alter table public.subscribers add column if not exists streak_last date;
+
+-- ===== supabase/migrations/0009_trial.sql =====
+-- GoodPush — 14-day free trial, then the GoodPush Pass (4,99 €/year)
+alter table public.subscribers add column if not exists trial_started_at date default current_date;
+
+drop view if exists public.stats;
+create view public.stats as
+select
+  (select count(*) from public.subscribers where active)                                                    as active_subscribers,
+  (select count(*) from public.subscribers where created_at > now() - interval '1 day')                     as new_today,
+  (select count(*) from public.subscribers where created_at > now() - interval '7 days')                    as new_7d,
+  (select count(*) from public.subscribers where active and coalesce(trial_started_at, created_at::date) > current_date - 14) as in_trial,
+  (select count(*) from public.premium_active)                                                              as paying,
+  round((select count(*) from public.premium_active) * 4.99, 2)                                             as arr_eur;
+revoke all on public.stats from anon, authenticated;

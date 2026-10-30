@@ -232,3 +232,11 @@ Content changes every week: phrase of the week (library), intro + 30-second habi
 the latest verified movie line + news quote (cards hidden if none), and a rotating affiliate pick.
 Preview: `curl -H "Authorization: Bearer $CRON_SECRET" "https://YOUR_SITE/api/cron/newsletter?preview=es"`.
 Needs `BREVO_API_KEY` + `BREVO_LIST_ID`, table `newsletter_issues` (0007) and the third block of `supabase/cron.sql`.
+
+## 15. Pricing: 14-day free trial → GoodPush Pass (4,99 €/year)
+
+- Trial starts when onboarding ends (`profile.trialStart`, mirrored in `subscribers.trial_started_at`). No card needed.
+- The hourly sender stops pushes after 14 days unless the device/account has an active Stripe subscription.
+  Days 12–13 the push title says "⏳ 2 free days left" and opens /premium.
+- In the app: a pill shows the days left (last 7 days); after the trial, /today shows the paywall card.
+- Stripe: one Product "GoodPush Pass", recurring price 4,99 € / year → `STRIPE_PRICE_ID`.

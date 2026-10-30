@@ -28,7 +28,7 @@
 				<h3 class="text-lg font-semibold">{i.t('premium.free')}</h3>
 				<Smiley size={40} color="cream" />
 			</div>
-			<p class="mt-6"><span class="display text-5xl">0 €</span></p>
+			<p class="mt-6"><span class="display text-5xl">0 €</span><span class="ml-1 text-ink/50">· 14 d</span></p>
 			<ul class="mt-8 flex-1 space-y-3.5 text-[15px]">
 				{#each ['f1', 'f2', 'f3'] as k (k)}
 					<li class="flex items-center gap-3"><Check size={18} class="text-ink/40" />{i.t(`premium.${k}` as 'premium.f1')}</li>
@@ -44,7 +44,7 @@
 			</div>
 			<p class="mt-6"><span class="display text-5xl">{PUBLIC_PREMIUM_PRICE}</span><span class="ml-1 text-paper/60">{i.t('premium.month')}</span></p>
 			<ul class="mt-8 flex-1 space-y-3.5 text-[15px]">
-				{#each ['f2', 'f3', 'p1', 'p2', 'p3', 'p4'] as k (k)}
+				{#each ['p1', 'p2', 'p3', 'f3', 'p4'] as k (k)}
 					<li class="flex items-center gap-3"><Check size={18} class="text-sun" />{i.t(`premium.${k}` as 'premium.p1')}</li>
 				{/each}
 			</ul>
