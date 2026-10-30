@@ -91,12 +91,12 @@ export const GET: RequestHandler = async ({ request, url }) => {
 				if (slot === -1) return;
 
 				const topics = r.topics ?? [];
-				const news = slot === 0 && topics.length ? pickQuote(quotesByDay.get(today) ?? [], topics, today) : null;
+				const news = slot === 0 ? pickQuote(quotesByDay.get(today) ?? [], topics, today, r.categories) : null;
 				const phrase = news ?? phraseForDay(r.categories, today, { slot, premium, topics });
 				if (dryRun) return void sent++;
 				try {
 					await sendPush(r, {
-						title: slot === 0 ? 'GoodPush' : 'GoodPush ✦',
+						title: news ? (news.cat === 'movies' ? 'GoodPush · 🎬' : 'GoodPush · 🗞') : slot === 0 ? 'GoodPush' : 'GoodPush ✦',
 						body: pushBody(phrase, r.lang, r.name),
 						id: phrase.id,
 						url: `/today?utm_source=push&slot=${slot}`

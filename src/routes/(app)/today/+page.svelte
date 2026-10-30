@@ -61,7 +61,7 @@
 			goto('/start', { replaceState: true });
 			return;
 		}
-		todaysQuote(today, app.profile.topics).then((q) => {
+		todaysQuote(today, app.profile.topics, app.profile.categories).then((q) => {
 			if (q) {
 				quote = q;
 				app.rememberQuote(q);
@@ -142,7 +142,7 @@
 		>
 			<div class="flex items-center justify-between text-xs font-semibold tracking-wider uppercase opacity-70">
 				{#if phrase.author && phrase.topic}
-					<span class="flex items-center gap-2">{TOPIC_EMOJI[phrase.topic]} {i.t('quote.news')} · {i.topic(phrase.topic)}</span>
+					<span class="flex items-center gap-2">{TOPIC_EMOJI[phrase.topic]} {phrase.cat === 'movies' ? i.t('quote.movie') : i.t('quote.news')} · {i.topic(phrase.topic)}</span>
 				{:else}
 					<span class="flex items-center gap-2"><CatIcon cat={phrase.cat} /> {i.cat(phrase.cat)}</span>
 				{/if}

@@ -1,5 +1,5 @@
 import { ANTHROPIC_API_KEY, QUOTES_MODEL } from '$app/env/private';
-import { TOPIC_LABEL, type TopicId } from '#lib/data/topics.ts';
+import { TOPIC_CAT, TOPIC_LABEL, type TopicId } from '#lib/data/topics.ts';
 
 /**
  * Finds ONE real, recent, uplifting quote for a sub-topic with Claude + web search,
@@ -26,7 +26,27 @@ type Block =
 
 export const quoteFinderReady = () => !!ANTHROPIC_API_KEY;
 
-function prompt(topic: TopicId, today: string) {
+const JSON_SHAPE = `{"found": true, "author": "Full Name", "original": "exact words in the original language", "original_lang": "en|es|fr|other", "en": "faithful English translation (or the original if English)", "es": "faithful Spanish translation", "fr": "faithful French translation", "source_url": "https://… the page where the exact words appear", "said_on": "YYYY-MM-DD or null", "context": "one short line"}
+or {"found": false}`;
+
+function moviePrompt(topic: TopicId, today: string, avoid: string[]) {
+	const genre = { classics: 'classic or iconic films', animation: 'animated films (Pixar, Disney, Ghibli, DreamWorks…)', sportsfilms: 'sports films', superheroes: 'superhero films' }[topic as string] ?? 'films';
+	return `Today is ${today}. You curate GoodPush, an app that sends one uplifting line per day.
+
+Find ONE famous, motivating line of dialogue from ${genre} — the kind of line people quote to push themselves.
+
+Hard rules:
+- EXACT dialogue as written on a reliable quote page (Wikiquote, IMDb quotes, or a reputable article) that you found with search. Never paraphrase or invent.
+- One or two sentences, max 180 characters. Uplifting, safe for all ages, no violence or swearing.
+- Not one of these (already used): ${avoid.length ? avoid.slice(0, 30).join(' | ') : 'none'}.
+- "author" must be "Character · Film title (year)". "said_on" is null. "context": one short line about the scene.
+
+Reply with ONLY one JSON object, no markdown:
+${JSON_SHAPE}`;
+}
+
+function prompt(topic: TopicId, today: string, avoid: string[] = []) {
+	if (TOPIC_CAT[topic] === 'movies') return moviePrompt(topic, today, avoid);
 	const name = TOPIC_LABEL.en[topic];
 	return `Today is ${today}. You curate GoodPush, an app that sends one uplifting line per day.
 
@@ -40,8 +60,7 @@ Hard rules:
 - If you cannot find one that meets every rule, say so.
 
 Reply with ONLY one JSON object, no markdown:
-{"found": true, "author": "Full Name", "original": "exact words in the original language", "original_lang": "en|es|fr|other", "en": "faithful English translation (or the original if English)", "es": "faithful Spanish translation", "fr": "faithful French translation", "source_url": "https://… the article where the exact words appear", "said_on": "YYYY-MM-DD or null", "context": "one short line, e.g. after winning the semi-final"}
-or {"found": false}`;
+${JSON_SHAPE}`;
 }
 
 /** Lowercase, no accents, no punctuation/quotes, single spaces. */
@@ -92,7 +111,7 @@ async function verify(q: FoundQuote, citations: { url: string; cited_text?: stri
 	});
 }
 
-export async function findQuote(topic: TopicId, today: string): Promise<{ quote: FoundQuote | null; reason: string; searches: number }> {
+export async function findQuote(topic: TopicId, today: string, avoid: string[] = []): Promise<{ quote: FoundQuote | null; reason: string; searches: number }> {
 	const res = await fetch('https://api.anthropic.com/v1/messages', {
 		method: 'POST',
 		headers: {
@@ -104,7 +123,7 @@ export async function findQuote(topic: TopicId, today: string): Promise<{ quote:
 			model: QUOTES_MODEL,
 			max_tokens: 1500,
 			tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 3 }],
-			messages: [{ role: 'user', content: prompt(topic, today) }]
+			messages: [{ role: 'user', content: prompt(topic, today, avoid) }]
 		}),
 		signal: AbortSignal.timeout(90_000)
 	});

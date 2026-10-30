@@ -17,7 +17,8 @@ export const PICKS: Record<CategoryId, Pick[]> = {
 	study: [{ title: 'Deep Work', by: 'Cal Newport', query: 'Deep Work Cal Newport' }],
 	build: [{ title: 'The Mom Test', by: 'Rob Fitzpatrick', query: 'The Mom Test Rob Fitzpatrick' }],
 	faith: [{ title: 'A 5-minute gratitude journal', by: 'Journal', query: 'five minute journal' }],
-	selflove: [{ title: 'The Gifts of Imperfection', by: 'Brené Brown', query: 'The Gifts of Imperfection Brene Brown' }]
+	selflove: [{ title: 'The Gifts of Imperfection', by: 'Brené Brown', query: 'The Gifts of Imperfection Brene Brown' }],
+	movies: [{ title: 'Rocky — the complete saga', by: 'Blu-ray', query: 'Rocky complete saga blu-ray' }]
 };
 
 export function pickUrl(p: Pick): string {

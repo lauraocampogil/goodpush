@@ -12,7 +12,8 @@ export const TOPICS = {
 	study: ['exams', 'languages', 'university'],
 	build: ['startup', 'creator', 'career'],
 	faith: ['gratitude', 'hope', 'prayer'],
-	selflove: ['confidence', 'body', 'heartbreak']
+	selflove: ['confidence', 'body', 'heartbreak'],
+	movies: ['classics', 'animation', 'sportsfilms', 'superheroes']
 } as const satisfies Record<CategoryId, readonly string[]>;
 
 export type TopicId = (typeof TOPICS)[CategoryId][number];
@@ -51,7 +52,11 @@ export const TOPIC_EMOJI: Record<TopicId, string> = {
 	prayer: '🙏',
 	confidence: '💪',
 	body: '🫶',
-	heartbreak: '💔'
+	heartbreak: '💔',
+	classics: '🎞️',
+	animation: '🧸',
+	sportsfilms: '🥇',
+	superheroes: '🦸'
 };
 
 export const TOPIC_LABEL: Record<Lang, Record<TopicId, string>> = {
@@ -81,7 +86,11 @@ export const TOPIC_LABEL: Record<Lang, Record<TopicId, string>> = {
 		prayer: 'Prayer',
 		confidence: 'Confidence',
 		body: 'Body image',
-		heartbreak: 'Heartbreak'
+		heartbreak: 'Heartbreak',
+		classics: 'Classics',
+		animation: 'Animation',
+		sportsfilms: 'Sports movies',
+		superheroes: 'Superheroes'
 	},
 	es: {
 		habits: 'Hábitos',
@@ -109,7 +118,11 @@ export const TOPIC_LABEL: Record<Lang, Record<TopicId, string>> = {
 		prayer: 'Oración',
 		confidence: 'Confianza',
 		body: 'Mi cuerpo',
-		heartbreak: 'Ruptura'
+		heartbreak: 'Ruptura',
+		classics: 'Clásicos',
+		animation: 'Animación',
+		sportsfilms: 'Pelis de deporte',
+		superheroes: 'Superhéroes'
 	},
 	fr: {
 		habits: 'Habitudes',
@@ -137,6 +150,10 @@ export const TOPIC_LABEL: Record<Lang, Record<TopicId, string>> = {
 		prayer: 'Prière',
 		confidence: 'Confiance',
 		body: 'Image de soi',
-		heartbreak: 'Rupture'
+		heartbreak: 'Rupture',
+		classics: 'Classiques',
+		animation: 'Animation',
+		sportsfilms: 'Films de sport',
+		superheroes: 'Super-héros'
 	}
 };

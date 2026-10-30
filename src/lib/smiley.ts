@@ -28,7 +28,8 @@ export const CATEGORY_COLOR: Record<CategoryId, StickerColor> = {
 	study: 'yellow',
 	build: 'mint',
 	faith: 'cream',
-	selflove: 'pink'
+	selflove: 'pink',
+	movies: 'sun'
 };
 
 const MOUTH: Partial<Record<SmileyMood, string>> = {

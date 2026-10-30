@@ -5,7 +5,8 @@ export const CATEGORY_IDS = [
 	'study',
 	'build',
 	'faith',
-	'selflove'
+	'selflove',
+	'movies'
 ] as const;
 
 export type CategoryId = (typeof CATEGORY_IDS)[number];
@@ -20,7 +21,8 @@ export const CATEGORY_EMOJI: Record<CategoryId, string> = {
 	study: '📚',
 	build: '🚀',
 	faith: '🙏',
-	selflove: '💗'
+	selflove: '💗',
+	movies: '🎬'
 };
 
 /** Hours offered in onboarding / settings (local time of the user). */

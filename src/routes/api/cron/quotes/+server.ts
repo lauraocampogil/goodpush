@@ -36,9 +36,9 @@ export const GET: RequestHandler = async ({ request, url }) => {
 	// Skip topics that already have today's quote; avoid repeating the last 30 days
 	const { data: recent } = await supabase
 		.from('quotes')
-		.select('topic,publish_on,quote_en,quote_es,quote_fr')
-		.gte('publish_on', shiftDay(today, -30));
-	const rows = (recent ?? []) as { topic: string; publish_on: string; quote_en: string | null; quote_es: string | null; quote_fr: string | null }[];
+		.select('topic,author,publish_on,quote_en,quote_es,quote_fr')
+		.gte('publish_on', shiftDay(today, -180));
+	const rows = (recent ?? []) as { topic: string; author: string; publish_on: string; quote_en: string | null; quote_es: string | null; quote_fr: string | null }[];
 	const done = new Set(rows.filter((r) => r.publish_on === today).map((r) => r.topic));
 	const seen = new Set(rows.flatMap((r) => [r.quote_en, r.quote_es, r.quote_fr]).filter(Boolean).map((t) => normalize(t!)));
 
@@ -46,7 +46,8 @@ export const GET: RequestHandler = async ({ request, url }) => {
 		topics.map(async (topic) => {
 			if (done.has(topic) && !forced) return { topic, status: 'already has one' };
 			try {
-				const { quote, reason, searches } = await findQuote(topic, today);
+				const avoid = rows.filter((r) => r.topic === topic).map((r) => `${r.author}: ${r.quote_en ?? r.quote_es ?? r.quote_fr}`);
+				const { quote, reason, searches } = await findQuote(topic, today, avoid);
 				if (!quote) return { topic, status: reason, searches };
 				if (seen.has(normalize(quote.original))) return { topic, status: 'duplicate', searches };
 				if (!dry) {

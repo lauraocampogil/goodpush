@@ -80,6 +80,7 @@ const en = {
 	'ob.topics.d': 'Pick what you’re into. You’ll also get real quotes from the news — like what a player said after last night’s game.',
 	'settings.topics': 'Your specific interests',
 	'quote.news': 'In the news',
+	'quote.movie': 'From the movies',
 	'quote.source': 'Source',
 	'ob.time.t': 'When do you want it?',
 	'ob.time.d': 'Your local time.',
@@ -357,6 +358,7 @@ const es: Dict = {
 	'ob.topics.d': 'Elige lo que te gusta. También recibirás frases reales de la actualidad — como lo que dijo un jugador después del partido.',
 	'settings.topics': 'Tus intereses',
 	'quote.news': 'De actualidad',
+	'quote.movie': 'De película',
 	'quote.source': 'Fuente',
 	'ob.time.t': '¿A qué hora lo quieres?',
 	'ob.time.d': 'Tu hora local.',
@@ -625,6 +627,7 @@ const fr: Dict = {
 	'ob.topics.d': 'Choisis ce qui te parle. Tu recevras aussi de vraies citations de l’actu — comme ce qu’un joueur a dit après le match.',
 	'settings.topics': 'Tes centres d’intérêt',
 	'quote.news': 'Dans l’actu',
+	'quote.movie': 'Réplique de film',
 	'quote.source': 'Source',
 	'ob.time.t': 'À quelle heure ?',
 	'ob.time.d': 'Ton heure locale.',
@@ -826,9 +829,9 @@ const fr: Dict = {
 export const DICTS: Record<Lang, Dict> = { en, es, fr };
 
 export const CATEGORY_LABEL: Record<Lang, Record<CategoryId, string>> = {
-	en: { discipline: 'Discipline', calm: 'Calm', sport: 'Sport', study: 'Study', build: 'Build', faith: 'Faith', selflove: 'Self-love' },
-	es: { discipline: 'Disciplina', calm: 'Calma', sport: 'Deporte', study: 'Estudios', build: 'Emprender', faith: 'Fe', selflove: 'Amor propio' },
-	fr: { discipline: 'Discipline', calm: 'Calme', sport: 'Sport', study: 'Études', build: 'Entreprendre', faith: 'Foi', selflove: 'Amour de soi' }
+	en: { discipline: 'Discipline', calm: 'Calm', sport: 'Sport', study: 'Study', build: 'Build', faith: 'Faith', selflove: 'Self-love', movies: 'Movies' },
+	es: { discipline: 'Disciplina', calm: 'Calma', sport: 'Deporte', study: 'Estudios', build: 'Emprender', faith: 'Fe', selflove: 'Amor propio', movies: 'Cine' },
+	fr: { discipline: 'Discipline', calm: 'Calme', sport: 'Sport', study: 'Études', build: 'Entreprendre', faith: 'Foi', selflove: 'Amour de soi', movies: 'Cinéma' }
 };
 
 export const LANG_LABEL: Record<Lang, string> = { en: 'English', es: 'Español', fr: 'Français' };

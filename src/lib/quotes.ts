@@ -1,4 +1,5 @@
 import type { Phrase } from './data/phrases';
+import type { CategoryId } from './data/categories';
 import { TOPIC_CAT, isTopic, type TopicId } from './data/topics';
 import { dayNumber } from './phrase';
 
@@ -37,17 +38,19 @@ export function quoteToPhrase(q: QuoteRow): Phrase | null {
 }
 
 /** Same pick on the server (push) and in the app, so both show the same quote. */
-export function pickQuote(quotes: Phrase[], topics: TopicId[], key: string): Phrase | null {
-	const mine = quotes.filter((q) => q.topic && topics.includes(q.topic)).sort((a, b) => (a.id < b.id ? -1 : 1));
+export function pickQuote(quotes: Phrase[], topics: TopicId[], key: string, categories: CategoryId[] = []): Phrase | null {
+	// Movies: picking the category is enough to get real film quotes
+	const movieFan = categories.includes('movies') && !topics.some((t) => TOPIC_CAT[t] === 'movies');
+	const mine = quotes.filter((q) => (q.topic && topics.includes(q.topic)) || (movieFan && q.cat === 'movies')).sort((a, b) => (a.id < b.id ? -1 : 1));
 	return mine.length ? mine[dayNumber(key) % mine.length] : null;
 }
 
 /** App: today's quote for this person, or null (never blocks longer than `ms`). */
-export async function todaysQuote(day: string, topics: TopicId[], ms = 1500): Promise<Phrase | null> {
-	if (!topics.length) return null;
+export async function todaysQuote(day: string, topics: TopicId[], categories: CategoryId[] = [], ms = 1500): Promise<Phrase | null> {
+	if (!topics.length && !categories.includes('movies')) return null;
 	const load = fetch(`/api/quotes?day=${day}`)
 		.then((r) => (r.ok ? (r.json() as Promise<{ quotes: Phrase[] }>) : { quotes: [] }))
-		.then(({ quotes }) => pickQuote(quotes, topics, day))
+		.then(({ quotes }) => pickQuote(quotes, topics, day, categories))
 		.catch(() => null);
 	const timeout = new Promise<null>((resolve) => setTimeout(() => resolve(null), ms));
 	return Promise.race([load, timeout]);
