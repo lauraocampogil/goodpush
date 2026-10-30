@@ -58,14 +58,14 @@
 		<p class="text-sm text-ink/60">{i.t('acc.code')} <strong class="text-ink">{email}</strong></p>
 		<form class="space-y-3" onsubmit={(e) => (e.preventDefault(), verify())}>
 			<input
-				class="field text-center text-3xl tracking-[0.5em] tabular-nums"
+				class="field text-center text-3xl tracking-[0.3em] tabular-nums"
 				inputmode="numeric"
 				autocomplete="one-time-code"
-				maxlength="6"
+				maxlength="8"
 				placeholder={i.t('acc.code.ph')}
 				bind:value={code}
 			/>
-			<button class="btn w-full py-4" disabled={busy || code.trim().length < 6}>{i.t('acc.verify')}</button>
+			<button class="btn w-full py-4" disabled={busy || !/^\d{6,8}$/.test(code.trim())}>{i.t('acc.verify')}</button>
 		</form>
 		<button class="w-full py-2 text-sm font-semibold text-ink/60 underline" onclick={() => ((step = 'start'), (code = ''))}>{i.t('acc.resend')}</button>
 	{/if}
