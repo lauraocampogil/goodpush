@@ -23,33 +23,45 @@
 	// svelte-ignore state_referenced_locally
 	const i = setI18n(data.lang);
 
+	/** One failing piece (storage, analytics, account…) must never freeze the whole site. */
+	function safe(label: string, fn: () => void) {
+		try {
+			fn();
+		} catch (err) {
+			console.error(`[goodpush] ${label} failed`, err);
+			Sentry.captureException(err, { tags: { step: label } });
+		}
+	}
+
 	onMount(() => {
-		app.load();
-		app.captureSource(new URL(page.url.href));
-		install.listen();
-		auth.init();
+		safe('store', () => app.load());
+		safe('source', () => app.captureSource(new URL(page.url.href)));
+		safe('install', () => install.listen());
+		safe('auth', () => auth.init());
 
 		const standalone = isStandalone();
-		// Errors in Sentry are linked to the (anonymous) device and its context
-		Sentry.setUser({ id: app.profile.deviceId });
-		Sentry.setTags({ lang: i.lang, standalone: String(standalone), premium: String(app.premium) });
-		initAnalytics(app.profile.deviceId, {
-			lang: i.lang,
-			standalone,
-			platform: isIOS() ? 'ios' : isAndroid() ? 'android' : 'desktop',
-			source: app.source,
-			premium: app.premium
+		safe('sentry', () => {
+			// Errors in Sentry are linked to the (anonymous) device and its context
+			Sentry.setUser({ id: app.profile.deviceId });
+			Sentry.setTags({ lang: i.lang, standalone: String(standalone), premium: String(app.premium) });
 		});
+		safe('analytics', () =>
+			initAnalytics(app.profile.deviceId, {
+				lang: i.lang,
+				standalone,
+				platform: isIOS() ? 'ios' : isAndroid() ? 'android' : 'desktop',
+				source: app.source,
+				premium: app.premium
+			})
+		);
 
 		// "Downloads": a PWA install = the app's first open from the home screen
-		try {
+		safe('installed', () => {
 			if (standalone && !localStorage.getItem('goodpush:installed')) {
 				localStorage.setItem('goodpush:installed', '1');
 				track('app_installed', { via: 'home_screen', platform: isIOS() ? 'ios' : isAndroid() ? 'android' : 'desktop' });
 			}
-		} catch {
-			/* ignore */
-		}
+		});
 		addEventListener('appinstalled', () => track('app_installed', { via: 'browser_prompt' }));
 	});
 

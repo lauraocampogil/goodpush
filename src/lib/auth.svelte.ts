@@ -25,10 +25,15 @@ class Auth {
 			auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' }
 		});
 		this.client.auth.onAuthStateChange((event, session) => {
-			this.user = session?.user ?? null;
-			app.authHeader = session ? `Bearer ${session.access_token}` : null;
-			this.ready = true;
-			if (event === 'SIGNED_IN') queueMicrotask(() => this.afterSignIn());
+			try {
+				this.user = session?.user ?? null;
+				app.authHeader = session ? `Bearer ${session.access_token}` : null;
+				this.ready = true;
+				if (event === 'SIGNED_IN') queueMicrotask(() => this.afterSignIn().catch((e) => console.error('[auth]', e)));
+			} catch (err) {
+				console.error('[auth] state change', err);
+				this.ready = true;
+			}
 		});
 		// Keep the account in sync whenever the app saves (debounced)
 		app.onSave = () => {

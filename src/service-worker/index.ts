@@ -43,7 +43,9 @@ self.addEventListener('fetch', (event) => {
 			}
 			try {
 				const res = await fetch(req);
-				if (res.ok && res.type === 'basic') cache.put(req, res.clone());
+				// Only cache build files, static assets and the offline page — never other HTML
+				const cacheable = isImmutable || assets.some((f) => url.pathname === f.path) || url.pathname === '/today';
+				if (cacheable && res.ok && res.type === 'basic') cache.put(req, res.clone());
 				return res;
 			} catch {
 				return (
