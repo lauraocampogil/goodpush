@@ -9,6 +9,8 @@
 	import { setPerson } from '#lib/analytics.ts';
 	import { app } from '#lib/store.svelte.ts';
 	import type { LayoutProps } from './$types';
+	import SignIn from '#lib/components/SignIn.svelte';
+	import Smiley from '#lib/components/Smiley.svelte';
 
 	let { children }: LayoutProps = $props();
 	const i = getI18n();
@@ -25,7 +27,9 @@
 		{ href: '/history', key: 'nav.history', icon: Clock },
 		{ href: '/settings', key: 'nav.settings', icon: Gear }
 	] as const;
-	const showNav = $derived(page.url.pathname !== '/start');
+	// An account is required: people who finished onboarding without one sign in first
+	const needsAccount = $derived(auth.enabled && auth.ready && !auth.user && app.profile.onboarded && !['/start', '/account'].includes(page.url.pathname));
+	const showNav = $derived(page.url.pathname !== '/start' && !needsAccount);
 </script>
 
 <Seo title="GoodPush" description={i.t('meta.description')} noindex />
@@ -43,7 +47,16 @@
 			</div>
 		</header>
 	{/if}
-	{@render children()}
+	{#if needsAccount}
+		<section class="flex flex-1 flex-col justify-center py-8">
+			<Smiley size={64} color="orange" wink />
+			<h1 class="display mt-6 text-4xl">{i.t('gate.t')}</h1>
+			<p class="mt-3 mb-8 text-ink/60">{i.t('gate.d')}</p>
+			<div class="max-w-md"><SignIn next={page.url.pathname} /></div>
+		</section>
+	{:else}
+		{@render children()}
+	{/if}
 </div>
 
 {#if showNav}

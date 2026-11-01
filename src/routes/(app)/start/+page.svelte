@@ -76,7 +76,7 @@
 		}
 	}
 
-	/** Step 6 (optional): create an account with Google or email — skipped if unavailable or already signed in. */
+	/** Step 6: create an account with Google or email (required; skipped only when accounts aren't configured). */
 	function afterPush() {
 		if (auth.enabled && !auth.user) go(5);
 		else finish();
@@ -189,7 +189,7 @@
 		{#if step < 4}
 			<button class="btn w-full py-4 text-lg" disabled={!canNext} onclick={() => go(step + 1)}>{i.t('ob.next')} <ArrowRight /></button>
 		{:else if step === 5}
-			<button class="py-2 font-semibold text-ink/60 underline" onclick={finish}>{i.t('ob.acc.skip')}</button>
+			<p class="text-center text-xs text-ink/50">{i.t('ob.acc.why')}</p>
 		{:else}
 			<button class="btn w-full py-4 text-lg" disabled={busy} onclick={enable}>
 				<Smiley size={24} /> {i.t('ob.notif.cta')}
