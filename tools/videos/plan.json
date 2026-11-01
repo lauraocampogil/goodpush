@@ -1,0 +1,3302 @@
+[
+ {
+  "date": "2026-11-02",
+  "slot": "Morning",
+  "theme": "discipline",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Do it even when you *don’t feel like it*.",
+    "es": "Hazlo aunque *no tengas ganas*.",
+    "fr": "Fais-le même *sans en avoir envie*."
+   }
+  ],
+  "caption": {
+   "en": "Do it even when you don’t feel like it.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Hazlo aunque no tengas ganas.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Fais-le même sans en avoir envie.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-02",
+  "slot": "Midday",
+  "theme": "discipline",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Motivation fades. *Habits* stay.",
+    "es": "La motivación se va. Los *hábitos* se quedan.",
+    "fr": "La motivation passe. Les *habitudes* restent."
+   },
+   {
+    "en": "Today is *not* up for negotiation.",
+    "es": "Hoy *no* se negocia.",
+    "fr": "Aujourd’hui, ça *ne* se négocie pas."
+   },
+   {
+    "en": "Small steps. *Every* single day.",
+    "es": "Pasos pequeños. *Todos* los días.",
+    "fr": "Des petits pas. *Chaque* jour."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-02",
+  "slot": "Evening",
+  "theme": "discipline",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "The version of you that wins *starts now*.",
+    "es": "La versión de ti que gana *empieza ahora*.",
+    "fr": "La version de toi qui gagne *commence maintenant*."
+   }
+  ],
+  "caption": {
+   "en": "The version of you that wins starts now.\n\nSave it for later 💛",
+   "es": "La versión de ti que gana empieza ahora.\n\nGuárdala para luego 💛",
+   "fr": "La version de toi qui gagne commence maintenant.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-03",
+  "slot": "Morning",
+  "theme": "study",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "One page. Then *another*.",
+    "es": "Una página. Luego *otra*.",
+    "fr": "Une page. Puis *une autre*."
+   }
+  ],
+  "caption": {
+   "en": "One page. Then another.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Una página. Luego otra.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Une page. Puis une autre.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-03",
+  "slot": "Midday",
+  "theme": "study",
+  "format": "C",
+  "hook": {
+   "en": "POV: your phone motivates you every morning",
+   "es": "POV: tu móvil te motiva cada mañana",
+   "fr": "POV : ton téléphone te motive chaque matin"
+  },
+  "phrases": [
+   {
+    "en": "Phone away. *Focus* on.",
+    "es": "Móvil lejos. *Foco* encendido.",
+    "fr": "Téléphone loin. *Focus* allumé."
+   }
+  ],
+  "caption": {
+   "en": "Phone away. Focus on.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Móvil lejos. Foco encendido.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Téléphone loin. Focus allumé.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-03",
+  "slot": "Evening",
+  "theme": "study",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Future you says *thank you*.",
+    "es": "Tu yo del futuro te dice *gracias*.",
+    "fr": "Ton toi du futur te dit *merci*."
+   }
+  ],
+  "caption": {
+   "en": "Future you says thank you.\n\nSave it for later 💛",
+   "es": "Tu yo del futuro te dice gracias.\n\nGuárdala para luego 💛",
+   "fr": "Ton toi du futur te dit merci.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-04",
+  "slot": "Morning",
+  "theme": "calm",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Breathe. Everything arrives *in its time*.",
+    "es": "Respira. Todo llega *a su tiempo*.",
+    "fr": "Respire. Tout arrive *en son temps*."
+   }
+  ],
+  "caption": {
+   "en": "Breathe. Everything arrives in its time.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Respira. Todo llega a su tiempo.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Respire. Tout arrive en son temps.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#calm #anxietyrelief #mentalhealth #motivation #dailymotivation #mindset #goodpush",
+   "es": "#calma #ansiedad #saludmental #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#calme #anxiete #santementale #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-04",
+  "slot": "Midday",
+  "theme": "calm",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "You don’t have to solve *everything* today.",
+    "es": "No tienes que resolver *todo* hoy.",
+    "fr": "Tu n’as pas à tout *régler* aujourd’hui."
+   },
+   {
+    "en": "Slow is *still* moving forward.",
+    "es": "Despacio *también* es avanzar.",
+    "fr": "Lentement, c’est *quand même* avancer."
+   },
+   {
+    "en": "This feeling is a *visitor*, not your home.",
+    "es": "Esta sensación es una *visita*, no tu casa.",
+    "fr": "Ce sentiment est un *visiteur*, pas ta maison."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#calm #anxietyrelief #mentalhealth #motivation #dailymotivation #mindset #goodpush",
+   "es": "#calma #ansiedad #saludmental #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#calme #anxiete #santementale #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-04",
+  "slot": "Evening",
+  "theme": "calm",
+  "format": "E",
+  "hook": {
+   "en": "Calm: 4 reminders you needed",
+   "es": "Calma: 4 frases que necesitabas",
+   "fr": "Calme : 4 rappels dont tu avais besoin"
+  },
+  "phrases": [
+   {
+    "en": "Rest is part of the *plan*.",
+    "es": "Descansar también es parte del *plan*.",
+    "fr": "Le repos fait partie du *plan*."
+   },
+   {
+    "en": "One thing at a time. *Just one*.",
+    "es": "Una cosa a la vez. *Solo una*.",
+    "fr": "Une chose à la fois. *Juste une*."
+   },
+   {
+    "en": "You are *safe* right now.",
+    "es": "Ahora mismo estás *a salvo*.",
+    "fr": "Là, maintenant, tu es *en sécurité*."
+   },
+   {
+    "en": "Let today be *light*.",
+    "es": "Deja que hoy sea *ligero*.",
+    "fr": "Laisse aujourd’hui être *léger*."
+   }
+  ],
+  "caption": {
+   "en": "Calm: 4 reminders you needed\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Calma: 4 frases que necesitabas\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Calme : 4 rappels dont tu avais besoin\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#calm #anxietyrelief #mentalhealth #motivation #dailymotivation #mindset #goodpush",
+   "es": "#calma #ansiedad #saludmental #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#calme #anxiete #santementale #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-05",
+  "slot": "Morning",
+  "theme": "sport",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "One more rep than *yesterday*.",
+    "es": "Una repetición más que *ayer*.",
+    "fr": "Une répétition de plus qu’*hier*."
+   }
+  ],
+  "caption": {
+   "en": "One more rep than yesterday.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Una repetición más que ayer.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Une répétition de plus qu’hier.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#gymmotivation #fitnessmotivation #football #motivation #dailymotivation #mindset #goodpush",
+   "es": "#motivaciondeportiva #gym #futbol #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationsport #salledesport #foot #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-05",
+  "slot": "Midday",
+  "theme": "sport",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Sweat now. *Shine* later.",
+    "es": "Suda ahora. *Brilla* después.",
+    "fr": "Transpire maintenant. *Brille* plus tard."
+   },
+   {
+    "en": "The body does it. The *mind* decides.",
+    "es": "El cuerpo lo hace. La *mente* decide.",
+    "fr": "Le corps exécute. Le *mental* décide."
+   },
+   {
+    "en": "Train like nobody *believes* in you.",
+    "es": "Entrena como si nadie *creyera* en ti.",
+    "fr": "Entraîne-toi comme si personne n’y *croyait*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#gymmotivation #fitnessmotivation #football #motivation #dailymotivation #mindset #goodpush",
+   "es": "#motivaciondeportiva #gym #futbol #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationsport #salledesport #foot #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-05",
+  "slot": "Evening",
+  "theme": "sport",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Bad session? Still a *session*.",
+    "es": "¿Mal entreno? Sigue siendo un *entreno*.",
+    "fr": "Mauvaise séance ? Ça reste une *séance*."
+   }
+  ],
+  "caption": {
+   "en": "Bad session? Still a session.\n\nSave it for later 💛",
+   "es": "¿Mal entreno? Sigue siendo un entreno.\n\nGuárdala para luego 💛",
+   "fr": "Mauvaise séance ? Ça reste une séance.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#gymmotivation #fitnessmotivation #football #motivation #dailymotivation #mindset #goodpush",
+   "es": "#motivaciondeportiva #gym #futbol #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationsport #salledesport #foot #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-06",
+  "slot": "Morning",
+  "theme": "build",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Build in *silence*.",
+    "es": "Construye en *silencio*.",
+    "fr": "Construis en *silence*."
+   }
+  ],
+  "caption": {
+   "en": "Build in silence.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Construye en silencio.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Construis en silence.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#entrepreneur #startup #buildinpublic #motivation #dailymotivation #mindset #goodpush",
+   "es": "#emprendedor #emprendimiento #negocios #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#entrepreneur #startup #business #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-06",
+  "slot": "Midday",
+  "theme": "build",
+  "format": "C",
+  "hook": {
+   "en": "POV: your phone motivates you every morning",
+   "es": "POV: tu móvil te motiva cada mañana",
+   "fr": "POV : ton téléphone te motive chaque matin"
+  },
+  "phrases": [
+   {
+    "en": "Ship it. Then make it *better*.",
+    "es": "Lánzalo. Luego hazlo *mejor*.",
+    "fr": "Lance-le. Puis rends-le *meilleur*."
+   }
+  ],
+  "caption": {
+   "en": "Ship it. Then make it better.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Lánzalo. Luego hazlo mejor.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Lance-le. Puis rends-le meilleur.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#entrepreneur #startup #buildinpublic #motivation #dailymotivation #mindset #goodpush",
+   "es": "#emprendedor #emprendimiento #negocios #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#entrepreneur #startup #business #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-06",
+  "slot": "Evening",
+  "theme": "build",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Every “no” is *data*.",
+    "es": "Cada “no” es *información*.",
+    "fr": "Chaque « non » est une *info*."
+   }
+  ],
+  "caption": {
+   "en": "Every “no” is data.\n\nSave it for later 💛",
+   "es": "Cada “no” es información.\n\nGuárdala para luego 💛",
+   "fr": "Chaque « non » est une info.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#entrepreneur #startup #buildinpublic #motivation #dailymotivation #mindset #goodpush",
+   "es": "#emprendedor #emprendimiento #negocios #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#entrepreneur #startup #business #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-07",
+  "slot": "Morning",
+  "theme": "selflove",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "You are *enough*. Today too.",
+    "es": "Eres *suficiente*. Hoy también.",
+    "fr": "Tu es *assez*. Aujourd’hui aussi."
+   }
+  ],
+  "caption": {
+   "en": "You are enough. Today too.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Eres suficiente. Hoy también.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Tu es assez. Aujourd’hui aussi.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#selflove #confidence #healing #motivation #dailymotivation #mindset #goodpush",
+   "es": "#amorpropio #autoestima #sanar #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#amourdesoi #confianceensoi #guerison #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-07",
+  "slot": "Midday",
+  "theme": "selflove",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Talk to yourself like someone you *love*.",
+    "es": "Háblate como a alguien que *quieres*.",
+    "fr": "Parle-toi comme à quelqu’un que tu *aimes*."
+   },
+   {
+    "en": "Your pace is *your* pace.",
+    "es": "Tu ritmo es *tu* ritmo.",
+    "fr": "Ton rythme est *ton* rythme."
+   },
+   {
+    "en": "Be proud of how far you’ve *come*.",
+    "es": "Siéntete orgullosa de todo lo que has *avanzado*.",
+    "fr": "Sois fier du chemin *parcouru*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#selflove #confidence #healing #motivation #dailymotivation #mindset #goodpush",
+   "es": "#amorpropio #autoestima #sanar #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#amourdesoi #confianceensoi #guerison #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-07",
+  "slot": "Evening",
+  "theme": "selflove",
+  "format": "E",
+  "hook": {
+   "en": "Self-love: 4 reminders you needed",
+   "es": "Amor propio: 4 frases que necesitabas",
+   "fr": "Amour de soi : 4 rappels dont tu avais besoin"
+  },
+  "phrases": [
+   {
+    "en": "You don’t need to *earn* rest.",
+    "es": "No tienes que *ganarte* el descanso.",
+    "fr": "Tu n’as pas à *mériter* le repos."
+   },
+   {
+    "en": "Mistakes don’t cancel your *worth*.",
+    "es": "Los errores no cancelan tu *valor*.",
+    "fr": "Les erreurs n’annulent pas ta *valeur*."
+   },
+   {
+    "en": "Choose *you*. Without guilt.",
+    "es": "Elígete a *ti*. Sin culpa.",
+    "fr": "Choisis-*toi*. Sans culpabilité."
+   },
+   {
+    "en": "You’re doing *better* than you think.",
+    "es": "Lo estás haciendo *mejor* de lo que crees.",
+    "fr": "Tu fais *mieux* que tu ne le penses."
+   }
+  ],
+  "caption": {
+   "en": "Self-love: 4 reminders you needed\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Amor propio: 4 frases que necesitabas\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Amour de soi : 4 rappels dont tu avais besoin\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#selflove #confidence #healing #motivation #dailymotivation #mindset #goodpush",
+   "es": "#amorpropio #autoestima #sanar #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#amourdesoi #confianceensoi #guerison #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-08",
+  "slot": "Morning",
+  "theme": "faith",
+  "format": "F",
+  "hook": {
+   "en": "Day 7 of a good push every day 🔥",
+   "es": "Día 7 recibiendo un buen empujón 🔥",
+   "fr": "Jour 7 d'un bon push chaque jour 🔥"
+  },
+  "phrases": [
+   {
+    "en": "You are not alone. You *never* were.",
+    "es": "No estás sola. *Nunca* lo estuviste.",
+    "fr": "Tu n’es pas seul. Tu ne l’as *jamais* été."
+   }
+  ],
+  "caption": {
+   "en": "You are not alone. You never were.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "No estás sola. Nunca lo estuviste.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Tu n’es pas seul. Tu ne l’as jamais été.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#gratitude #hope #faith #motivation #dailymotivation #mindset #goodpush",
+   "es": "#gratitud #esperanza #fe #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#gratitude #espoir #foi #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-08",
+  "slot": "Midday",
+  "theme": "faith",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Trust the *timing*.",
+    "es": "Confía en los *tiempos*.",
+    "fr": "Fais confiance au *timing*."
+   },
+   {
+    "en": "What is meant for you will *find* you.",
+    "es": "Lo que es para ti te va a *encontrar*.",
+    "fr": "Ce qui t’est destiné te *trouvera*."
+   },
+   {
+    "en": "Pray. Then *move*.",
+    "es": "Reza. Y luego *muévete*.",
+    "fr": "Prie. Puis *avance*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#gratitude #hope #faith #motivation #dailymotivation #mindset #goodpush",
+   "es": "#gratitud #esperanza #fe #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#gratitude #espoir #foi #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-08",
+  "slot": "Evening",
+  "theme": "faith",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Gratitude turns enough into *plenty*.",
+    "es": "La gratitud convierte lo suficiente en *abundancia*.",
+    "fr": "La gratitude change l’assez en *abondance*."
+   }
+  ],
+  "caption": {
+   "en": "Gratitude turns enough into plenty.\n\nSave it for later 💛",
+   "es": "La gratitud convierte lo suficiente en abundancia.\n\nGuárdala para luego 💛",
+   "fr": "La gratitude change l’assez en abondance.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#gratitude #hope #faith #motivation #dailymotivation #mindset #goodpush",
+   "es": "#gratitud #esperanza #fe #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#gratitude #espoir #foi #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-09",
+  "slot": "Morning",
+  "theme": "discipline",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Stop waiting. *Start* messy.",
+    "es": "Deja de esperar. *Empieza* aunque sea imperfecto.",
+    "fr": "Arrête d’attendre. *Commence*, même imparfait."
+   }
+  ],
+  "caption": {
+   "en": "Stop waiting. Start messy.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Deja de esperar. Empieza aunque sea imperfecto.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Arrête d’attendre. Commence, même imparfait.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-09",
+  "slot": "Midday",
+  "theme": "discipline",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Nobody is coming to *save* you. Good. You’ve got this.",
+    "es": "Nadie va a venir a *salvarte*. Bien. Tú puedes.",
+    "fr": "Personne ne viendra te *sauver*. Tant mieux. Tu gères."
+   },
+   {
+    "en": "Finish what you *started*.",
+    "es": "Termina lo que *empezaste*.",
+    "fr": "Termine ce que tu as *commencé*."
+   },
+   {
+    "en": "Cue the *training montage*.",
+    "es": "Que empiece el *montaje de entrenamiento*.",
+    "fr": "Lance le *montage d’entraînement*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-09",
+  "slot": "Evening",
+  "theme": "discipline",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Roll the credits on your *excuses*.",
+    "es": "Pon los créditos finales a tus *excusas*.",
+    "fr": "Lance le générique de fin de tes *excuses*."
+   }
+  ],
+  "caption": {
+   "en": "Roll the credits on your excuses.\n\nSave it for later 💛",
+   "es": "Pon los créditos finales a tus excusas.\n\nGuárdala para luego 💛",
+   "fr": "Lance le générique de fin de tes excuses.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-10",
+  "slot": "Morning",
+  "theme": "study",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "25 minutes. You can do *25 minutes*.",
+    "es": "25 minutos. Puedes con *25 minutos*.",
+    "fr": "25 minutes. Tu peux faire *25 minutes*."
+   }
+  ],
+  "caption": {
+   "en": "25 minutes. You can do 25 minutes.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "25 minutos. Puedes con 25 minutos.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "25 minutes. Tu peux faire 25 minutes.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-10",
+  "slot": "Midday",
+  "theme": "study",
+  "format": "C",
+  "hook": {
+   "en": "POV: your phone motivates you every morning",
+   "es": "POV: tu móvil te motiva cada mañana",
+   "fr": "POV : ton téléphone te motive chaque matin"
+  },
+  "phrases": [
+   {
+    "en": "Confused means you’re *learning*.",
+    "es": "Estar confundida significa que estás *aprendiendo*.",
+    "fr": "Être perdu, c’est être en train d’*apprendre*."
+   }
+  ],
+  "caption": {
+   "en": "Confused means you’re learning.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Estar confundida significa que estás aprendiendo.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Être perdu, c’est être en train d’apprendre.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-10",
+  "slot": "Evening",
+  "theme": "study",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Done is better than *perfect*.",
+    "es": "Hecho es mejor que *perfecto*.",
+    "fr": "Fait vaut mieux que *parfait*."
+   }
+  ],
+  "caption": {
+   "en": "Done is better than perfect.\n\nSave it for later 💛",
+   "es": "Hecho es mejor que perfecto.\n\nGuárdala para luego 💛",
+   "fr": "Fait vaut mieux que parfait.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-11",
+  "slot": "Morning",
+  "theme": "calm",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Not the end. Just a *scene change*.",
+    "es": "No es el final. Solo un *cambio de escena*.",
+    "fr": "Pas la fin. Juste un *changement de scène*."
+   }
+  ],
+  "caption": {
+   "en": "Not the end. Just a scene change.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "No es el final. Solo un cambio de escena.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Pas la fin. Juste un changement de scène.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#calm #anxietyrelief #mentalhealth #motivation #dailymotivation #mindset #goodpush",
+   "es": "#calma #ansiedad #saludmental #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#calme #anxiete #santementale #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-11",
+  "slot": "Midday",
+  "theme": "calm",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Your thoughts are loud, not *true*.",
+    "es": "Tus pensamientos son ruidosos, no *verdad*.",
+    "fr": "Tes pensées sont bruyantes, pas *vraies*."
+   },
+   {
+    "en": "Name five things you can *see*. You’re here.",
+    "es": "Nombra cinco cosas que *ves*. Estás aquí.",
+    "fr": "Nomme cinq choses que tu *vois*. Tu es là."
+   },
+   {
+    "en": "Tomorrow can *wait*. Rest now.",
+    "es": "Mañana puede *esperar*. Ahora descansa.",
+    "fr": "Demain peut *attendre*. Repose-toi."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#calm #anxietyrelief #mentalhealth #motivation #dailymotivation #mindset #goodpush",
+   "es": "#calma #ansiedad #saludmental #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#calme #anxiete #santementale #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-11",
+  "slot": "Evening",
+  "theme": "calm",
+  "format": "E",
+  "hook": {
+   "en": "Calm: 4 reminders you needed",
+   "es": "Calma: 4 frases que necesitabas",
+   "fr": "Calme : 4 rappels dont tu avais besoin"
+  },
+  "phrases": [
+   {
+    "en": "Screens off. *Mind off*.",
+    "es": "Pantallas fuera. *Mente fuera*.",
+    "fr": "Écrans éteints. *Tête éteinte*."
+   },
+   {
+    "en": "Notice your *breath*. That’s the whole practice.",
+    "es": "Nota tu *respiración*. Esa es toda la práctica.",
+    "fr": "Remarque ta *respiration*. C’est toute la pratique."
+   },
+   {
+    "en": "Be *here*. Not in the next thing.",
+    "es": "Está *aquí*. No en lo siguiente.",
+    "fr": "Sois *ici*. Pas dans la suite."
+   },
+   {
+    "en": "Breathe. Everything arrives *in its time*.",
+    "es": "Respira. Todo llega *a su tiempo*.",
+    "fr": "Respire. Tout arrive *en son temps*."
+   }
+  ],
+  "caption": {
+   "en": "Calm: 4 reminders you needed\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Calma: 4 frases que necesitabas\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Calme : 4 rappels dont tu avais besoin\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#calm #anxietyrelief #mentalhealth #motivation #dailymotivation #mindset #goodpush",
+   "es": "#calma #ansiedad #saludmental #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#calme #anxiete #santementale #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-12",
+  "slot": "Morning",
+  "theme": "sport",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Champions are built on *boring* days.",
+    "es": "Los campeones se hacen en los días *aburridos*.",
+    "fr": "Les champions se font les jours *ennuyeux*."
+   }
+  ],
+  "caption": {
+   "en": "Champions are built on boring days.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Los campeones se hacen en los días aburridos.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Les champions se font les jours ennuyeux.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#gymmotivation #fitnessmotivation #football #motivation #dailymotivation #mindset #goodpush",
+   "es": "#motivaciondeportiva #gym #futbol #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationsport #salledesport #foot #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-12",
+  "slot": "Midday",
+  "theme": "sport",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Lace up. The rest *follows*.",
+    "es": "Átate las zapatillas. Lo demás *viene solo*.",
+    "fr": "Lace tes chaussures. Le reste *suit*."
+   },
+   {
+    "en": "Tired is temporary. *Proud* is forever.",
+    "es": "El cansancio pasa. El *orgullo* queda.",
+    "fr": "La fatigue passe. La *fierté* reste."
+   },
+   {
+    "en": "This is the part where the *hero* gets up.",
+    "es": "Esta es la parte en la que el *héroe* se levanta.",
+    "fr": "C’est le moment où le *héros* se relève."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#gymmotivation #fitnessmotivation #football #motivation #dailymotivation #mindset #goodpush",
+   "es": "#motivaciondeportiva #gym #futbol #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationsport #salledesport #foot #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-12",
+  "slot": "Evening",
+  "theme": "sport",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Lights. Camera. *Go*.",
+    "es": "Luces. Cámara. *Acción*.",
+    "fr": "Lumière. Caméra. *Action*."
+   }
+  ],
+  "caption": {
+   "en": "Lights. Camera. Go.\n\nSave it for later 💛",
+   "es": "Luces. Cámara. Acción.\n\nGuárdala para luego 💛",
+   "fr": "Lumière. Caméra. Action.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#gymmotivation #fitnessmotivation #football #motivation #dailymotivation #mindset #goodpush",
+   "es": "#motivaciondeportiva #gym #futbol #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationsport #salledesport #foot #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-13",
+  "slot": "Morning",
+  "theme": "build",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Your idea deserves a *chance*.",
+    "es": "Tu idea merece una *oportunidad*.",
+    "fr": "Ton idée mérite sa *chance*."
+   }
+  ],
+  "caption": {
+   "en": "Your idea deserves a chance.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Tu idea merece una oportunidad.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Ton idée mérite sa chance.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#entrepreneur #startup #buildinpublic #motivation #dailymotivation #mindset #goodpush",
+   "es": "#emprendedor #emprendimiento #negocios #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#entrepreneur #startup #business #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-13",
+  "slot": "Midday",
+  "theme": "build",
+  "format": "C",
+  "hook": {
+   "en": "POV: your phone motivates you every morning",
+   "es": "POV: tu móvil te motiva cada mañana",
+   "fr": "POV : ton téléphone te motive chaque matin"
+  },
+  "phrases": [
+   {
+    "en": "Talk to *one* customer today.",
+    "es": "Habla hoy con *un* cliente.",
+    "fr": "Parle à *un* client aujourd’hui."
+   }
+  ],
+  "caption": {
+   "en": "Talk to one customer today.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Habla hoy con un cliente.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Parle à un client aujourd’hui.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#entrepreneur #startup #buildinpublic #motivation #dailymotivation #mindset #goodpush",
+   "es": "#emprendedor #emprendimiento #negocios #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#entrepreneur #startup #business #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-13",
+  "slot": "Evening",
+  "theme": "build",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Consistency beats *talent* that quits.",
+    "es": "La constancia gana al *talento* que se rinde.",
+    "fr": "La régularité bat le *talent* qui abandonne."
+   }
+  ],
+  "caption": {
+   "en": "Consistency beats talent that quits.\n\nSave it for later 💛",
+   "es": "La constancia gana al talento que se rinde.\n\nGuárdala para luego 💛",
+   "fr": "La régularité bat le talent qui abandonne.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#entrepreneur #startup #buildinpublic #motivation #dailymotivation #mindset #goodpush",
+   "es": "#emprendedor #emprendimiento #negocios #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#entrepreneur #startup #business #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-14",
+  "slot": "Morning",
+  "theme": "selflove",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "You’re the *main character*. Act like it.",
+    "es": "Eres el *protagonista*. Actúa como tal.",
+    "fr": "Tu es le *personnage principal*. Agis comme tel."
+   }
+  ],
+  "caption": {
+   "en": "You’re the main character. Act like it.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Eres el protagonista. Actúa como tal.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Tu es le personnage principal. Agis comme tel.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#selflove #confidence #healing #motivation #dailymotivation #mindset #goodpush",
+   "es": "#amorpropio #autoestima #sanar #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#amourdesoi #confianceensoi #guerison #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-14",
+  "slot": "Midday",
+  "theme": "selflove",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Underdogs make the *best* endings.",
+    "es": "Los que nadie esperaba tienen los *mejores* finales.",
+    "fr": "Les outsiders ont les *meilleures* fins."
+   },
+   {
+    "en": "Walk in like you *belong*. You do.",
+    "es": "Entra como si *pertenecieras*. Es así.",
+    "fr": "Entre comme si tu étais *à ta place*. Tu l’es."
+   },
+   {
+    "en": "Say it *out loud*.",
+    "es": "Dilo *en voz alta*.",
+    "fr": "Dis-le *à voix haute*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#selflove #confidence #healing #motivation #dailymotivation #mindset #goodpush",
+   "es": "#amorpropio #autoestima #sanar #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#amourdesoi #confianceensoi #guerison #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-14",
+  "slot": "Evening",
+  "theme": "selflove",
+  "format": "E",
+  "hook": {
+   "en": "Self-love: 4 reminders you needed",
+   "es": "Amor propio: 4 frases que necesitabas",
+   "fr": "Amour de soi : 4 rappels dont tu avais besoin"
+  },
+  "phrases": [
+   {
+    "en": "Your body is a *home*, not a project.",
+    "es": "Tu cuerpo es un *hogar*, no un proyecto.",
+    "fr": "Ton corps est une *maison*, pas un projet."
+   },
+   {
+    "en": "Thank your legs for *carrying* you.",
+    "es": "Agradece a tus piernas por *llevarte*.",
+    "fr": "Remercie tes jambes de te *porter*."
+   },
+   {
+    "en": "It hurts because it *mattered*. You’ll heal.",
+    "es": "Duele porque *importaba*. Vas a sanar.",
+    "fr": "Ça fait mal parce que ça *comptait*. Tu vas guérir."
+   },
+   {
+    "en": "Choose *you* today.",
+    "es": "Hoy elígete *a ti*.",
+    "fr": "Aujourd’hui, choisis-*toi*."
+   }
+  ],
+  "caption": {
+   "en": "Self-love: 4 reminders you needed\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Amor propio: 4 frases que necesitabas\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Amour de soi : 4 rappels dont tu avais besoin\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#selflove #confidence #healing #motivation #dailymotivation #mindset #goodpush",
+   "es": "#amorpropio #autoestima #sanar #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#amourdesoi #confianceensoi #guerison #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-15",
+  "slot": "Morning",
+  "theme": "faith",
+  "format": "F",
+  "hook": {
+   "en": "Day 14 of a good push every day 🔥",
+   "es": "Día 14 recibiendo un buen empujón 🔥",
+   "fr": "Jour 14 d'un bon push chaque jour 🔥"
+  },
+  "phrases": [
+   {
+    "en": "Hope is a *decision*.",
+    "es": "La esperanza es una *decisión*.",
+    "fr": "L’espoir est une *décision*."
+   }
+  ],
+  "caption": {
+   "en": "Hope is a decision.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "La esperanza es una decisión.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "L’espoir est une décision.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#gratitude #hope #faith #motivation #dailymotivation #mindset #goodpush",
+   "es": "#gratitud #esperanza #fe #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#gratitude #espoir #foi #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-15",
+  "slot": "Midday",
+  "theme": "faith",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "You are carried *today* too.",
+    "es": "Hoy *también* te sostienen.",
+    "fr": "Aujourd’hui *aussi*, tu es porté."
+   },
+   {
+    "en": "Peace first. *Answers* later.",
+    "es": "Primero la paz. Las *respuestas* después.",
+    "fr": "La paix d’abord. Les *réponses* après."
+   },
+   {
+    "en": "The plot twist is *you* not giving up.",
+    "es": "El giro de guion es que *tú* no te rindes.",
+    "fr": "Le rebondissement, c’est *toi* qui n’abandonnes pas."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#gratitude #hope #faith #motivation #dailymotivation #mindset #goodpush",
+   "es": "#gratitud #esperanza #fe #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#gratitude #espoir #foi #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-15",
+  "slot": "Evening",
+  "theme": "faith",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Name *three* good things today.",
+    "es": "Nombra *tres* cosas buenas de hoy.",
+    "fr": "Cite *trois* bonnes choses d’aujourd’hui."
+   }
+  ],
+  "caption": {
+   "en": "Name three good things today.\n\nSave it for later 💛",
+   "es": "Nombra tres cosas buenas de hoy.\n\nGuárdala para luego 💛",
+   "fr": "Cite trois bonnes choses d’aujourd’hui.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#gratitude #hope #faith #motivation #dailymotivation #mindset #goodpush",
+   "es": "#gratitud #esperanza #fe #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#gratitude #espoir #foi #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-16",
+  "slot": "Morning",
+  "theme": "discipline",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Make it so small you *can’t* say no.",
+    "es": "Hazlo tan pequeño que *no puedas* decir que no.",
+    "fr": "Rends-le si petit que tu *ne peux pas* dire non."
+   }
+  ],
+  "caption": {
+   "en": "Make it so small you can’t say no.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Hazlo tan pequeño que no puedas decir que no.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Rends-le si petit que tu ne peux pas dire non.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-16",
+  "slot": "Midday",
+  "theme": "discipline",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Don’t break the *chain* today.",
+    "es": "Hoy no rompas la *cadena*.",
+    "fr": "Ne casse pas la *chaîne* aujourd’hui."
+   },
+   {
+    "en": "Win the *first hour*, win the day.",
+    "es": "Gana la *primera hora*, gana el día.",
+    "fr": "Gagne la *première heure*, gagne la journée."
+   },
+   {
+    "en": "Feet on the floor. *Go*.",
+    "es": "Pies en el suelo. *Vamos*.",
+    "fr": "Les pieds par terre. *Go*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-16",
+  "slot": "Evening",
+  "theme": "discipline",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Phone in the other room. *Deep work* now.",
+    "es": "El móvil en otra habitación. *Concentración* total.",
+    "fr": "Téléphone dans l’autre pièce. *Focus* total."
+   }
+  ],
+  "caption": {
+   "en": "Phone in the other room. Deep work now.\n\nSave it for later 💛",
+   "es": "El móvil en otra habitación. Concentración total.\n\nGuárdala para luego 💛",
+   "fr": "Téléphone dans l’autre pièce. Focus total.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-17",
+  "slot": "Morning",
+  "theme": "study",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Your effort *counts*, even when nobody sees it.",
+    "es": "Tu esfuerzo *cuenta*, aunque nadie lo vea.",
+    "fr": "Ton effort *compte*, même si personne ne le voit."
+   }
+  ],
+  "caption": {
+   "en": "Your effort counts, even when nobody sees it.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Tu esfuerzo cuenta, aunque nadie lo vea.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Ton effort compte, même si personne ne le voit.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-17",
+  "slot": "Midday",
+  "theme": "study",
+  "format": "C",
+  "hook": {
+   "en": "POV: your phone motivates you every morning",
+   "es": "POV: tu móvil te motiva cada mañana",
+   "fr": "POV : ton téléphone te motive chaque matin"
+  },
+  "phrases": [
+   {
+    "en": "Start with the *hardest* one.",
+    "es": "Empieza por lo más *difícil*.",
+    "fr": "Commence par le plus *dur*."
+   }
+  ],
+  "caption": {
+   "en": "Start with the hardest one.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Empieza por lo más difícil.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Commence par le plus dur.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-17",
+  "slot": "Evening",
+  "theme": "study",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Write a day worth *rewatching*.",
+    "es": "Escribe un día que valga la pena *volver a ver*.",
+    "fr": "Écris une journée qui vaut d’être *revue*."
+   }
+  ],
+  "caption": {
+   "en": "Write a day worth rewatching.\n\nSave it for later 💛",
+   "es": "Escribe un día que valga la pena volver a ver.\n\nGuárdala para luego 💛",
+   "fr": "Écris une journée qui vaut d’être revue.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-18",
+  "slot": "Morning",
+  "theme": "calm",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "You don’t have to solve *everything* today.",
+    "es": "No tienes que resolver *todo* hoy.",
+    "fr": "Tu n’as pas à tout *régler* aujourd’hui."
+   }
+  ],
+  "caption": {
+   "en": "You don’t have to solve everything today.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "No tienes que resolver todo hoy.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Tu n’as pas à tout régler aujourd’hui.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#calm #anxietyrelief #mentalhealth #motivation #dailymotivation #mindset #goodpush",
+   "es": "#calma #ansiedad #saludmental #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#calme #anxiete #santementale #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-18",
+  "slot": "Midday",
+  "theme": "calm",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Slow is *still* moving forward.",
+    "es": "Despacio *también* es avanzar.",
+    "fr": "Lentement, c’est *quand même* avancer."
+   },
+   {
+    "en": "This feeling is a *visitor*, not your home.",
+    "es": "Esta sensación es una *visita*, no tu casa.",
+    "fr": "Ce sentiment est un *visiteur*, pas ta maison."
+   },
+   {
+    "en": "Rest is part of the *plan*.",
+    "es": "Descansar también es parte del *plan*.",
+    "fr": "Le repos fait partie du *plan*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#calm #anxietyrelief #mentalhealth #motivation #dailymotivation #mindset #goodpush",
+   "es": "#calma #ansiedad #saludmental #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#calme #anxiete #santementale #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-18",
+  "slot": "Evening",
+  "theme": "calm",
+  "format": "E",
+  "hook": {
+   "en": "Calm: 4 reminders you needed",
+   "es": "Calma: 4 frases que necesitabas",
+   "fr": "Calme : 4 rappels dont tu avais besoin"
+  },
+  "phrases": [
+   {
+    "en": "One thing at a time. *Just one*.",
+    "es": "Una cosa a la vez. *Solo una*.",
+    "fr": "Une chose à la fois. *Juste une*."
+   },
+   {
+    "en": "You are *safe* right now.",
+    "es": "Ahora mismo estás *a salvo*.",
+    "fr": "Là, maintenant, tu es *en sécurité*."
+   },
+   {
+    "en": "Let today be *light*.",
+    "es": "Deja que hoy sea *ligero*.",
+    "fr": "Laisse aujourd’hui être *léger*."
+   },
+   {
+    "en": "Not the end. Just a *scene change*.",
+    "es": "No es el final. Solo un *cambio de escena*.",
+    "fr": "Pas la fin. Juste un *changement de scène*."
+   }
+  ],
+  "caption": {
+   "en": "Calm: 4 reminders you needed\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Calma: 4 frases que necesitabas\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Calme : 4 rappels dont tu avais besoin\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#calm #anxietyrelief #mentalhealth #motivation #dailymotivation #mindset #goodpush",
+   "es": "#calma #ansiedad #saludmental #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#calme #anxiete #santementale #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-19",
+  "slot": "Morning",
+  "theme": "sport",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Every touch in training is a *goal* later.",
+    "es": "Cada toque en el entreno es un *gol* después.",
+    "fr": "Chaque touche à l’entraînement est un *but* plus tard."
+   }
+  ],
+  "caption": {
+   "en": "Every touch in training is a goal later.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Cada toque en el entreno es un gol después.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Chaque touche à l’entraînement est un but plus tard.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#gymmotivation #fitnessmotivation #football #motivation #dailymotivation #mindset #goodpush",
+   "es": "#motivaciondeportiva #gym #futbol #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationsport #salledesport #foot #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-19",
+  "slot": "Midday",
+  "theme": "sport",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Lose the ball? Win it *back*.",
+    "es": "¿Pierdes el balón? *Recupéralo*.",
+    "fr": "Tu perds le ballon ? *Récupère-le*."
+   },
+   {
+    "en": "Play for the *badge* on the front.",
+    "es": "Juega por el *escudo* del pecho.",
+    "fr": "Joue pour l’*écusson* sur le maillot."
+   },
+   {
+    "en": "Miss the shot? Take the *next* one.",
+    "es": "¿Fallas el tiro? Lanza el *siguiente*.",
+    "fr": "Tu rates le tir ? Prends le *suivant*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#gymmotivation #fitnessmotivation #football #motivation #dailymotivation #mindset #goodpush",
+   "es": "#motivaciondeportiva #gym #futbol #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationsport #salledesport #foot #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-19",
+  "slot": "Evening",
+  "theme": "sport",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Defense is *effort*. Effort is free.",
+    "es": "La defensa es *esfuerzo*. Y el esfuerzo es gratis.",
+    "fr": "La défense, c’est de l’*effort*. Et l’effort est gratuit."
+   }
+  ],
+  "caption": {
+   "en": "Defense is effort. Effort is free.\n\nSave it for later 💛",
+   "es": "La defensa es esfuerzo. Y el esfuerzo es gratis.\n\nGuárdala para luego 💛",
+   "fr": "La défense, c’est de l’effort. Et l’effort est gratuit.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#gymmotivation #fitnessmotivation #football #motivation #dailymotivation #mindset #goodpush",
+   "es": "#motivaciondeportiva #gym #futbol #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationsport #salledesport #foot #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-20",
+  "slot": "Morning",
+  "theme": "build",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Nobody knows what they’re doing. *Start* anyway.",
+    "es": "Nadie sabe lo que hace. *Empieza* igual.",
+    "fr": "Personne ne sait vraiment. *Commence* quand même."
+   }
+  ],
+  "caption": {
+   "en": "Nobody knows what they’re doing. Start anyway.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Nadie sabe lo que hace. Empieza igual.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Personne ne sait vraiment. Commence quand même.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#entrepreneur #startup #buildinpublic #motivation #dailymotivation #mindset #goodpush",
+   "es": "#emprendedor #emprendimiento #negocios #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#entrepreneur #startup #business #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-20",
+  "slot": "Midday",
+  "theme": "build",
+  "format": "C",
+  "hook": {
+   "en": "POV: your phone motivates you every morning",
+   "es": "POV: tu móvil te motiva cada mañana",
+   "fr": "POV : ton téléphone te motive chaque matin"
+  },
+  "phrases": [
+   {
+    "en": "Bet on *yourself*.",
+    "es": "Apuesta por *ti*.",
+    "fr": "Parie sur *toi*."
+   }
+  ],
+  "caption": {
+   "en": "Bet on yourself.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Apuesta por ti.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Parie sur toi.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#entrepreneur #startup #buildinpublic #motivation #dailymotivation #mindset #goodpush",
+   "es": "#emprendedor #emprendimiento #negocios #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#entrepreneur #startup #business #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-20",
+  "slot": "Evening",
+  "theme": "build",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Every great story has a *hard* second act.",
+    "es": "Toda gran historia tiene un segundo acto *difícil*.",
+    "fr": "Toute grande histoire a un deuxième acte *difficile*."
+   }
+  ],
+  "caption": {
+   "en": "Every great story has a hard second act.\n\nSave it for later 💛",
+   "es": "Toda gran historia tiene un segundo acto difícil.\n\nGuárdala para luego 💛",
+   "fr": "Toute grande histoire a un deuxième acte difficile.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#entrepreneur #startup #buildinpublic #motivation #dailymotivation #mindset #goodpush",
+   "es": "#emprendedor #emprendimiento #negocios #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#entrepreneur #startup #business #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-21",
+  "slot": "Morning",
+  "theme": "selflove",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "You are *enough*. Today too.",
+    "es": "Eres *suficiente*. Hoy también.",
+    "fr": "Tu es *assez*. Aujourd’hui aussi."
+   }
+  ],
+  "caption": {
+   "en": "You are enough. Today too.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Eres suficiente. Hoy también.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Tu es assez. Aujourd’hui aussi.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#selflove #confidence #healing #motivation #dailymotivation #mindset #goodpush",
+   "es": "#amorpropio #autoestima #sanar #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#amourdesoi #confianceensoi #guerison #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-21",
+  "slot": "Midday",
+  "theme": "selflove",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Talk to yourself like someone you *love*.",
+    "es": "Háblate como a alguien que *quieres*.",
+    "fr": "Parle-toi comme à quelqu’un que tu *aimes*."
+   },
+   {
+    "en": "Your pace is *your* pace.",
+    "es": "Tu ritmo es *tu* ritmo.",
+    "fr": "Ton rythme est *ton* rythme."
+   },
+   {
+    "en": "Be proud of how far you’ve *come*.",
+    "es": "Siéntete orgullosa de todo lo que has *avanzado*.",
+    "fr": "Sois fier du chemin *parcouru*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#selflove #confidence #healing #motivation #dailymotivation #mindset #goodpush",
+   "es": "#amorpropio #autoestima #sanar #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#amourdesoi #confianceensoi #guerison #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-21",
+  "slot": "Evening",
+  "theme": "selflove",
+  "format": "E",
+  "hook": {
+   "en": "Self-love: 4 reminders you needed",
+   "es": "Amor propio: 4 frases que necesitabas",
+   "fr": "Amour de soi : 4 rappels dont tu avais besoin"
+  },
+  "phrases": [
+   {
+    "en": "You don’t need to *earn* rest.",
+    "es": "No tienes que *ganarte* el descanso.",
+    "fr": "Tu n’as pas à *mériter* le repos."
+   },
+   {
+    "en": "Mistakes don’t cancel your *worth*.",
+    "es": "Los errores no cancelan tu *valor*.",
+    "fr": "Les erreurs n’annulent pas ta *valeur*."
+   },
+   {
+    "en": "Choose *you*. Without guilt.",
+    "es": "Elígete a *ti*. Sin culpa.",
+    "fr": "Choisis-*toi*. Sans culpabilité."
+   },
+   {
+    "en": "You’re doing *better* than you think.",
+    "es": "Lo estás haciendo *mejor* de lo que crees.",
+    "fr": "Tu fais *mieux* que tu ne le penses."
+   }
+  ],
+  "caption": {
+   "en": "Self-love: 4 reminders you needed\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Amor propio: 4 frases que necesitabas\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Amour de soi : 4 rappels dont tu avais besoin\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#selflove #confidence #healing #motivation #dailymotivation #mindset #goodpush",
+   "es": "#amorpropio #autoestima #sanar #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#amourdesoi #confianceensoi #guerison #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-22",
+  "slot": "Morning",
+  "theme": "faith",
+  "format": "F",
+  "hook": {
+   "en": "Day 21 of a good push every day 🔥",
+   "es": "Día 21 recibiendo un buen empujón 🔥",
+   "fr": "Jour 21 d'un bon push chaque jour 🔥"
+  },
+  "phrases": [
+   {
+    "en": "Thank *someone* today.",
+    "es": "Dale las gracias a *alguien* hoy.",
+    "fr": "Remercie *quelqu’un* aujourd’hui."
+   }
+  ],
+  "caption": {
+   "en": "Thank someone today.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Dale las gracias a alguien hoy.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Remercie quelqu’un aujourd’hui.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#gratitude #hope #faith #motivation #dailymotivation #mindset #goodpush",
+   "es": "#gratitud #esperanza #fe #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#gratitude #espoir #foi #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-22",
+  "slot": "Midday",
+  "theme": "faith",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Better days are *coming*.",
+    "es": "Vienen días *mejores*.",
+    "fr": "De meilleurs jours *arrivent*."
+   },
+   {
+    "en": "Even the longest night *ends*.",
+    "es": "Hasta la noche más larga *termina*.",
+    "fr": "Même la plus longue nuit *finit*."
+   },
+   {
+    "en": "Take a quiet *minute* for your heart.",
+    "es": "Regálale un *minuto* de silencio a tu corazón.",
+    "fr": "Offre une *minute* de silence à ton cœur."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#gratitude #hope #faith #motivation #dailymotivation #mindset #goodpush",
+   "es": "#gratitud #esperanza #fe #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#gratitude #espoir #foi #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-22",
+  "slot": "Evening",
+  "theme": "faith",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Give it *up*. Then keep walking.",
+    "es": "*Entrégalo*. Y sigue caminando.",
+    "fr": "*Confie-le*. Puis continue d’avancer."
+   }
+  ],
+  "caption": {
+   "en": "Give it up. Then keep walking.\n\nSave it for later 💛",
+   "es": "Entrégalo. Y sigue caminando.\n\nGuárdala para luego 💛",
+   "fr": "Confie-le. Puis continue d’avancer.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#gratitude #hope #faith #motivation #dailymotivation #mindset #goodpush",
+   "es": "#gratitud #esperanza #fe #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#gratitude #espoir #foi #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-23",
+  "slot": "Morning",
+  "theme": "discipline",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "One tab. One task. *One win*.",
+    "es": "Una pestaña. Una tarea. *Una victoria*.",
+    "fr": "Un onglet. Une tâche. *Une victoire*."
+   }
+  ],
+  "caption": {
+   "en": "One tab. One task. One win.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Una pestaña. Una tarea. Una victoria.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Un onglet. Une tâche. Une victoire.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-23",
+  "slot": "Midday",
+  "theme": "discipline",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Do it even when you *don’t feel like it*.",
+    "es": "Hazlo aunque *no tengas ganas*.",
+    "fr": "Fais-le même *sans en avoir envie*."
+   },
+   {
+    "en": "Motivation fades. *Habits* stay.",
+    "es": "La motivación se va. Los *hábitos* se quedan.",
+    "fr": "La motivation passe. Les *habitudes* restent."
+   },
+   {
+    "en": "Today is *not* up for negotiation.",
+    "es": "Hoy *no* se negocia.",
+    "fr": "Aujourd’hui, ça *ne* se négocie pas."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-23",
+  "slot": "Evening",
+  "theme": "discipline",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Small steps. *Every* single day.",
+    "es": "Pasos pequeños. *Todos* los días.",
+    "fr": "Des petits pas. *Chaque* jour."
+   }
+  ],
+  "caption": {
+   "en": "Small steps. Every single day.\n\nSave it for later 💛",
+   "es": "Pasos pequeños. Todos los días.\n\nGuárdala para luego 💛",
+   "fr": "Des petits pas. Chaque jour.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-24",
+  "slot": "Morning",
+  "theme": "study",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "You know more than you *think*.",
+    "es": "Sabes más de lo que *crees*.",
+    "fr": "Tu en sais plus que tu ne *crois*."
+   }
+  ],
+  "caption": {
+   "en": "You know more than you think.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Sabes más de lo que crees.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Tu en sais plus que tu ne crois.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-24",
+  "slot": "Midday",
+  "theme": "study",
+  "format": "C",
+  "hook": {
+   "en": "POV: your phone motivates you every morning",
+   "es": "POV: tu móvil te motiva cada mañana",
+   "fr": "POV : ton téléphone te motive chaque matin"
+  },
+  "phrases": [
+   {
+    "en": "One more chapter. Then *rest*.",
+    "es": "Un capítulo más. Luego *descansa*.",
+    "fr": "Encore un chapitre. Puis *repos*."
+   }
+  ],
+  "caption": {
+   "en": "One more chapter. Then rest.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Un capítulo más. Luego descansa.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Encore un chapitre. Puis repos.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-24",
+  "slot": "Evening",
+  "theme": "study",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Speak badly *today*. Speak well later.",
+    "es": "Habla mal *hoy*. Hablarás bien después.",
+    "fr": "Parle mal *aujourd’hui*. Tu parleras bien plus tard."
+   }
+  ],
+  "caption": {
+   "en": "Speak badly today. Speak well later.\n\nSave it for later 💛",
+   "es": "Habla mal hoy. Hablarás bien después.\n\nGuárdala para luego 💛",
+   "fr": "Parle mal aujourd’hui. Tu parleras bien plus tard.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-25",
+  "slot": "Morning",
+  "theme": "calm",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Your thoughts are loud, not *true*.",
+    "es": "Tus pensamientos son ruidosos, no *verdad*.",
+    "fr": "Tes pensées sont bruyantes, pas *vraies*."
+   }
+  ],
+  "caption": {
+   "en": "Your thoughts are loud, not true.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Tus pensamientos son ruidosos, no verdad.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Tes pensées sont bruyantes, pas vraies.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#calm #anxietyrelief #mentalhealth #motivation #dailymotivation #mindset #goodpush",
+   "es": "#calma #ansiedad #saludmental #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#calme #anxiete #santementale #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-25",
+  "slot": "Midday",
+  "theme": "calm",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Name five things you can *see*. You’re here.",
+    "es": "Nombra cinco cosas que *ves*. Estás aquí.",
+    "fr": "Nomme cinq choses que tu *vois*. Tu es là."
+   },
+   {
+    "en": "Tomorrow can *wait*. Rest now.",
+    "es": "Mañana puede *esperar*. Ahora descansa.",
+    "fr": "Demain peut *attendre*. Repose-toi."
+   },
+   {
+    "en": "Screens off. *Mind off*.",
+    "es": "Pantallas fuera. *Mente fuera*.",
+    "fr": "Écrans éteints. *Tête éteinte*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#calm #anxietyrelief #mentalhealth #motivation #dailymotivation #mindset #goodpush",
+   "es": "#calma #ansiedad #saludmental #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#calme #anxiete #santementale #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-25",
+  "slot": "Evening",
+  "theme": "calm",
+  "format": "E",
+  "hook": {
+   "en": "Calm: 4 reminders you needed",
+   "es": "Calma: 4 frases que necesitabas",
+   "fr": "Calme : 4 rappels dont tu avais besoin"
+  },
+  "phrases": [
+   {
+    "en": "Notice your *breath*. That’s the whole practice.",
+    "es": "Nota tu *respiración*. Esa es toda la práctica.",
+    "fr": "Remarque ta *respiration*. C’est toute la pratique."
+   },
+   {
+    "en": "Be *here*. Not in the next thing.",
+    "es": "Está *aquí*. No en lo siguiente.",
+    "fr": "Sois *ici*. Pas dans la suite."
+   },
+   {
+    "en": "Breathe. Everything arrives *in its time*.",
+    "es": "Respira. Todo llega *a su tiempo*.",
+    "fr": "Respire. Tout arrive *en son temps*."
+   },
+   {
+    "en": "You don’t have to solve *everything* today.",
+    "es": "No tienes que resolver *todo* hoy.",
+    "fr": "Tu n’as pas à tout *régler* aujourd’hui."
+   }
+  ],
+  "caption": {
+   "en": "Calm: 4 reminders you needed\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Calma: 4 frases que necesitabas\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Calme : 4 rappels dont tu avais besoin\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#calm #anxietyrelief #mentalhealth #motivation #dailymotivation #mindset #goodpush",
+   "es": "#calma #ansiedad #saludmental #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#calme #anxiete #santementale #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-26",
+  "slot": "Morning",
+  "theme": "sport",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Next point. *Only* the next point.",
+    "es": "Siguiente punto. *Solo* el siguiente.",
+    "fr": "Point suivant. *Seulement* le suivant."
+   }
+  ],
+  "caption": {
+   "en": "Next point. Only the next point.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Siguiente punto. Solo el siguiente.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Point suivant. Seulement le suivant.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#gymmotivation #fitnessmotivation #football #motivation #dailymotivation #mindset #goodpush",
+   "es": "#motivaciondeportiva #gym #futbol #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationsport #salledesport #foot #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-26",
+  "slot": "Midday",
+  "theme": "sport",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Breathe between points. *Reset*.",
+    "es": "Respira entre puntos. *Reinicia*.",
+    "fr": "Respire entre les points. *Reset*."
+   },
+   {
+    "en": "Slow kilometres are still *kilometres*.",
+    "es": "Los kilómetros lentos también son *kilómetros*.",
+    "fr": "Les kilomètres lents restent des *kilomètres*."
+   },
+   {
+    "en": "The first kilometre lies. *Keep going*.",
+    "es": "El primer kilómetro miente. *Sigue*.",
+    "fr": "Le premier kilomètre ment. *Continue*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#gymmotivation #fitnessmotivation #football #motivation #dailymotivation #mindset #goodpush",
+   "es": "#motivaciondeportiva #gym #futbol #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationsport #salledesport #foot #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-26",
+  "slot": "Evening",
+  "theme": "sport",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Show up. Even for a *short* session.",
+    "es": "Ve. Aunque sea una sesión *corta*.",
+    "fr": "Vas-y. Même pour une séance *courte*."
+   }
+  ],
+  "caption": {
+   "en": "Show up. Even for a short session.\n\nSave it for later 💛",
+   "es": "Ve. Aunque sea una sesión corta.\n\nGuárdala para luego 💛",
+   "fr": "Vas-y. Même pour une séance courte.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#gymmotivation #fitnessmotivation #football #motivation #dailymotivation #mindset #goodpush",
+   "es": "#motivaciondeportiva #gym #futbol #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationsport #salledesport #foot #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-27",
+  "slot": "Morning",
+  "theme": "build",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Talk to *one* user today.",
+    "es": "Habla con *un* usuario hoy.",
+    "fr": "Parle à *un* utilisateur aujourd’hui."
+   }
+  ],
+  "caption": {
+   "en": "Talk to one user today.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Habla con un usuario hoy.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Parle à un utilisateur aujourd’hui.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#entrepreneur #startup #buildinpublic #motivation #dailymotivation #mindset #goodpush",
+   "es": "#emprendedor #emprendimiento #negocios #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#entrepreneur #startup #business #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-27",
+  "slot": "Midday",
+  "theme": "build",
+  "format": "C",
+  "hook": {
+   "en": "POV: your phone motivates you every morning",
+   "es": "POV: tu móvil te motiva cada mañana",
+   "fr": "POV : ton téléphone te motive chaque matin"
+  },
+  "phrases": [
+   {
+    "en": "Ship it. *Then* make it pretty.",
+    "es": "Lánzalo. *Después* lo pones bonito.",
+    "fr": "Lance-le. *Ensuite* rends-le joli."
+   }
+  ],
+  "caption": {
+   "en": "Ship it. Then make it pretty.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Lánzalo. Después lo pones bonito.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Lance-le. Ensuite rends-le joli.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#entrepreneur #startup #buildinpublic #motivation #dailymotivation #mindset #goodpush",
+   "es": "#emprendedor #emprendimiento #negocios #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#entrepreneur #startup #business #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-27",
+  "slot": "Evening",
+  "theme": "build",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Post the *imperfect* one.",
+    "es": "Publica el *imperfecto*.",
+    "fr": "Publie le *imparfait*."
+   }
+  ],
+  "caption": {
+   "en": "Post the imperfect one.\n\nSave it for later 💛",
+   "es": "Publica el imperfecto.\n\nGuárdala para luego 💛",
+   "fr": "Publie le imparfait.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#entrepreneur #startup #buildinpublic #motivation #dailymotivation #mindset #goodpush",
+   "es": "#emprendedor #emprendimiento #negocios #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#entrepreneur #startup #business #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-28",
+  "slot": "Morning",
+  "theme": "selflove",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "You’re the *main character*. Act like it.",
+    "es": "Eres el *protagonista*. Actúa como tal.",
+    "fr": "Tu es le *personnage principal*. Agis comme tel."
+   }
+  ],
+  "caption": {
+   "en": "You’re the main character. Act like it.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Eres el protagonista. Actúa como tal.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Tu es le personnage principal. Agis comme tel.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#selflove #confidence #healing #motivation #dailymotivation #mindset #goodpush",
+   "es": "#amorpropio #autoestima #sanar #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#amourdesoi #confianceensoi #guerison #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-28",
+  "slot": "Midday",
+  "theme": "selflove",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Underdogs make the *best* endings.",
+    "es": "Los que nadie esperaba tienen los *mejores* finales.",
+    "fr": "Les outsiders ont les *meilleures* fins."
+   },
+   {
+    "en": "Walk in like you *belong*. You do.",
+    "es": "Entra como si *pertenecieras*. Es así.",
+    "fr": "Entre comme si tu étais *à ta place*. Tu l’es."
+   },
+   {
+    "en": "Say it *out loud*.",
+    "es": "Dilo *en voz alta*.",
+    "fr": "Dis-le *à voix haute*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#selflove #confidence #healing #motivation #dailymotivation #mindset #goodpush",
+   "es": "#amorpropio #autoestima #sanar #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#amourdesoi #confianceensoi #guerison #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-28",
+  "slot": "Evening",
+  "theme": "selflove",
+  "format": "E",
+  "hook": {
+   "en": "Self-love: 4 reminders you needed",
+   "es": "Amor propio: 4 frases que necesitabas",
+   "fr": "Amour de soi : 4 rappels dont tu avais besoin"
+  },
+  "phrases": [
+   {
+    "en": "Your body is a *home*, not a project.",
+    "es": "Tu cuerpo es un *hogar*, no un proyecto.",
+    "fr": "Ton corps est une *maison*, pas un projet."
+   },
+   {
+    "en": "Thank your legs for *carrying* you.",
+    "es": "Agradece a tus piernas por *llevarte*.",
+    "fr": "Remercie tes jambes de te *porter*."
+   },
+   {
+    "en": "It hurts because it *mattered*. You’ll heal.",
+    "es": "Duele porque *importaba*. Vas a sanar.",
+    "fr": "Ça fait mal parce que ça *comptait*. Tu vas guérir."
+   },
+   {
+    "en": "Choose *you* today.",
+    "es": "Hoy elígete *a ti*.",
+    "fr": "Aujourd’hui, choisis-*toi*."
+   }
+  ],
+  "caption": {
+   "en": "Self-love: 4 reminders you needed\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Amor propio: 4 frases que necesitabas\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Amour de soi : 4 rappels dont tu avais besoin\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#selflove #confidence #healing #motivation #dailymotivation #mindset #goodpush",
+   "es": "#amorpropio #autoestima #sanar #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#amourdesoi #confianceensoi #guerison #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-29",
+  "slot": "Morning",
+  "theme": "faith",
+  "format": "F",
+  "hook": {
+   "en": "Day 28 of a good push every day 🔥",
+   "es": "Día 28 recibiendo un buen empujón 🔥",
+   "fr": "Jour 28 d'un bon push chaque jour 🔥"
+  },
+  "phrases": [
+   {
+    "en": "You are not alone. You *never* were.",
+    "es": "No estás sola. *Nunca* lo estuviste.",
+    "fr": "Tu n’es pas seul. Tu ne l’as *jamais* été."
+   }
+  ],
+  "caption": {
+   "en": "You are not alone. You never were.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "No estás sola. Nunca lo estuviste.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Tu n’es pas seul. Tu ne l’as jamais été.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#gratitude #hope #faith #motivation #dailymotivation #mindset #goodpush",
+   "es": "#gratitud #esperanza #fe #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#gratitude #espoir #foi #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-29",
+  "slot": "Midday",
+  "theme": "faith",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Trust the *timing*.",
+    "es": "Confía en los *tiempos*.",
+    "fr": "Fais confiance au *timing*."
+   },
+   {
+    "en": "What is meant for you will *find* you.",
+    "es": "Lo que es para ti te va a *encontrar*.",
+    "fr": "Ce qui t’est destiné te *trouvera*."
+   },
+   {
+    "en": "Pray. Then *move*.",
+    "es": "Reza. Y luego *muévete*.",
+    "fr": "Prie. Puis *avance*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#gratitude #hope #faith #motivation #dailymotivation #mindset #goodpush",
+   "es": "#gratitud #esperanza #fe #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#gratitude #espoir #foi #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-29",
+  "slot": "Evening",
+  "theme": "faith",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Gratitude turns enough into *plenty*.",
+    "es": "La gratitud convierte lo suficiente en *abundancia*.",
+    "fr": "La gratitude change l’assez en *abondance*."
+   }
+  ],
+  "caption": {
+   "en": "Gratitude turns enough into plenty.\n\nSave it for later 💛",
+   "es": "La gratitud convierte lo suficiente en abundancia.\n\nGuárdala para luego 💛",
+   "fr": "La gratitude change l’assez en abondance.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#gratitude #hope #faith #motivation #dailymotivation #mindset #goodpush",
+   "es": "#gratitud #esperanza #fe #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#gratitude #espoir #foi #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-11-30",
+  "slot": "Morning",
+  "theme": "discipline",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "The version of you that wins *starts now*.",
+    "es": "La versión de ti que gana *empieza ahora*.",
+    "fr": "La version de toi qui gagne *commence maintenant*."
+   }
+  ],
+  "caption": {
+   "en": "The version of you that wins starts now.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "La versión de ti que gana empieza ahora.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "La version de toi qui gagne commence maintenant.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-11-30",
+  "slot": "Midday",
+  "theme": "discipline",
+  "format": "B",
+  "hook": {
+   "en": "Which one do you need today? 1, 2 or 3",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3"
+  },
+  "phrases": [
+   {
+    "en": "Stop waiting. *Start* messy.",
+    "es": "Deja de esperar. *Empieza* aunque sea imperfecto.",
+    "fr": "Arrête d’attendre. *Commence*, même imparfait."
+   },
+   {
+    "en": "Nobody is coming to *save* you. Good. You’ve got this.",
+    "es": "Nadie va a venir a *salvarte*. Bien. Tú puedes.",
+    "fr": "Personne ne viendra te *sauver*. Tant mieux. Tu gères."
+   },
+   {
+    "en": "Finish what you *started*.",
+    "es": "Termina lo que *empezaste*.",
+    "fr": "Termine ce que tu as *commencé*."
+   }
+  ],
+  "caption": {
+   "en": "Which one do you need today? 1, 2 or 3\n\nComment your number 👇",
+   "es": "¿Cuál necesitas hoy? 1, 2 o 3\n\nComenta tu número 👇",
+   "fr": "Lequel il te faut aujourd'hui ? 1, 2 ou 3\n\nCommente ton numéro 👇"
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-11-30",
+  "slot": "Evening",
+  "theme": "discipline",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Cue the *training montage*.",
+    "es": "Que empiece el *montaje de entrenamiento*.",
+    "fr": "Lance le *montage d’entraînement*."
+   }
+  ],
+  "caption": {
+   "en": "Cue the training montage.\n\nSave it for later 💛",
+   "es": "Que empiece el montaje de entrenamiento.\n\nGuárdala para luego 💛",
+   "fr": "Lance le montage d’entraînement.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#discipline #habits #selfimprovement #motivation #dailymotivation #mindset #goodpush",
+   "es": "#disciplina #habitos #superacion #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#discipline #habitudes #developpementpersonnel #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ },
+ {
+  "date": "2026-12-01",
+  "slot": "Morning",
+  "theme": "study",
+  "format": "A",
+  "hook": {
+   "en": "Your push for today 🔔",
+   "es": "Tu push de hoy 🔔",
+   "fr": "Ton push du jour 🔔"
+  },
+  "phrases": [
+   {
+    "en": "Ten new words. *Every* day.",
+    "es": "Diez palabras nuevas. *Cada* día.",
+    "fr": "Dix nouveaux mots. *Chaque* jour."
+   }
+  ],
+  "caption": {
+   "en": "Ten new words. Every day.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Diez palabras nuevas. Cada día.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Dix nouveaux mots. Chaque jour.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "14:00 (8:00 New York)",
+   "es": "08:00",
+   "fr": "07:30"
+  }
+ },
+ {
+  "date": "2026-12-01",
+  "slot": "Midday",
+  "theme": "study",
+  "format": "C",
+  "hook": {
+   "en": "POV: your phone motivates you every morning",
+   "es": "POV: tu móvil te motiva cada mañana",
+   "fr": "POV : ton téléphone te motive chaque matin"
+  },
+  "phrases": [
+   {
+    "en": "Future you is *proud* of this all-nighter.",
+    "es": "Tu yo del futuro está *orgulloso* de esto.",
+    "fr": "Le toi du futur est *fier* de ça."
+   }
+  ],
+  "caption": {
+   "en": "Future you is proud of this all-nighter.\n\nGet one every day on your lock screen — link in bio. 14 days free.",
+   "es": "Tu yo del futuro está orgulloso de esto.\n\nRecibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.",
+   "fr": "Le toi du futur est fier de ça.\n\nReçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits."
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "18:00 (12:00 New York)",
+   "es": "14:00",
+   "fr": "12:30"
+  }
+ },
+ {
+  "date": "2026-12-01",
+  "slot": "Evening",
+  "theme": "study",
+  "format": "D",
+  "hook": {
+   "en": "Read this before you give up",
+   "es": "Lee esto antes de rendirte",
+   "fr": "Lis ça avant d'abandonner"
+  },
+  "phrases": [
+   {
+    "en": "Go to class. *Half* the work is showing up.",
+    "es": "Ve a clase. *La mitad* del trabajo es ir.",
+    "fr": "Va en cours. *La moitié* du travail, c’est d’y être."
+   }
+  ],
+  "caption": {
+   "en": "Go to class. Half the work is showing up.\n\nSave it for later 💛",
+   "es": "Ve a clase. La mitad del trabajo es ir.\n\nGuárdala para luego 💛",
+   "fr": "Va en cours. La moitié du travail, c’est d’y être.\n\nGarde-la pour plus tard 💛"
+  },
+  "hashtags": {
+   "en": "#studymotivation #studytok #exams #motivation #dailymotivation #mindset #goodpush",
+   "es": "#estudiar #motivacionestudio #examenes #motivación #frasesmotivadoras #mentalidad #goodpush",
+   "fr": "#motivationetudes #etudiant #examens #motivation #citationdujour #mindset #goodpush"
+  },
+  "times": {
+   "en": "23:00 (17:00 New York)",
+   "es": "21:00",
+   "fr": "20:30"
+  }
+ }
+]
