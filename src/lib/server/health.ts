@@ -11,6 +11,7 @@ import { PUBLIC_POSTHOG_KEY, PUBLIC_SENTRY_DSN, PUBLIC_SITE_URL, PUBLIC_SUPABASE
 import { db } from './supabase.ts';
 import { stripe } from './stripe.ts';
 import { pushReady } from './webpush.ts';
+import { platformReady, tiktokDirect } from './social.ts';
 
 /**
  * Live checks of every piece GoodPush needs. Nothing secret is returned — only ok / missing / error.
@@ -78,6 +79,27 @@ export async function healthChecks(): Promise<Check[]> {
 		cron('goodpush-hourly-send', 'Envío de frases cada hora', 'SQL en Supabase', 'Supabase → SQL (bloque 1 de cron.sql)'),
 		cron('goodpush-daily-quotes', 'Citas de la actualidad y películas (IA, diario)', 'necesita ANTHROPIC_API_KEY', 'Supabase → SQL (bloque 2 de cron.sql)'),
 		cron('goodpush-weekly-newsletter', 'Newsletter semanal (domingo)', 'necesita Brevo', 'Supabase → SQL (bloque 3 de cron.sql)'),
+		cron('goodpush-social', 'Publicación en Instagram + TikTok (cada 10 min)', 'SQL en Supabase', 'Supabase → SQL (bloque 4 de cron.sql)'),
+		...(['instagram', 'tiktok'] as const).map((pl) =>
+			run({ id: `social:${pl}`, group: 'Redes sociales', label: pl === 'instagram' ? 'Instagram (3 cuentas)' : 'TikTok (3 cuentas)', fix: pl === 'instagram' ? 'Vercel → INSTAGRAM_APP_ID + INSTAGRAM_APP_SECRET, luego /admin/social' : 'Vercel → TIKTOK_CLIENT_KEY + TIKTOK_CLIENT_SECRET, luego /admin/social' }, async () => {
+				if (!platformReady(pl)) return { status: 'missing', detail: 'Faltan las claves de la app' };
+				if (!supabase) return { status: 'missing' };
+				const { data } = await supabase.from('social_accounts').select('lang,username').eq('platform', pl);
+				const n = data?.length ?? 0;
+				const mode = pl === 'tiktok' ? (tiktokDirect() ? ' · publica directo' : ' · modo borrador') : '';
+				return { status: n === 3 ? 'ok' : n ? 'error' : 'missing', detail: `${n}/3 conectadas${n ? ': ' + data!.map((a) => `${a.lang} @${a.username}`).join(', ') : ''}${mode}` };
+			})
+		),
+		run({ id: 'social-queue', group: 'Redes sociales', label: 'Cola de publicaciones (GitHub Actions cada sábado)', fix: 'GitHub → Settings → Secrets: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, PEXELS_API_KEY' }, async () => {
+			if (!supabase) return { status: 'missing' };
+			const now = new Date().toISOString();
+			const [{ count: queued }, { count: failed }] = await Promise.all([
+				supabase.from('social_posts').select('id', { count: 'exact', head: true }).eq('status', 'queued').gte('publish_at', now),
+				supabase.from('social_posts').select('id', { count: 'exact', head: true }).eq('status', 'failed').gte('publish_at', new Date(Date.now() - 7 * 86400_000).toISOString())
+			]);
+			if (!queued) return { status: 'missing', detail: 'Cola vacía — se llena el sábado' };
+			return { status: failed ? 'error' : 'ok', detail: `${queued} posts esperando${failed ? ` · ${failed} con error esta semana` : ''}` };
+		}),
 		run({ id: 'ai', group: 'Contenido', label: 'IA para citas y newsletter (Claude)', fix: 'Vercel → ANTHROPIC_API_KEY' }, async () => ({ status: ANTHROPIC_API_KEY ? 'ok' : 'optional', detail: ANTHROPIC_API_KEY ? undefined : 'Sin clave: se usan tus frases y los consejos fijos' })),
 		run({ id: 'brevo', group: 'Email', label: 'Brevo (newsletter + emails de marketing)', fix: 'Vercel → BREVO_API_KEY + BREVO_LIST_ID' }, async () => {
 			if (!BREVO_API_KEY || !BREVO_LIST_ID) return { status: 'missing' };

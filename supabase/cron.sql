@@ -15,7 +15,7 @@ returns bigint language sql security definer set search_path = public, extension
 $$;
 revoke all on function public.goodpush_call(text, int) from public, anon, authenticated;
 
-select cron.unschedule(jobname) from cron.job where jobname in ('goodpush-hourly-send', 'goodpush-daily-quotes', 'goodpush-weekly-newsletter');
+select cron.unschedule(jobname) from cron.job where jobname in ('goodpush-hourly-send', 'goodpush-daily-quotes', 'goodpush-weekly-newsletter', 'goodpush-social');
 
 -- Every hour: everyone gets their push at their own local hour
 select cron.schedule('goodpush-hourly-send', '0 * * * *', $$ select public.goodpush_call('/api/cron/send', 30000) $$);
@@ -23,5 +23,8 @@ select cron.schedule('goodpush-hourly-send', '0 * * * *', $$ select public.goodp
 select cron.schedule('goodpush-daily-quotes', '0 3 * * *', $$ select public.goodpush_call('/api/cron/quotes', 300000) $$);
 -- Every Sunday 08:00 UTC: "The Good Weekly" newsletter — does nothing until Brevo is set
 select cron.schedule('goodpush-weekly-newsletter', '0 8 * * 0', $$ select public.goodpush_call('/api/cron/newsletter', 120000) $$);
+
+-- Every 10 min: publishes the queued Instagram / TikTok posts whose time has come — does nothing until accounts are connected
+select cron.schedule('goodpush-social', '*/10 * * * *', $$ select public.goodpush_call('/api/cron/social', 300000) $$);
 
 -- Check:  select * from public.goodpush_cron_status();

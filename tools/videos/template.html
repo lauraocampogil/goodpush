@@ -155,6 +155,22 @@ window.setup = function (job) {
 			document.querySelectorAll('.opt').forEach((o, i) => { const p = backOut(prog(t, 1.0 + i * 1.5, 1.6 + i * 1.5)); o.style.opacity = clamp(p * 3); o.style.transform = `scale(${0.6 + 0.4 * p}) rotate(${(1 - clamp(p)) * (i % 2 ? 6 : -6)}deg)`; });
 			const pa = easeOut(prog(t, 5.8, 6.3)); const a = document.getElementById('ask'); a.style.opacity = pa; a.style.transform = `translateY(${(1 - pa) * 30}px)`;
 		} };
+	} else if (format === 'R') { // R — phrase over real footage (the clip is composited under this layer by ffmpeg)
+		document.documentElement.style.background = document.body.style.background = 'transparent';
+		stage.innerHTML = `
+			<div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.18) 32%,rgba(0,0,0,.22) 62%,rgba(0,0,0,.7) 100%)"></div>
+			<div id="brand" class="abs pill" style="left:80px;top:200px;background:rgba(251,248,241,.92);color:#141414;padding:16px 30px 16px 18px;font-size:30px"><span style="width:52px;height:52px;display:inline-block">${smiley('smile', 'sun')}</span>GoodPush · ${esc(T.theme[theme][lang])}</div>
+			<div id="hook" class="abs" style="left:80px;right:170px;top:360px;font:800 46px/1.15 Inter;color:#FBF8F1;text-shadow:0 4px 24px rgba(0,0,0,.45)">${esc(job.hook[lang])}</div>
+			<div id="big" class="abs display" style="left:80px;right:170px;top:520px;height:760px;display:flex;align-items:center;color:#FBF8F1;--hl:${STICKER.sun};text-shadow:0 6px 30px rgba(0,0,0,.35)"><div>${words(ph[0])}</div></div>
+			${end.replace('opacity:0', 'opacity:0;background:#F6E36B;color:#141414')}`;
+		document.querySelectorAll('#big .hl').forEach((h) => (h.style.textShadow = 'none'));
+		fitText(document.getElementById('big'), 124, 64);
+		SCENE = { duration: 7, draw(t) {
+			const pb = easeOut(prog(t, 0.1, 0.6)); const b = document.getElementById('brand'); b.style.opacity = pb; b.style.transform = `translateY(${(1 - pb) * -30}px)`;
+			const ph0 = easeExpo(prog(t, 0.3, 0.9)); const h = document.getElementById('hook'); h.style.opacity = ph0; h.style.transform = `translateY(${(1 - ph0) * 30}px)`;
+			revealWords(document.getElementById('big'), t, 0.9, 2.6);
+			document.getElementById('end').style.opacity = easeOut(prog(t, 4.6, 5.1));
+		} };
 	} else { // D — phrase on color + floating stickers
 		stage.innerHTML = `
 			<div class="abs" style="inset:0;background:${bg};color:${fg};--hl:${hlColor}">
@@ -170,7 +186,7 @@ window.setup = function (job) {
 		} };
 	}
 	return document.fonts.ready.then(() => { // re-fit once the fonts are in
-		const big = document.getElementById('big'); if (big) fitText(big, format === 'D' ? 128 : 120, 64);
+		const big = document.getElementById('big'); if (big) fitText(big, format === 'D' ? 128 : format === 'R' ? 124 : 120, 64);
 		document.querySelectorAll('.opt .txt').forEach((e) => fitText(e, 46, 30));
 		return SCENE.duration;
 	});

@@ -71,6 +71,15 @@ export const variables = defineEnvVars({
 		description: 'Claude model for the quote finder',
 		schema: (v) => optional(v) ?? 'claude-sonnet-5-5'
 	},
+	ADMIN_EMAILS: { description: 'Comma-separated emails allowed on /admin (social accounts, queue)', schema: optional },
+	INSTAGRAM_APP_ID: { description: 'Meta app → Instagram API with Instagram login → Instagram app ID', schema: optional },
+	INSTAGRAM_APP_SECRET: { description: 'Meta app → Instagram app secret', schema: optional },
+	TIKTOK_CLIENT_KEY: { description: 'TikTok for Developers app → Client key', schema: optional },
+	TIKTOK_CLIENT_SECRET: { description: 'TikTok for Developers app → Client secret', schema: optional },
+	TIKTOK_DIRECT: {
+		description: 'Set to 1 once TikTok approves the app audit: posts go public directly instead of landing as drafts',
+		schema: (v) => optional(v) === '1' || optional(v) === 'true'
+	},
 	QUOTES_MAX_TOPICS: {
 		description: 'Max sub-topics searched per day (cost control, ~0.05–0.10 $ each)',
 		schema: (v) => Math.max(0, Math.min(26, Number(optional(v) ?? 4) || 0))
