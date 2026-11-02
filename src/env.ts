@@ -8,7 +8,7 @@ export const variables = defineEnvVars({
 	PUBLIC_SITE_URL: {
 		public: true,
 		description: 'Production URL, e.g. https://goodpush.app (used for SEO + share links)',
-		schema: (v) => optional(v) ?? 'https://goodpush.app'
+		schema: (v) => optional(v) ?? 'https://goodpush-app.vercel.app'
 	},
 	PUBLIC_VAPID_KEY: {
 		public: true,
@@ -43,7 +43,7 @@ export const variables = defineEnvVars({
 	PUBLIC_CONTACT_EMAIL: {
 		public: true,
 		description: 'Contact email shown in legal pages',
-		schema: (v) => optional(v) ?? 'hello@goodpush.app'
+		schema: (v) => optional(v) ?? 'goodpush.app@gmail.com'
 	},
 
 	// ---- Private (server only) ----
@@ -55,7 +55,7 @@ export const variables = defineEnvVars({
 	VAPID_PRIVATE_KEY: { description: 'Web Push VAPID private key', schema: optional },
 	VAPID_SUBJECT: {
 		description: 'mailto: contact for push services',
-		schema: (v) => optional(v) ?? 'mailto:hello@goodpush.app'
+		schema: (v) => optional(v) ?? 'mailto:goodpush.app@gmail.com'
 	},
 	CRON_SECRET: { description: 'Shared secret for /api/cron/send', schema: optional },
 	BREVO_API_KEY: { description: 'Brevo API key (email marketing)', schema: optional },

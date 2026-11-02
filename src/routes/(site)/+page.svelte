@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { PUBLIC_SITE_URL } from '$app/env/public';
+	import { structuredData } from '#lib/seo.ts';
 	import { track } from '#lib/analytics.ts';
 	import Footer from '#lib/components/Footer.svelte';
 	import InstallSheet from '#lib/components/InstallSheet.svelte';
@@ -41,21 +41,11 @@
 		track('install_sheet_open', { platform: isIOS() ? 'ios' : 'other' });
 	}
 
-	const jsonLd = JSON.stringify({
-		'@context': 'https://schema.org',
-		'@type': 'WebApplication',
-		name: 'GoodPush',
-		url: PUBLIC_SITE_URL,
-		applicationCategory: 'LifestyleApplication',
-		operatingSystem: 'iOS, Android, Web',
-		offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' }
-	});
+	// Structured data — helps Google and AI assistants describe GoodPush correctly (GEO)
+	const jsonLd = $derived(structuredData(i.lang, (k) => i.t(k as never)));
 </script>
 
-<Seo title={i.t('meta.title')} description={i.t('meta.description')} />
-<svelte:head>
-	{@html `<script type="application/ld+json">${jsonLd}</script>`}
-</svelte:head>
+<Seo title={i.t('meta.title')} description={i.t('meta.description')} jsonld={jsonLd} />
 
 <Nav onstart={() => start('nav')} cta={onboarded ? i.t('nav.open') : i.t('nav.get')} />
 <main>
