@@ -19,7 +19,7 @@ const manifest = JSON.parse(readFileSync(join(dir, 'manifest.json'), 'utf8'));
 const urls = new Map();
 let n = 0;
 for (const post of manifest) {
-	for (const f of post.files) {
+	for (const f of [...post.files, ...(post.video ? [post.video] : [])]) {
 		if (urls.has(f)) continue;
 		const path = `${week}/${f}`;
 		const { error } = await db.storage.from('social').upload(path, readFileSync(join(dir, f)), {
@@ -34,8 +34,9 @@ console.log(`↑ ${n} files uploaded`);
 
 const rows = manifest.flatMap((p) => {
 	const base = { lang: p.lang, post_date: p.date, slot: p.slot, format: p.format, kind: p.kind, media: p.files.map((f) => urls.get(f)), caption: p.caption, publish_at: p.publish_at };
-	// TikTok photo posts need a verified domain — carousels go to Instagram only for now
-	return p.kind === 'video' ? [{ ...base, platform: 'instagram' }, { ...base, platform: 'tiktok' }] : [{ ...base, platform: 'instagram' }];
+	if (p.kind === 'video') return [{ ...base, platform: 'instagram' }, { ...base, platform: 'tiktok' }];
+	// Carousel: photos on Instagram, the same slides as a short video on TikTok → 3 posts a day on both
+	return [{ ...base, platform: 'instagram' }, ...(p.video ? [{ ...base, kind: 'video', media: [urls.get(p.video)], platform: 'tiktok' }] : [])];
 });
 // Don't touch posts that already went out
 const { data: done } = await db.from('social_posts').select('platform,lang,post_date,slot').in('status', ['published', 'draft', 'processing']).gte('post_date', week);

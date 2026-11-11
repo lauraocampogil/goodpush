@@ -6,13 +6,12 @@
 
 	type Acc = { platform: string; lang: string; username: string | null; expires_at: string | null; refresh_expires_at: string | null };
 	type Post = { id: string; platform: string; lang: string; post_date: string; slot: string; format: string; kind: string; media: string[]; caption: string; publish_at: string; status: string; error: string | null };
-	type Data = { ready: Record<string, boolean>; tiktokDirect: boolean; accounts: Acc[]; posts: Post[] };
+	type Data = { ready: Record<string, boolean>; tiktokDirect: boolean; langs: string[]; accounts: Acc[]; posts: Post[] };
 
 	const PLATFORMS = [
 		{ id: 'instagram', label: 'Instagram' },
 		{ id: 'tiktok', label: 'TikTok' }
 	];
-	const LANGS = ['en', 'es', 'fr'];
 	const FLAG: Record<string, string> = { en: '🇬🇧', es: '🇪🇸', fr: '🇫🇷' };
 	const STATUS: Record<string, [string, string]> = {
 		queued: ['En cola', 'bg-ink/5'],
@@ -81,7 +80,7 @@
 
 <section class="py-6">
 	<h1 class="display text-4xl">Redes sociales</h1>
-	<p class="mt-2 text-ink/60">Cada sábado se generan los 63 posts de la semana siguiente. Se publican solos a su hora.</p>
+	<p class="mt-2 text-ink/60">Cada sábado se generan los posts de la semana siguiente: 3 al día en cada cuenta. Se publican solos a su hora.</p>
 
 	{#if ok}<p class="mt-4 rounded-2xl bg-mint/60 p-4 font-semibold">Cuenta conectada ✅ ({ok})</p>{/if}
 	{#if err}<p class="mt-4 rounded-2xl bg-orange/20 p-4 font-semibold">{err}</p>{/if}
@@ -101,7 +100,7 @@
 						{#if pl.id === 'tiktok' && data.ready.tiktok}<span class="pill bg-ink/5 text-xs">{data.tiktokDirect ? 'Publica directo' : 'Modo borrador'}</span>{/if}
 					</div>
 					<ul class="mt-3 space-y-2">
-						{#each LANGS as l (l)}
+						{#each data.langs as l (l)}
 							{@const a = account(pl.id, l)}
 							<li class="flex items-center gap-3 rounded-2xl bg-ink/5 px-4 py-3">
 								<span class="text-xl">{FLAG[l]}</span>

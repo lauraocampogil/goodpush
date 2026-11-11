@@ -1,7 +1,7 @@
 import { error, json } from '@sveltejs/kit';
 import { CRON_SECRET } from '$app/env/private';
 import { db } from '#lib/server/supabase.ts';
-import { checkPost, createPost, refreshIfNeeded, type Account, type Post } from '#lib/server/social.ts';
+import { ACTIVE_SOCIAL_LANGS, checkPost, createPost, refreshIfNeeded, type Account, type Post } from '#lib/server/social.ts';
 import { captureServer } from '#lib/server/analytics.ts';
 import type { RequestHandler } from './$types';
 
@@ -55,7 +55,7 @@ export const GET: RequestHandler = async ({ request }) => {
 
 	// 2) Posts whose time has come
 	const now = Date.now();
-	const { data: due } = await supabase.from('social_posts').select('*').eq('status', 'queued').lte('publish_at', new Date(now).toISOString()).order('publish_at').limit(40);
+	const { data: due } = await supabase.from('social_posts').select('*').eq('status', 'queued').in('lang', ACTIVE_SOCIAL_LANGS).lte('publish_at', new Date(now).toISOString()).order('publish_at').limit(40);
 	for (const p of (due ?? []) as Post[]) {
 		if (Date.parse(p.publish_at) < now - LATE_MS) {
 			await save(p.id, { status: 'skipped', error: acc(p) ? 'too late' : 'account not connected' });

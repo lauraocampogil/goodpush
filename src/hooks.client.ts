@@ -8,8 +8,9 @@ if (PUBLIC_SENTRY_DSN) {
 		dsn: PUBLIC_SENTRY_DSN,
 		release: `goodpush@${version}`,
 		environment: dev ? 'development' : 'production',
-		// No session replay: keeps the bundle light and privacy simple
-		tracesSampleRate: 0.1,
+		// No session replay, no tracing: Sentry's SvelteKit tracing still reads the removed `$app/stores`
+		// (SvelteKit 3) and crashed the whole page on start — errors + feedback only.
+		integrations: (defaults) => defaults.filter((i) => !/BrowserTracing/i.test(i.name)),
 		// Ignore noise that isn't ours
 		ignoreErrors: ['ResizeObserver loop', 'AbortError', 'Transition was aborted', 'NotAllowedError']
 	});

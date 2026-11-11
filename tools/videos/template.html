@@ -66,7 +66,8 @@ const plain = (s) => s.replace(/\*/g, '');
 /** Phrase → word spans; the *starred* part gets the highlighter. */
 function words(text) {
 	const out = [];
-	text.split(/(\*[^*]+\*)/g).filter(Boolean).forEach((part) => {
+	// punctuation right after the highlight stays on the same line as it
+	text.replace(/\*([^*]+)\*([.,!?…:;]+)/g, '*$1$2*').split(/(\*[^*]+\*)/g).filter(Boolean).forEach((part) => {
 		const hl = part.startsWith('*');
 		const clean = hl ? part.slice(1, -1) : part;
 		const ws = clean.split(/(\s+)/).filter((w) => w.length);
@@ -194,9 +195,9 @@ window.setup = function (job) {
 window.draw = (t) => SCENE.draw(t);
 
 /** Carousel slide (1080×1350) for format E. */
-window.slide = function (job, idx) {
-	document.documentElement.style.height = document.body.style.height = '1350px';
-	const stage = document.getElementById('stage'); stage.style.height = '1350px';
+window.slide = function (job, idx, height = 1350) {
+	document.documentElement.style.height = document.body.style.height = height + 'px';
+	const stage = document.getElementById('stage'); stage.style.height = height + 'px';
 	const { lang, theme } = job; const color = CAT[theme]; const colors = [STICKER[color], '#FBF8F1', STICKER.pink, STICKER.mint, STICKER.sun, '#141414'];
 	const bgc = colors[idx]; const dark = idx === 5 || (idx === 0 && DARK.includes(color)); const fg = dark ? '#FBF8F1' : '#141414';
 	let inner;

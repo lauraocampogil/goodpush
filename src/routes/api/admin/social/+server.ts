@@ -1,7 +1,7 @@
 import { error, json } from '@sveltejs/kit';
 import { getUser } from '#lib/server/auth.ts';
 import { db } from '#lib/server/supabase.ts';
-import { authorizeUrl, isAdmin, platformReady, PLATFORMS, SOCIAL_LANGS, tiktokDirect, type Platform, type SocialLang } from '#lib/server/social.ts';
+import { ACTIVE_SOCIAL_LANGS, authorizeUrl, isAdmin, platformReady, PLATFORMS, SOCIAL_LANGS, tiktokDirect, type Platform, type SocialLang } from '#lib/server/social.ts';
 import type { RequestHandler } from './$types';
 
 async function admin(request: Request) {
@@ -24,6 +24,7 @@ export const GET: RequestHandler = async ({ request }) => {
 	return json({
 		ready: Object.fromEntries(PLATFORMS.map((p) => [p, platformReady(p)])),
 		tiktokDirect: tiktokDirect(),
+		langs: ACTIVE_SOCIAL_LANGS,
 		accounts: accounts ?? [],
 		posts: posts ?? []
 	});

@@ -10,7 +10,7 @@
 // add a trending sound inside TikTok / Instagram (licensed there, and it boosts reach).
 import { createRequire } from 'node:module';
 import { spawn } from 'node:child_process';
-import { mkdirSync, renameSync, writeFileSync, existsSync, readFileSync } from 'node:fs';
+import { mkdirSync, renameSync, writeFileSync, existsSync, readFileSync, rmSync } from 'node:fs';
 import { dirname, join, resolve, basename } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { planRange } from './plan.mjs';
@@ -19,7 +19,8 @@ import { clipFor } from './clips.mjs';
 const { chromium } = createRequire(import.meta.url)('playwright');
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '../..');
-const LANGS = ['en', 'es', 'fr'];
+// Social accounts that exist (the website keeps every language). Add fr here when @goodpush.fr opens.
+const LANGS = (process.env.SOCIAL_LANGS ?? 'en,es').split(',').map((l) => l.trim()).filter(Boolean);
 const FPS = 30;
 const args = process.argv.slice(2);
 const preview = args.includes('--preview');
@@ -46,6 +47,16 @@ function ffmpeg(file, { clip, duration } = {}) {
 	const p = spawn('ffmpeg', a, { stdio: ['pipe', 'inherit', 'inherit'] });
 	const done = new Promise((ok, ko) => p.on('exit', (c) => (c === 0 ? (renameSync(tmp, file), ok()) : ko(new Error('ffmpeg ' + c)))));
 	return { write: (buf) => new Promise((ok) => (p.stdin.write(buf) ? ok() : p.stdin.once('drain', ok))), close: () => (p.stdin.end(), done) };
+}
+
+function slidesVideo(pngs, file) {
+	const tmp = file.replace(/\.mp4$/, '.part.mp4');
+	const SLIDE = 1.6;
+	const inputs = pngs.flatMap((p) => ['-loop', '1', '-t', String(SLIDE), '-framerate', String(FPS), '-i', p]);
+	const chains = pngs.map((_, k) => `[${k}:v]scale=1080:1920,setsar=1,format=yuv420p[s${k}]`).join(';');
+	const filter = `${chains};${pngs.map((_, k) => `[s${k}]`).join('')}concat=n=${pngs.length}:v=1:a=0[v]`;
+	const p = spawn('ffmpeg', ['-y', '-loglevel', 'error', ...inputs, '-filter_complex', filter, '-map', '[v]', '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-r', String(FPS), '-movflags', '+faststart', tmp], { stdio: 'inherit' });
+	return new Promise((ok, ko) => p.on('exit', (c) => (c === 0 ? (renameSync(tmp, file), ok()) : ko(new Error('ffmpeg slides ' + c)))));
 }
 
 const browser = await chromium.launch();
@@ -81,6 +92,24 @@ for (const job0 of list) {
 				if (preview) break;
 			}
 			await page.setViewportSize({ width: 1080, height: 1920 });
+			// TikTok gets the carousel as a short video: the same slides drawn 9:16, 1.6 s each
+			if (!preview) {
+				const vid = `${base}.mp4`;
+				const file = join(outDir, vid);
+				if (!existsSync(file)) {
+					const tall = [];
+					for (let i = 0; i < 6; i++) {
+						await page.goto(url);
+						await page.evaluate(([j, k]) => window.slide(j, k, 1920), [{ ...job, lang }, i]);
+						const f = join(outDir, `.${base}_tall_${i + 1}.png`);
+						await page.screenshot({ path: f });
+						tall.push(f);
+					}
+					await slidesVideo(tall, file);
+					tall.forEach((f) => rmSync(f, { force: true }));
+				}
+				job.video = { ...(job.video ?? {}), [lang]: vid };
+			}
 		} else if (preview) {
 			await page.goto(url);
 			const dur = await page.evaluate((j) => window.setup(j), { ...job, lang });
@@ -107,7 +136,7 @@ for (const job0 of list) {
 		if (!preview) {
 			const caption = [job.caption[lang], clip?.credit, job.hashtags[lang]].filter(Boolean).join('\n\n');
 			captions.push(`## ${job.date} · ${job.slot} · ${lang.toUpperCase()} · ${base}\n\n${caption}\n`);
-			manifest.push({ date: job.date, slot: job.slot, format: job.format, lang, kind: job.format === 'E' ? 'carousel' : 'video', files, caption, publish_at: job.publish[lang] });
+			manifest.push({ date: job.date, slot: job.slot, format: job.format, lang, kind: job.format === 'E' ? 'carousel' : 'video', files, video: job.video?.[lang], caption, publish_at: job.publish[lang] });
 		}
 		process.stdout.write(`✓ ${base}${clip ? ' (' + basename(clip.file) + ')' : ''}\n`);
 	}

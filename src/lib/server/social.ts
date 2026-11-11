@@ -19,6 +19,8 @@ export type Platform = 'instagram' | 'tiktok';
 export const PLATFORMS: Platform[] = ['instagram', 'tiktok'];
 export const SOCIAL_LANGS = ['en', 'es', 'fr'] as const;
 export type SocialLang = (typeof SOCIAL_LANGS)[number];
+/** Accounts that exist today (the website keeps every language). Add 'fr' when @goodpush.fr opens. */
+export const ACTIVE_SOCIAL_LANGS: SocialLang[] = ['en', 'es'];
 
 export type Account = {
 	platform: Platform;
