@@ -49,9 +49,15 @@ export type Post = {
 };
 
 const IG = 'https://graph.instagram.com/v24.0';
+/** New Meta apps use "unified login": system-user tokens (EAA…) that never expire, served by graph.facebook.com.
+ *  Older Instagram-login tokens (IGAA…) live on graph.instagram.com. Same publishing calls on both. */
+const FB = 'https://graph.facebook.com/v24.0';
+const igHost = (token: string) => (token.startsWith('IG') ? IG : FB);
 const TT = 'https://open.tiktokapis.com/v2';
 
 export const platformReady = (p: Platform) => (p === 'instagram' ? !!(INSTAGRAM_APP_ID && INSTAGRAM_APP_SECRET) : !!(TIKTOK_CLIENT_KEY && TIKTOK_CLIENT_SECRET));
+/** Instagram can also be connected by pasting a system-user token from the Meta app (no app keys needed). */
+export const canConnect = (p: Platform) => p === 'instagram' || platformReady(p);
 export const tiktokDirect = () => !!TIKTOK_DIRECT;
 
 export function isAdmin(user: User | null) {
@@ -144,6 +150,15 @@ export async function exchangeCode(origin: string, platform: Platform, lang: Soc
 	return { platform, lang, external_id: t.open_id, username: me.data.user.username ?? me.data.user.display_name ?? null, access_token: t.access_token, refresh_token: t.refresh_token, expires_at: iso(t.expires_in), refresh_expires_at: iso(t.refresh_expires_in) };
 }
 
+/** Instagram via a pasted token (Meta app → Instagram API → "Generate access tokens"). Checks it can see the account. */
+export async function accountFromToken(lang: SocialLang, igUserId: string, token: string): Promise<Account> {
+	const id = igUserId.trim();
+	const t = token.trim();
+	if (!/^\d{5,25}$/.test(id)) throw new Error('El ID de la cuenta de Instagram son solo números');
+	const me = await j<{ id: string; username?: string }>(await fetch(`${igHost(t)}/${id}?fields=id,username&access_token=${encodeURIComponent(t)}`), 'Instagram');
+	return { platform: 'instagram', lang, external_id: me.id, username: me.username ?? null, access_token: t, refresh_token: null, expires_at: null, refresh_expires_at: null };
+}
+
 /** Keep tokens alive: TikTok every day (24 h tokens), Instagram when < 10 days are left (60-day tokens). */
 export async function refreshIfNeeded(db: SupabaseClient, a: Account): Promise<Account> {
 	const left = a.expires_at ? Date.parse(a.expires_at) - Date.now() : Infinity;
@@ -172,7 +187,7 @@ export async function refreshIfNeeded(db: SupabaseClient, a: Account): Promise<A
 
 // ---------- Instagram ----------
 async function igPost<T>(a: Account, path: string, params: Record<string, string>) {
-	return j<T>(await fetch(`${IG}/${path}`, { method: 'POST', body: new URLSearchParams({ ...params, access_token: a.access_token }) }), `Instagram ${path.split('/').pop()}`);
+	return j<T>(await fetch(`${igHost(a.access_token)}/${path}`, { method: 'POST', body: new URLSearchParams({ ...params, access_token: a.access_token }) }), `Instagram ${path.split('/').pop()}`);
 }
 /** Step 1: create the media container (Instagram downloads + processes the file). */
 async function igCreate(a: Account, p: Post): Promise<string> {
@@ -185,7 +200,7 @@ async function igCreate(a: Account, p: Post): Promise<string> {
 }
 /** Step 2 (a few minutes later): publish when Instagram says FINISHED. */
 async function igCheck(a: Account, p: Post): Promise<Partial<Post> & { status: string; external_id?: string; error?: string }> {
-	const s = await j<{ status_code: string; status?: string }>(await fetch(`${IG}/${p.container_id}?fields=status_code,status&access_token=${a.access_token}`), 'Instagram status');
+	const s = await j<{ status_code: string; status?: string }>(await fetch(`${igHost(a.access_token)}/${p.container_id}?fields=status_code,status&access_token=${a.access_token}`), 'Instagram status');
 	if (s.status_code === 'FINISHED') {
 		const r = await igPost<{ id: string }>(a, `${a.external_id}/media_publish`, { creation_id: p.container_id! });
 		return { status: 'published', external_id: r.id };

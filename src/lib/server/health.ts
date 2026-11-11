@@ -11,7 +11,7 @@ import { PUBLIC_POSTHOG_KEY, PUBLIC_SENTRY_DSN, PUBLIC_SITE_URL, PUBLIC_SUPABASE
 import { db } from './supabase.ts';
 import { stripe } from './stripe.ts';
 import { pushReady } from './webpush.ts';
-import { ACTIVE_SOCIAL_LANGS, platformReady, tiktokDirect } from './social.ts';
+import { ACTIVE_SOCIAL_LANGS, canConnect, tiktokDirect } from './social.ts';
 
 /**
  * Live checks of every piece GoodPush needs. Nothing secret is returned — only ok / missing / error.
@@ -81,8 +81,8 @@ export async function healthChecks(): Promise<Check[]> {
 		cron('goodpush-weekly-newsletter', 'Newsletter semanal (domingo)', 'necesita Brevo', 'Supabase → SQL (bloque 3 de cron.sql)'),
 		cron('goodpush-social', 'Publicación en Instagram + TikTok (cada 10 min)', 'SQL en Supabase', 'Supabase → SQL (bloque 4 de cron.sql)'),
 		...(['instagram', 'tiktok'] as const).map((pl) =>
-			run({ id: `social:${pl}`, group: 'Redes sociales', label: `${pl === 'instagram' ? 'Instagram' : 'TikTok'} (${ACTIVE_SOCIAL_LANGS.map((l) => l.toUpperCase()).join(' + ')})`, fix: pl === 'instagram' ? 'Vercel → INSTAGRAM_APP_ID + INSTAGRAM_APP_SECRET, luego /admin/social' : 'Vercel → TIKTOK_CLIENT_KEY + TIKTOK_CLIENT_SECRET, luego /admin/social' }, async () => {
-				if (!platformReady(pl)) return { status: 'missing', detail: 'Faltan las claves de la app' };
+			run({ id: `social:${pl}`, group: 'Redes sociales', label: `${pl === 'instagram' ? 'Instagram' : 'TikTok'} (${ACTIVE_SOCIAL_LANGS.map((l) => l.toUpperCase()).join(' + ')})`, fix: pl === 'instagram' ? '/admin/social → pegar el token de cada cuenta (app de Meta)' : 'Vercel → TIKTOK_CLIENT_KEY + TIKTOK_CLIENT_SECRET, luego /admin/social' }, async () => {
+				if (!canConnect(pl)) return { status: 'missing', detail: 'Faltan las claves de la app' };
 				if (!supabase) return { status: 'missing' };
 				const { data } = await supabase.from('social_accounts').select('lang,username').eq('platform', pl).in('lang', ACTIVE_SOCIAL_LANGS);
 				const n = data?.length ?? 0;

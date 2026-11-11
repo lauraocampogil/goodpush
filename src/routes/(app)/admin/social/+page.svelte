@@ -6,7 +6,7 @@
 
 	type Acc = { platform: string; lang: string; username: string | null; expires_at: string | null; refresh_expires_at: string | null };
 	type Post = { id: string; platform: string; lang: string; post_date: string; slot: string; format: string; kind: string; media: string[]; caption: string; publish_at: string; status: string; error: string | null };
-	type Data = { ready: Record<string, boolean>; tiktokDirect: boolean; langs: string[]; accounts: Acc[]; posts: Post[] };
+	type Data = { ready: Record<string, boolean>; canConnect: Record<string, boolean>; tiktokDirect: boolean; langs: string[]; accounts: Acc[]; posts: Post[] };
 
 	const PLATFORMS = [
 		{ id: 'instagram', label: 'Instagram' },
@@ -58,6 +58,24 @@
 			err = (e as Error).message;
 		}
 	}
+	// Instagram (new Meta apps): paste the token + account ID from the Meta app
+	let pasting = $state<string | null>(null);
+	let tokenIn = $state('');
+	let idIn = $state('');
+	let saving = $state(false);
+	async function saveToken(lang: string) {
+		saving = true;
+		err = null;
+		try {
+			await call('POST', { action: 'token', platform: 'instagram', lang, token: tokenIn, igUserId: idIn });
+			pasting = null;
+			tokenIn = idIn = '';
+			await load();
+		} catch (e) {
+			err = (e as Error).message;
+		}
+		saving = false;
+	}
 	async function act(action: string, extra: Record<string, string>) {
 		await call('POST', { action, ...extra }).catch((e) => (err = e.message));
 		await load();
@@ -96,7 +114,7 @@
 				<div class="rounded-3xl bg-white p-5 shadow-[var(--shadow-soft)]">
 					<div class="flex items-center justify-between">
 						<h3 class="text-lg font-bold">{pl.label}</h3>
-						{#if !data.ready[pl.id]}<span class="pill bg-orange/20 text-xs">Faltan las claves en Vercel</span>{/if}
+						{#if !data.canConnect[pl.id]}<span class="pill bg-orange/20 text-xs">Faltan las claves en Vercel</span>{/if}
 						{#if pl.id === 'tiktok' && data.ready.tiktok}<span class="pill bg-ink/5 text-xs">{data.tiktokDirect ? 'Publica directo' : 'Modo borrador'}</span>{/if}
 					</div>
 					<ul class="mt-3 space-y-2">
@@ -108,8 +126,20 @@
 								{#if a}
 									<button class="text-sm text-ink/50 underline" onclick={() => act('disconnect', { platform: pl.id, lang: l })}>Quitar</button>
 								{/if}
-								<button class="btn btn-sm rounded-full bg-ink px-4 py-2 text-sm font-bold text-white disabled:opacity-40" disabled={!data.ready[pl.id]} onclick={() => connect(pl.id, l)}>{a ? 'Reconectar' : 'Conectar'}</button>
+								{#if pl.id === 'instagram' && !data.ready.instagram}
+									<button class="rounded-full bg-ink px-4 py-2 text-sm font-bold text-white" onclick={() => (pasting = pasting === l ? null : l)}>{a ? 'Cambiar token' : 'Pegar token'}</button>
+								{:else}
+									<button class="rounded-full bg-ink px-4 py-2 text-sm font-bold text-white disabled:opacity-40" disabled={!data.ready[pl.id]} onclick={() => connect(pl.id, l)}>{a ? 'Reconectar' : 'Conectar'}</button>
+								{/if}
 							</li>
+							{#if pl.id === 'instagram' && pasting === l}
+								<li class="space-y-2 rounded-2xl bg-sun/40 p-4 text-sm">
+									<p>Meta → app GoodPush Publisher → API de Instagram → <b>2. Generar tokens de acceso</b>: copia el <b>ID</b> de la cuenta y su <b>token</b>.</p>
+									<input class="w-full rounded-xl bg-white px-3 py-2" placeholder="ID de la cuenta de Instagram (solo números)" bind:value={idIn} inputmode="numeric" />
+									<input class="w-full rounded-xl bg-white px-3 py-2" placeholder="Token (empieza por EAA…)" bind:value={tokenIn} type="password" autocomplete="off" />
+									<button class="rounded-full bg-ink px-4 py-2 font-bold text-white disabled:opacity-40" disabled={saving || !tokenIn || !idIn} onclick={() => saveToken(l)}>{saving ? 'Comprobando…' : 'Guardar'}</button>
+								</li>
+							{/if}
 						{/each}
 					</ul>
 					{#if pl.id === 'tiktok' && !data.tiktokDirect}

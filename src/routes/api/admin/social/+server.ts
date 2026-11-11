@@ -1,7 +1,7 @@
 import { error, json } from '@sveltejs/kit';
 import { getUser } from '#lib/server/auth.ts';
 import { db } from '#lib/server/supabase.ts';
-import { ACTIVE_SOCIAL_LANGS, authorizeUrl, isAdmin, platformReady, PLATFORMS, SOCIAL_LANGS, tiktokDirect, type Platform, type SocialLang } from '#lib/server/social.ts';
+import { ACTIVE_SOCIAL_LANGS, accountFromToken, authorizeUrl, canConnect, isAdmin, platformReady, PLATFORMS, SOCIAL_LANGS, tiktokDirect, type Platform, type SocialLang } from '#lib/server/social.ts';
 import type { RequestHandler } from './$types';
 
 async function admin(request: Request) {
@@ -23,6 +23,7 @@ export const GET: RequestHandler = async ({ request }) => {
 	]);
 	return json({
 		ready: Object.fromEntries(PLATFORMS.map((p) => [p, platformReady(p)])),
+		canConnect: Object.fromEntries(PLATFORMS.map((p) => [p, canConnect(p)])),
 		tiktokDirect: tiktokDirect(),
 		langs: ACTIVE_SOCIAL_LANGS,
 		accounts: accounts ?? [],
@@ -33,12 +34,24 @@ export const GET: RequestHandler = async ({ request }) => {
 /** { action: 'connect', platform, lang } → OAuth URL · { action: 'retry' | 'skip', id } · { action: 'disconnect', platform, lang } */
 export const POST: RequestHandler = async ({ request, url }) => {
 	const supabase = await admin(request);
-	const body = (await request.json()) as { action: string; platform?: Platform; lang?: SocialLang; id?: string };
+	const body = (await request.json()) as { action: string; platform?: Platform; lang?: SocialLang; id?: string; token?: string; igUserId?: string };
 	const okTarget = PLATFORMS.includes(body.platform!) && SOCIAL_LANGS.includes(body.lang!);
 	if (body.action === 'connect') {
 		if (!okTarget) error(400, 'Bad platform/lang');
 		if (!platformReady(body.platform!)) error(503, `${body.platform} app keys missing in Vercel`);
 		return json({ url: authorizeUrl(url.origin, body.platform!, body.lang!) });
+	}
+	if (body.action === 'token') {
+		if (body.platform !== 'instagram' || !SOCIAL_LANGS.includes(body.lang!) || !body.token || !body.igUserId) error(400, 'Falta el token o el ID');
+		let acc;
+		try {
+			acc = await accountFromToken(body.lang!, body.igUserId, body.token);
+		} catch (e) {
+			error(400, (e as Error).message);
+		}
+		const { error: dbError } = await supabase.from('social_accounts').upsert({ ...acc, updated_at: new Date().toISOString() });
+		if (dbError) error(500, dbError.message);
+		return json({ ok: true, username: acc.username });
 	}
 	if (body.action === 'disconnect') {
 		if (!okTarget) error(400, 'Bad platform/lang');
