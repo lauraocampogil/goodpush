@@ -8,7 +8,7 @@
 create or replace function public.goodpush_call(path text, timeout_ms int default 30000)
 returns bigint language sql security definer set search_path = public, extensions, vault, net as $$
   select net.http_get(
-    url := 'https://goodpush-app.vercel.app' || path,
+    url := 'https://goodpush.vercel.app' || path,
     headers := jsonb_build_object('Authorization', 'Bearer ' || (select decrypted_secret from vault.decrypted_secrets where name = 'goodpush_cron_secret' limit 1)),
     timeout_milliseconds := timeout_ms
   );
