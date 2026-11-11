@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<title>The Good Weekly</title>
+<!--
+  GoodPush — weekly newsletter template (Brevo).
+  Paste in Brevo → Campaigns → Create → "Code your own" (HTML).
+  Merge tags: {{ contact.FIRSTNAME }} · {{ unsubscribe }} · {{ mirror }}
+  Change everything between [ ] each week. Keep it short: 1 phrase, 1 story, 1 tip, 1 pick.
+-->
+</head>
+<body style="margin:0;padding:0;background:#F6E36B;">
+<div style="display:none;max-height:0;overflow:hidden;color:#F6E36B;">[Preview text: This week’s push + a 30-second habit that sticks.]</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F6E36B;">
+<tr><td align="center" style="padding:28px 12px 40px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#141414;">
+
+  <!-- Header -->
+  <tr><td style="padding:0 6px 18px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="vertical-align:middle;">
+        <img src="https://goodpush-3lfy.vercel.app/icons/icon-192.png" width="34" height="34" alt="" style="display:inline-block;vertical-align:middle;border-radius:50%;border:0;">
+        <span style="display:inline-block;vertical-align:middle;margin-left:8px;font-weight:900;font-size:18px;letter-spacing:.04em;">GOODPUSH</span>
+      </td>
+      <td align="right" style="vertical-align:middle;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.6;">The Good Weekly · #[01]</td>
+    </tr></table>
+  </td></tr>
+
+  <!-- Push of the week (big card) -->
+  <tr><td style="background:#141414;border-radius:32px;padding:34px 28px 30px;color:#FBF8F1;">
+    <p style="margin:0 0 18px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#F6E36B;">Hey {{ contact.FIRSTNAME | default:'you' }} — your push of the week</p>
+    <p style="margin:0;font-size:40px;line-height:1.02;font-weight:900;text-transform:uppercase;letter-spacing:-.01em;">
+      Motivation fades.<br><span style="background:#F6E36B;color:#141414;padding:0 6px;border-radius:6px;">Habits</span> stay.
+    </p>
+    <p style="margin:22px 0 0;font-size:14px;line-height:1.55;color:#FBF8F1;opacity:.75;">[One or two lines on why this phrase matters this week. Keep it human, like a friend texting you.]</p>
+  </td></tr>
+
+  <tr><td style="height:14px;line-height:14px;">&nbsp;</td></tr>
+
+  <!-- Story / tip -->
+  <tr><td style="background:#FBF8F1;border-radius:28px;padding:28px;">
+    <p style="margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#FF5B1F;">🔥 The 30-second habit</p>
+    <p style="margin:0 0 10px;font-size:22px;line-height:1.15;font-weight:900;">[Title: Make it so small you can’t say no]</p>
+    <p style="margin:0;font-size:15px;line-height:1.6;color:#3a3a3a;">[3–4 short sentences. One idea people can try today. Example: “Want to read more? Read one page. Just one. Tomorrow, one more.”]</p>
+  </td></tr>
+
+  <tr><td style="height:14px;line-height:14px;">&nbsp;</td></tr>
+
+  <!-- Two mini cards -->
+  <tr><td>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td width="50%" valign="top" style="padding-right:7px;">
+        <div style="background:#F7A6C9;border-radius:24px;padding:22px;">
+          <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;">🎬 Movie line</p>
+          <p style="margin:0;font-size:17px;line-height:1.2;font-weight:900;">[A real film line — copied from a reliable source]</p>
+          <p style="margin:8px 0 0;font-size:12px;font-weight:600;opacity:.7;">[Character · Film (year)]</p>
+        </div>
+      </td>
+      <td width="50%" valign="top" style="padding-left:7px;">
+        <div style="background:#9FDBBE;border-radius:24px;padding:22px;">
+          <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;">🗞 In the news</p>
+          <p style="margin:0;font-size:17px;line-height:1.2;font-weight:900;">[A real quote said this week — with link]</p>
+          <p style="margin:8px 0 0;font-size:12px;font-weight:600;opacity:.7;"><a href="[source link]" style="color:#141414;">[Name · source]</a></p>
+        </div>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <tr><td style="height:14px;line-height:14px;">&nbsp;</td></tr>
+
+  <!-- Streak nudge + CTA -->
+  <tr><td align="center" style="background:#FF5B1F;border-radius:28px;padding:30px 24px;color:#141414;">
+    <p style="margin:0 0 6px;font-size:28px;line-height:1;font-weight:900;">🔥 Keep your streak alive</p>
+    <p style="margin:0 0 20px;font-size:14px;line-height:1.5;">Open GoodPush once a day. That’s it. Miss a day and it starts again.</p>
+    <a href="https://goodpush-3lfy.vercel.app/today?utm_source=newsletter&utm_campaign=[01]" style="display:inline-block;background:#141414;color:#FBF8F1;text-decoration:none;font-weight:700;font-size:15px;padding:15px 28px;border-radius:999px;">Open today’s push →</a>
+  </td></tr>
+
+  <tr><td style="height:14px;line-height:14px;">&nbsp;</td></tr>
+
+  <!-- Pick of the week (affiliate) -->
+  <tr><td style="background:#FBF8F1;border-radius:24px;padding:20px 22px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="font-size:14px;line-height:1.45;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.6;">📚 Pick of the week</span><br>
+        <strong>[Atomic Habits — James Clear]</strong><br>
+        <span style="color:#555;">[One line on why it helps.]</span>
+      </td>
+      <td align="right" style="padding-left:10px;"><a href="[affiliate link]" style="font-size:13px;font-weight:700;color:#141414;white-space:nowrap;">See it →</a></td>
+    </tr></table>
+    <p style="margin:10px 0 0;font-size:11px;color:#888;">Affiliate link: we may earn a small commission, at no extra cost to you.</p>
+  </td></tr>
+
+  <!-- Footer -->
+  <tr><td align="center" style="padding:28px 10px 0;font-size:12px;line-height:1.6;color:#141414;">
+    <p style="margin:0 0 6px;font-weight:700;">Share GoodPush with someone who needs a push 💛</p>
+    <p style="margin:0 0 14px;">
+      <a href="https://instagram.com/goodpush.app" style="color:#141414;">Instagram</a> ·
+      <a href="https://tiktok.com/@goodpush.app" style="color:#141414;">TikTok</a> ·
+      <a href="https://goodpush-3lfy.vercel.app" style="color:#141414;">goodpush</a>
+    </p>
+    <p style="margin:0;opacity:.6;">You get this because you said yes to GoodPush emails.<br>
+      <a href="{{ unsubscribe }}" style="color:#141414;">Unsubscribe</a> · <a href="{{ mirror }}" style="color:#141414;">View in browser</a><br>
+      Made with love by Unix Creative Studio · Brussels</p>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>
