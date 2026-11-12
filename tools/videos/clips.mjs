@@ -48,3 +48,40 @@ export async function clipFor(job, root) {
 	}
 	return { file, credit: `🎥 ${v.user?.name ?? 'Pexels'} / Pexels` };
 }
+
+/** Several different clips for a fast-cut video (format K). Own clips in marketing/clips/<theme>/ first, then Pexels. */
+export async function clipsFor(job, root, n = 5) {
+	const out = [];
+	const themeDir = join(root, 'marketing', 'clips', job.theme);
+	if (existsSync(themeDir)) {
+		const files = readdirSync(themeDir).filter((f) => f.endsWith('.mp4')).sort();
+		const h = hash(job.date + job.slot);
+		for (let i = 0; i < Math.min(n, files.length); i++) out.push({ file: join(themeDir, files[(h + i) % files.length]), credit: null });
+		if (out.length >= n) return out;
+	}
+	const key = process.env.PEXELS_API_KEY;
+	if (!key) return out;
+	const qs = QUERIES[job.theme] ?? ['sunrise'];
+	const cache = join(root, 'marketing', 'clips', 'pexels');
+	mkdirSync(cache, { recursive: true });
+	const seen = new Set();
+	for (let i = 0; out.length < n && i < n * 3; i++) {
+		const query = qs[(hash(job.date + job.slot) + i) % qs.length];
+		const res = await fetch(`https://api.pexels.com/videos/search?${new URLSearchParams({ query, orientation: 'portrait', size: 'medium', per_page: '30' })}`, { headers: { Authorization: key } });
+		if (!res.ok) break;
+		const { videos = [] } = await res.json();
+		const pool = videos.filter((v) => v.duration >= 4 && v.height > v.width && !seen.has(v.id));
+		if (!pool.length) continue;
+		const v = pool[(hash(job.date + job.slot + i) >>> 3) % pool.length];
+		seen.add(v.id);
+		const f = v.video_files.filter((x) => x.file_type === 'video/mp4' && x.height >= 1280 && x.height > x.width).sort((a, b) => a.height - b.height)[0] ?? v.video_files[0];
+		const file = join(cache, `${v.id}.mp4`);
+		if (!existsSync(file)) {
+			const r = await fetch(f.link);
+			if (!r.ok) continue;
+			writeFileSync(file, Buffer.from(await r.arrayBuffer()));
+		}
+		out.push({ file, credit: v.user?.name ?? null });
+	}
+	return out;
+}

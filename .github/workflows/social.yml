@@ -53,6 +53,12 @@ jobs:
           npm i --no-save playwright
           npx playwright install --with-deps chromium
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-noto-color-emoji
+          pip install --quiet --break-system-packages kokoro-onnx soundfile
+      - name: Voice models cache
+        uses: actions/cache@v4
+        with:
+          path: tools/videos/.tts
+          key: kokoro-v1.0
       - run: node tools/social/robot.mjs
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}

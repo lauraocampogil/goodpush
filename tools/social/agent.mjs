@@ -26,7 +26,7 @@ for (const r of rows) {
 		const at = r.publish[lang];
 		if (have.has(`${L}|${new Date(at).toISOString()}`)) continue;
 		const [caption] = r.caption[lang].split('\n\n#');
-		const fields = { hook: r.hook[lang], phrases: r.phrases.map((p) => p[lang]), theme: r.theme, streak: r.streak };
+		const fields = { hook: r.hook[lang], phrases: r.phrases.map((p) => p[lang]), ...(r.script ? { script: r.script[lang] } : {}), theme: r.theme, streak: r.streak };
 		await createPost({
 			Post: P.title(`${r.date} · ${r.slot} · ${r.format} · ${L} — ${r.hook[lang]}`),
 			Status: P.status(STATUS),

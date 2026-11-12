@@ -33,6 +33,7 @@ const HOOK_R = [
 	["this one's for the overthinkers", 'para los que piensan demasiado', 'pour ceux qui réfléchissent trop'],
 	['the sign you asked for', 'la señal que pedías', 'le signe que tu attendais']
 ];
+const CLOSER = [['Now go get it.', 'Ahora ve a por ello.', 'Maintenant, vas-y.'], ["You've got this.", 'Tú puedes.', 'Tu peux le faire.'], ['Start today.', 'Empieza hoy.', "Commence aujourd'hui."]];
 const CTA_LINE = ['Get one every day on your lock screen — link in bio. 14 days free.', 'Recibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.', 'Reçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits.'];
 const SOFT = ['Save it for later 💛', 'Guárdala para luego 💛', 'Garde-la pour plus tard 💛'];
 const SHARE = ['Send this to someone who needs it 💛', 'Envíaselo a quien lo necesite 💛', "Envoie-le à quelqu'un qui en a besoin 💛"];
@@ -87,23 +88,24 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 		const mid = wd === 1 || wd === 4 ? 'C' : 'B';
 		const eve = wd === 2 || wd === 5 ? 'E' : 'D';
 		for (const [slot, f0] of [['Morning', morning], ['Midday', mid], ['Evening', eve]]) {
-			const n = f0 === 'B' ? 3 : f0 === 'E' ? 4 : 1;
+			// Robot mode: K = fast cuts + voice-over + big captions (the TikTok edit style) on most slots.
+			// Brand formats keep a few: A on Mon/Thu mornings, B quiz middays, E carousels Wed/Sat evenings, F streak on Sundays.
+			const format = !auto ? f0 : f0 === 'C' || f0 === 'D' ? 'K' : f0 === 'A' && ![0, 3].includes(wd) ? 'K' : f0;
+			const n = format === 'B' || format === 'K' ? 3 : format === 'E' ? 4 : 1;
 			const ph = take(theme, n);
 			if (f0 === 'F') streak += 7;
 			if (date < from) continue;
-			// Robot mode = mostly organic "cine" posts (R): real footage + subtitle. Brand formats keep a few slots:
-			// A on Mon/Thu mornings, B quiz middays, E carousels Wed/Sat evenings, F streak on Sundays.
-			const format = !auto ? f0 : f0 === 'C' || f0 === 'D' ? 'R' : f0 === 'A' && ![0, 3].includes(wd) ? 'R' : f0;
-			const cta = ['A', 'C', 'E', 'F'].includes(format);
+			const cta = ['A', 'C', 'E', 'F', 'K'].includes(format);
 			const L = (fn) => Object.fromEntries(LANGS.map((l, li) => [l, fn(l, li)]));
 			const dayN = Math.round((Date.parse(date) - Date.parse(START)) / 864e5);
-			const hookSrc = format === 'R' ? HOOK_R[(dayN * 3 + ['Morning', 'Midday', 'Evening'].indexOf(slot)) % HOOK_R.length] : HOOK[format];
+			const hookSrc = format === 'R' || format === 'K' ? HOOK_R[(dayN * 3 + ['Morning', 'Midday', 'Evening'].indexOf(slot)) % HOOK_R.length] : HOOK[format];
 			const hook = L((l, li) => hookSrc[li].replace('{t}', TL[theme][li]).replace('{n}', String(streak || 7)));
 			rows.push({
 				date, slot, theme, format, streak: format === 'F' ? streak : 0,
 				hook,
 				phrases: ph.map((p) => ({ id: p.id, en: p.en, es: p.es, fr: p.fr })),
-				caption: L((l, li) => `${n === 1 ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : format === 'R' ? SHARE[li] : SOFT[li]}`),
+				caption: L((l, li) => `${n === 1 || format === 'K' ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : format === 'R' ? SHARE[li] : SOFT[li]}`),
+				...(format === 'K' ? { script: L((l, li) => [((h) => `${h[0].toUpperCase()}${h.slice(1)}.`)(hook[l].replace(/^pov ?: ?/i, '')).replace(/([.!?])\.$/, '$1'), ...ph.map((p) => p[l]), CLOSER[dayN % CLOSER.length][li]]) } : {}),
 				hashtags: L((l, li) => `${HASH_THEME[theme][li]} ${HASH_BASE[li]}`),
 				publish: L((l) => zonedToUtc(date, SCHEDULE[l][slot], SCHEDULE[l].tz))
 			});

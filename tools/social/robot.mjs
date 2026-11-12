@@ -8,7 +8,7 @@ import { mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { basename, join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openRenderer } from '../videos/renderer.mjs';
-import { clipFor } from '../videos/clips.mjs';
+import { clipFor, clipsFor } from '../videos/clips.mjs';
 import { P, queryPosts, read, updatePost } from './notion.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
@@ -89,6 +89,15 @@ for (const page of due) {
 		if (format === 'E') {
 			const { pngs, video } = await r.carousel(job, lang, out, base);
 			igMedia = pngs; ttMedia = [video];
+		} else if (format === 'K') {
+			const script = f.script?.length ? f.script : [f.hook, ...(f.phrases ?? [])].filter(Boolean);
+			const clips = await clipsFor(job, root, script.length).catch(() => []);
+			const file = join(out, `${base}.mp4`);
+			if (clips.length) {
+				if (!existsSync(file)) await r.kinetic({ ...job, script: { [lang]: script } }, lang, file, clips.map((c) => c.file));
+				credit = '🎥 Pexels';
+			} else if (!existsSync(file)) await r.video({ ...job, format: 'D' }, lang, file); // no footage available → branded version
+			igMedia = ttMedia = [file];
 		} else {
 			let clip = null;
 			if (format === 'R') {

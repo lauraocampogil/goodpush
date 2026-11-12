@@ -195,6 +195,58 @@ window.setup = function (job) {
 };
 window.draw = (t) => SCENE.draw(t);
 
+/** K — fast-cut footage (ffmpeg, underneath) + voice-over + big kinetic captions, GoodPush colours, yellow end card. */
+window.setupK = function (job) {
+	const stage = document.getElementById('stage');
+	document.documentElement.style.background = document.body.style.background = 'transparent';
+	const { lang } = job;
+	const END = 1.7;
+	// captions: each spoken line → chunks of 1–3 words, timed by length inside the line
+	const caps = [];
+	job.lines.forEach((ln) => {
+		const ws = ln.text.split(/\s+/).filter(Boolean);
+		const groups = []; let cur = [];
+		ws.forEach((w) => { cur.push(w); const len = cur.join(' ').replace(/\*/g, '').length; if (cur.length >= 3 || len >= 12 || /[.,!?…:;]$/.test(w)) { groups.push(cur.join(' ')); cur = []; } });
+		if (cur.length) groups.push(cur.join(' '));
+		const total = groups.reduce((a, g) => a + g.replace(/\*/g, '').length + 2, 0);
+		let t = ln.start;
+		groups.forEach((g) => { const d = ((ln.end - ln.start) * (g.replace(/\*/g, '').length + 2)) / total; caps.push({ g, a: t, b: t + d }); t += d; });
+	});
+	// a *word* (or a word inside *…*) gets the yellow box; keep the stars balanced per chunk
+	let open = false;
+	const html = (g) => g.split(/\s+/).map((w) => {
+		const starts = w.startsWith('*'); const ends = /\*[.,!?…:;]*$/.test(w);
+		if (starts) open = true; const hl = open; if (ends) open = false;
+		const clean = esc(w.replace(/\*/g, ''));
+		return hl ? `<span class="hl">${clean}</span>` : clean;
+	}).join(' ');
+	caps.forEach((c) => (c.h = html(c.g)));
+	const last = job.lines[job.lines.length - 1].end;
+	const D = last + 0.5 + END;
+	stage.innerHTML = `
+		<div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,0) 30%,rgba(0,0,0,0) 65%,rgba(0,0,0,.35))"></div>
+		<div id="tag" class="abs pill" style="left:70px;top:150px;background:rgba(20,20,20,.55);color:#fff;padding:12px 26px 12px 14px;font-size:28px;backdrop-filter:blur(6px)"><span style="width:44px;height:44px;display:inline-block">${smiley('smile', 'sun')}</span>goodpush</div>
+		<div id="cap" class="abs display" style="left:60px;right:60px;top:760px;height:420px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;font-size:118px;line-height:1.02;text-transform:uppercase;--hl:${STICKER.sun};text-shadow:0 6px 0 rgba(0,0,0,.35),0 0 40px rgba(0,0,0,.45)"><div id="capin"></div></div>
+		<div id="endc" class="abs" style="inset:0;background:${STICKER.sun};opacity:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px">
+			<div style="width:300px;height:300px">${smiley('wink', 'ink')}</div>
+			<div class="display" style="font-size:110px;color:#141414">GOODPUSH</div>
+			<div class="pill" style="background:#141414;color:#FBF8F1;font-size:40px">${T.bio[lang].replace('goodpush · ', '')} · ${T.free[lang]}</div>
+		</div>`;
+	document.querySelectorAll('#cap .hl').forEach((h) => (h.style.textShadow = 'none'));
+	let shown = -1;
+	SCENE = { duration: D, draw(t) {
+		const i = caps.findIndex((c) => t >= c.a && t < c.b + 0.12);
+		const cap = document.getElementById('capin');
+		if (i !== shown) { cap.innerHTML = i >= 0 ? caps[i].h : ''; cap.querySelectorAll('.hl').forEach((h) => (h.style.textShadow = 'none')); cap.style.transform = 'none'; fitText(document.getElementById('cap'), 118, 60); shown = i; }
+		if (i >= 0) { const p = backOut(prog(t, caps[i].a, caps[i].a + 0.16), 2.2); cap.style.transform = `scale(${0.78 + 0.22 * p}) rotate(${(i % 2 ? 1 : -1) * (1 - clamp(p)) * 4}deg)`; cap.style.opacity = clamp(p * 2); }
+		const pe = easeExpo(prog(t, D - END, D - END + 0.25));
+		const e = document.getElementById('endc'); e.style.opacity = pe; e.style.transform = `scale(${1.08 - 0.08 * pe})`;
+		document.getElementById('tag').style.opacity = 1 - pe;
+	} };
+	return document.fonts.ready.then(() => D);
+};
+
+
 /** Carousel slide (1080×1350) for format E. */
 window.slide = function (job, idx, height = 1350) {
 	document.documentElement.style.height = document.body.style.height = height + 'px';
