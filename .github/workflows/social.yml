@@ -1,0 +1,61 @@
+# GoodPush — Social Studio (same pipeline as Unix): Notion → robot → Postiz → Instagram + TikTok.
+#  • Sunday 18:23 UTC  — the agent writes next week's posts into Notion (Posts, status Approved)
+#  • Every day 05:07 + 17:07 UTC — the robot renders what's due in the next 36 h and schedules it in Postiz
+# Secrets (GitHub → Settings → Secrets and variables → Actions):
+#   NOTION_TOKEN, POSTIZ_URL, POSTIZ_API_KEY, PEXELS_API_KEY (optional)
+name: Social — agent + robot
+on:
+  schedule:
+    - cron: '23 18 * * 0'
+    - cron: '7 5,17 * * *'
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'agent (write posts in Notion) or robot (render + schedule in Postiz)'
+        required: true
+        default: robot
+        type: choice
+        options: [robot, agent]
+      from:
+        description: 'agent only: first day (YYYY-MM-DD). Empty = next Monday'
+        required: false
+      days:
+        description: 'agent only: number of days'
+        required: false
+        default: '7'
+concurrency: social
+jobs:
+  agent:
+    if: github.event.schedule == '23 18 * * 0' || inputs.task == 'agent'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tools/social/agent.mjs ${{ inputs.from }} ${{ inputs.from && inputs.days || '' }}
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+  robot:
+    if: github.event.schedule == '7 5,17 * * *' || inputs.task == 'robot'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: |
+          npm ci
+          npm i --no-save playwright
+          npx playwright install --with-deps chromium
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-noto-color-emoji
+      - run: node tools/social/robot.mjs
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          POSTIZ_URL: ${{ secrets.POSTIZ_URL }}
+          POSTIZ_API_KEY: ${{ secrets.POSTIZ_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
