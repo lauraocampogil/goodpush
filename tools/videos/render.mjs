@@ -38,10 +38,10 @@ mkdirSync(outDir, { recursive: true });
 
 function ffmpeg(file, { clip, duration } = {}) {
 	const tmp = file.replace(/\.mp4$/, '.part.mp4');
-	const enc = ['-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-r', String(FPS), '-movflags', '+faststart'];
+	const enc = ['-c:v', 'libx264', '-preset', 'medium', '-crf', '21', '-maxrate', '6M', '-bufsize', '12M', '-pix_fmt', 'yuv420p', '-r', String(FPS), '-movflags', '+faststart'];
 	const a = clip
 		? ['-y', '-loglevel', 'error', '-stream_loop', '-1', '-i', clip, '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'png', '-i', '-',
-			'-filter_complex', `[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=${FPS},setsar=1,trim=duration=${duration},setpts=PTS-STARTPTS[bg];[bg][1:v]overlay=format=auto:shortest=1,format=yuv420p[v]`,
+			'-filter_complex', `[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=${FPS},setsar=1,trim=duration=${duration},setpts=PTS-STARTPTS,eq=contrast=1.06:saturation=0.82:brightness=-0.02,colorbalance=rs=0.04:gs=0.0:bs=-0.04:rh=-0.03:bh=0.05[bg];[bg][1:v]overlay=format=auto:shortest=1,noise=alls=6:allf=t,format=yuv420p[v]`,
 			'-map', '[v]', '-an', '-t', String(duration), ...enc, tmp]
 		: ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-', ...enc, tmp];
 	const p = spawn('ffmpeg', a, { stdio: ['pipe', 'inherit', 'inherit'] });

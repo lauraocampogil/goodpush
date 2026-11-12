@@ -23,8 +23,19 @@ const HOOK = {
 	E: ['{t}: 4 reminders you needed', '{t}: 4 frases que necesitabas', '{t} : 4 rappels dont tu avais besoin'],
 	F: ['Day {n} of a good push every day 🔥', 'Día {n} recibiendo un buen empujón 🔥', "Jour {n} d'un bon push chaque jour 🔥"]
 };
+// "Cine" posts (R) talk like TikTok, not like an ad — one hook per day, rotating
+const HOOK_R = [
+	['pov: you needed to hear this today', 'pov: necesitabas leer esto hoy', "pov : tu avais besoin de lire ça aujourd'hui"],
+	['save this for the hard days', 'guárdalo para los días difíciles', 'garde ça pour les jours difficiles'],
+	['a reminder for whoever needs it', 'para quien lo necesite', "pour celui ou celle qui en a besoin"],
+	["if you're seeing this, it's for you", 'si te sale esto, es para ti', "si tu vois ça, c'est pour toi"],
+	['read this twice', 'léelo dos veces', 'lis ça deux fois'],
+	["this one's for the overthinkers", 'para los que piensan demasiado', 'pour ceux qui réfléchissent trop'],
+	['the sign you asked for', 'la señal que pedías', 'le signe que tu attendais']
+];
 const CTA_LINE = ['Get one every day on your lock screen — link in bio. 14 days free.', 'Recibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.', 'Reçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits.'];
 const SOFT = ['Save it for later 💛', 'Guárdala para luego 💛', 'Garde-la pour plus tard 💛'];
+const SHARE = ['Send this to someone who needs it 💛', 'Envíaselo a quien lo necesite 💛', "Envoie-le à quelqu'un qui en a besoin 💛"];
 const ASK = ['Comment your number 👇', 'Comenta tu número 👇', 'Commente ton numéro 👇'];
 const HASH_BASE = ['#motivation #dailymotivation #mindset #goodpush', '#motivación #frasesmotivadoras #mentalidad #goodpush', '#motivation #citationdujour #mindset #goodpush'];
 const HASH_THEME = {
@@ -80,16 +91,19 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 			const ph = take(theme, n);
 			if (f0 === 'F') streak += 7;
 			if (date < from) continue;
-			// Robot mode: no screen recordings; real footage on C days + Mon/Thu/Sun evenings
-			const format = !auto ? f0 : f0 === 'C' ? 'R' : f0 === 'D' && [0, 3, 6].includes(wd) ? 'R' : f0;
-			const cta = ['A', 'C', 'E', 'F', 'R'].includes(format);
+			// Robot mode = mostly organic "cine" posts (R): real footage + subtitle. Brand formats keep a few slots:
+			// A on Mon/Thu mornings, B quiz middays, E carousels Wed/Sat evenings, F streak on Sundays.
+			const format = !auto ? f0 : f0 === 'C' || f0 === 'D' ? 'R' : f0 === 'A' && ![0, 3].includes(wd) ? 'R' : f0;
+			const cta = ['A', 'C', 'E', 'F'].includes(format);
 			const L = (fn) => Object.fromEntries(LANGS.map((l, li) => [l, fn(l, li)]));
-			const hook = L((l, li) => HOOK[format][li].replace('{t}', TL[theme][li]).replace('{n}', String(streak || 7)));
+			const dayN = Math.round((Date.parse(date) - Date.parse(START)) / 864e5);
+			const hookSrc = format === 'R' ? HOOK_R[(dayN * 3 + ['Morning', 'Midday', 'Evening'].indexOf(slot)) % HOOK_R.length] : HOOK[format];
+			const hook = L((l, li) => hookSrc[li].replace('{t}', TL[theme][li]).replace('{n}', String(streak || 7)));
 			rows.push({
 				date, slot, theme, format, streak: format === 'F' ? streak : 0,
 				hook,
 				phrases: ph.map((p) => ({ id: p.id, en: p.en, es: p.es, fr: p.fr })),
-				caption: L((l, li) => `${n === 1 ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : SOFT[li]}`),
+				caption: L((l, li) => `${n === 1 ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : format === 'R' ? SHARE[li] : SOFT[li]}`),
 				hashtags: L((l, li) => `${HASH_THEME[theme][li]} ${HASH_BASE[li]}`),
 				publish: L((l) => zonedToUtc(date, SCHEDULE[l][slot], SCHEDULE[l].tz))
 			});
