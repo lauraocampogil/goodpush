@@ -40,25 +40,25 @@
 
 <Seo title="GoodPush Premium" description={i.t('premium.sub')} />
 
-<div>
+<div class="bg-ink text-paper">
 	<Nav onstart={() => goto(app.profile.onboarded ? '/today' : '/')} cta={i.t('nav.open')} />
 	<main>
-		<section class="bg-sun pt-36 pb-24 text-center"><div class="container-site">
+		<section class="pt-36 pb-16 text-center"><div class="container-site">
 			<Smiley size={96} color="orange" wink class="mx-auto animate-float" />
 			<h1 use:splitReveal={{ text: i.t('premium.title') }} class="display mx-auto mt-6 max-w-4xl text-[clamp(2.24rem,7.0vw,4.9rem)]">{i.t('premium.title')}</h1>
-			<p class="soft mx-auto mt-4 max-w-2xl text-3xl">{i.t('premium.sub')}</p>
+			<p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-paper/70">{i.t('premium.sub')}</p>
 			{#if app.premium}
-				<p class="pill mt-8 bg-ink px-4 py-2 text-sun">{i.t('premium.active')}</p>
+				<p class="pill mt-8 bg-acid px-4 py-2 text-ink">{i.t('premium.active')}</p>
 			{/if}
 			{#if page.url.searchParams.has('canceled')}
-				<p class="mx-auto mt-6 max-w-md rounded-2xl ring-1 ring-ink/10 bg-white p-3 font-semibold">{i.t('premium.canceled')}</p>
+				<p class="mx-auto mt-6 max-w-md rounded-2xl bg-ink-2 p-3 font-semibold">{i.t('premium.canceled')}</p>
 			{/if}
 		</div></section>
 
 		<Pricing heading={false} {busy} onfree={() => goto(app.profile.onboarded ? '/today' : '/')} onpremium={buy} />
 
 		{#if err}<p class="container-site -mt-16 mb-10 text-center font-bold text-orange" role="alert">{err}</p>{/if}
-		<p class="container-site -mt-14 pb-20 text-center text-sm text-ink/60">
+		<p class="container-site -mt-14 pb-20 text-center text-sm text-paper/60">
 			{i.t('premium.restore')} <a class="underline" href="mailto:{PUBLIC_CONTACT_EMAIL}">{PUBLIC_CONTACT_EMAIL}</a>
 		</p>
 	</main>
