@@ -12,11 +12,10 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 OUT = os.path.join(ROOT, 'static', 'brand')
 os.makedirs(OUT, exist_ok=True)
-INK, PAPER, SUN, CREAM = '#141414', '#FBF8F1', '#F6E36B', '#EEE7D2'
+INK, PAPER, SUN, CREAM = '#0D0D0E', '#FDFDFF', '#D5FF00', '#FDFDFF'
 
-# ---------- wordmark as vector paths (Unbounded ExtraBold, tracking -0.02em) ----------
-font = TTFont(os.path.join(ROOT, 'node_modules/@fontsource-variable/unbounded/files/unbounded-latin-wght-normal.woff2'))
-font = instantiateVariableFont(font, {'wght': 800})
+# ---------- wordmark as vector paths (Anton, tracking +0.01em) ----------
+font = TTFont(os.path.join(ROOT, 'node_modules/@fontsource/anton/files/anton-latin-400-normal.woff2'))
 gs, cmap, upm = font.getGlyphSet(), font.getBestCmap(), font['head'].unitsPerEm
 cap = font['OS/2'].sCapHeight or 700
 
@@ -29,7 +28,7 @@ def wordmark(text='GOODPUSH', size=100):
         pen = SVGPathPen(gs)
         gs[g].draw(TransformPen(pen, (s, 0, 0, -s, x, cap * s)))
         d.append(pen.getCommands())
-        x += gs[g].width * s - 0.02 * size
+        x += gs[g].width * s + 0.01 * size
     return ' '.join(d), x + 0.02 * size, cap * s
 
 def smiley(color=INK, mood='smile'):

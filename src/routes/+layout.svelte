@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Self-hosted fonts (no Google Fonts requests → better for GDPR + offline)
+	import '@fontsource/anton/400.css';
 	import '@fontsource-variable/unbounded';
 	import '@fontsource/instrument-serif/400.css';
 	import '@fontsource/instrument-serif/400-italic.css';

@@ -6,13 +6,11 @@
 	import Footer from '#lib/components/Footer.svelte';
 	import InstallSheet from '#lib/components/InstallSheet.svelte';
 	import Seo from '#lib/components/Seo.svelte';
-	import DarkFeatures from '#lib/components/landing/DarkFeatures.svelte';
 	import Faq from '#lib/components/landing/Faq.svelte';
-	import Hero from '#lib/components/landing/Hero.svelte';
+	import HeroWall from '#lib/components/landing/HeroWall.svelte';
 	import Nav from '#lib/components/landing/Nav.svelte';
-	import PhoneRow from '#lib/components/landing/PhoneRow.svelte';
 	import Pricing from '#lib/components/landing/Pricing.svelte';
-	import StickerPile from '#lib/components/landing/StickerPile.svelte';
+	import Story from '#lib/components/landing/Story.svelte';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { isIOS, isStandalone } from '#lib/platform.ts';
 	import { app } from '#lib/store.svelte.ts';
@@ -48,11 +46,9 @@
 <Seo title={i.t('meta.title')} description={i.t('meta.description')} jsonld={jsonLd} />
 
 <Nav onstart={() => start('nav')} cta={onboarded ? i.t('nav.open') : i.t('nav.get')} />
-<main>
-	<Hero onstart={() => start('hero')} {cta} />
-	<PhoneRow />
-	<DarkFeatures onstart={() => start('dark')} {cta} />
-	<StickerPile />
+<main class="bg-ink text-paper">
+	<HeroWall onstart={() => start('hero')} {cta} />
+	<Story onstart={() => start('story')} />
 	<Pricing onfree={() => start('pricing')} onpremium={() => { track('premium_click', { from: 'landing' }); goto('/premium'); }} />
 	<Faq />
 </main>

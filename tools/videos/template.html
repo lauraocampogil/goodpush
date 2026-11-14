@@ -5,14 +5,16 @@
 <style>
 	@font-face { font-family: 'Unbounded'; src: url('../../node_modules/@fontsource-variable/unbounded/files/unbounded-latin-wght-normal.woff2') format('woff2'); font-weight: 200 900; }
 	@font-face { font-family: 'Unbounded'; src: url('../../node_modules/@fontsource-variable/unbounded/files/unbounded-latin-ext-wght-normal.woff2') format('woff2'); font-weight: 200 900; unicode-range: U+0100-024F, U+1E00-1EFF; }
+	@font-face { font-family: 'Anton'; src: url('../../node_modules/@fontsource/anton/files/anton-latin-400-normal.woff2') format('woff2'); font-weight: 400; }
+	@font-face { font-family: 'Anton'; src: url('../../node_modules/@fontsource/anton/files/anton-latin-ext-400-normal.woff2') format('woff2'); font-weight: 400; unicode-range: U+0100-024F, U+1E00-1EFF; }
 	@font-face { font-family: 'Inter'; src: url('../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
 	@font-face { font-family: 'Inter'; src: url('../../node_modules/@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2') format('woff2'); font-weight: 100 900; unicode-range: U+0100-024F, U+1E00-1EFF; }
 	* { box-sizing: border-box; margin: 0; padding: 0; }
-	html, body { width: 1080px; height: 1920px; overflow: hidden; background: #F6E36B; }
-	#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Inter', sans-serif; color: #141414; }
+	html, body { width: 1080px; height: 1920px; overflow: hidden; background: #D5FF00; }
+	#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Inter', sans-serif; color: #0D0D0E; }
 	.abs { position: absolute; }
-	.display { font-family: 'Unbounded', sans-serif; font-weight: 800; letter-spacing: -0.01em; line-height: 1.02; }
-	.hl { background: var(--hl, #fff); color: #141414; border-radius: 14px; padding: 0 12px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+	.display { font-family: 'Anton', 'Unbounded', sans-serif; font-weight: 400; letter-spacing: 0; line-height: 0.98; text-transform: uppercase; }
+	.hl { background: var(--hl, #fff); color: #0D0D0E; border-radius: 14px; padding: 0 12px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 	.word { display: inline-block; white-space: pre; }
 	.pill { display: inline-flex; align-items: center; gap: 18px; border-radius: 999px; padding: 22px 36px; font: 700 34px 'Inter'; }
 	.card { border-radius: 56px; }
@@ -25,7 +27,7 @@
 /* GoodPush video templates. Deterministic: draw(t) sets every style from the time t (seconds),
    so each frame is exact and the same every render. Safe zones: nothing important in the
    bottom 420 px or the right 170 px (TikTok / Reels buttons). */
-const STICKER = { orange: '#FF5B1F', yellow: '#FFB81C', green: '#2F7D4A', mint: '#9FDBBE', pink: '#F7A6C9', purple: '#6C4DA6', cream: '#EEE7D2', sun: '#F6E36B', ink: '#141414' };
+const STICKER = { orange: '#F42902', yellow: '#FFB81C', green: '#2F7D4A', mint: '#9FDBBE', pink: '#F7A6C9', purple: '#6C4DA6', cream: '#FDFDFF', sun: '#D5FF00', ink: '#0D0D0E' };
 const CAT = { discipline: 'orange', calm: 'purple', sport: 'green', study: 'yellow', build: 'mint', faith: 'cream', selflove: 'pink' };
 const DARK = ['orange', 'green', 'purple'];
 const T = {
@@ -100,10 +102,10 @@ window.setup = function (job) {
 	const stage = document.getElementById('stage');
 	const { format, lang, theme } = job;
 	const color = CAT[theme]; const bg = STICKER[color]; const dark = DARK.includes(color);
-	const fg = dark ? '#FBF8F1' : '#141414';
+	const fg = dark ? '#FDFDFF' : '#0D0D0E';
 	const hlColor = dark ? STICKER.sun : '#FFFFFF';
 	const ph = job.phrases.map((p) => p[lang]);
-	const end = `<div id="end" class="abs pill" style="left:80px; top:1380px; background:#141414; color:#FBF8F1; opacity:0">
+	const end = `<div id="end" class="abs pill" style="left:80px; top:1380px; background:#0D0D0E; color:#FDFDFF; opacity:0">
 		<span style="width:56px;height:56px;display:inline-block">${smiley('smile', 'sun')}</span>${T.bio[lang]} · ${T.free[lang]}</div>`;
 	const d = new Date(job.date + 'T12:00:00');
 	const dateLine = `${T.weekday[lang][d.getDay()]} ${d.getDate()} ${T.month[lang][d.getMonth()]}`;
@@ -113,7 +115,7 @@ window.setup = function (job) {
 		const isF = format === 'F';
 		const title = isF ? `🔥 ${job.streak} ${T.streak[lang]}` : T.theme[theme][lang];
 		stage.innerHTML = `
-			<div id="lock" class="abs" style="inset:0; background:#F6E36B">
+			<div id="lock" class="abs" style="inset:0; background:#D5FF00">
 				<div class="abs" style="left:0;right:0;top:250px;text-align:center;font:600 40px Inter;opacity:.7">${dateLine}</div>
 				<div class="abs display" style="left:0;right:0;top:300px;text-align:center;font-size:230px;font-weight:600">${isF ? '07:30' : '08:00'}</div>
 				${[['orange', 120, 1280, 240, -12, 'wink'], ['pink', 700, 1180, 200, 14, 'smile'], ['purple', 380, 1500, 170, 6, 'calm']].map(([c, x, y, s, r, m], k) => `<div class="abs float" data-k="${k}" style="left:${x}px;top:${y}px;width:${s}px;height:${s}px;transform:rotate(${r}deg)">${smiley(m, c)}</div>`).join('')}
@@ -146,9 +148,9 @@ window.setup = function (job) {
 		stage.innerHTML = `
 			<div class="abs" style="inset:0;background:${bg}"></div>
 			<div id="hook" class="abs display" style="left:80px;right:170px;top:200px;font-size:76px;color:${fg}">${esc(job.hook[lang])}</div>
-			${ph.map((p, i) => `<div class="abs card opt" style="left:80px;right:170px;top:${560 + i * 300}px;height:260px;background:${cardBg[i]};display:flex;align-items:center;gap:34px;padding:0 44px;box-shadow:0 18px 0 #141414">
+			${ph.map((p, i) => `<div class="abs card opt" style="left:80px;right:170px;top:${560 + i * 300}px;height:260px;background:${cardBg[i]};display:flex;align-items:center;gap:34px;padding:0 44px;box-shadow:0 18px 0 #0D0D0E">
 				<div class="display" style="font-size:110px;width:90px">${i + 1}</div><div class="txt" style="font:700 44px/1.2 Inter;height:200px;flex:1;display:flex;align-items:center">${esc(plain(p))}</div></div>`).join('')}
-			<div id="ask" class="abs pill" style="left:80px;top:1500px;background:#141414;color:#FBF8F1;opacity:0">${T.ask[lang]}</div>`;
+			<div id="ask" class="abs pill" style="left:80px;top:1500px;background:#0D0D0E;color:#FDFDFF;opacity:0">${T.ask[lang]}</div>`;
 		document.querySelectorAll('.opt .txt').forEach((e) => fitText(e, 46, 30));
 		SCENE = { duration: 9, draw(t) {
 			const h = document.getElementById('hook'); const ph0 = easeExpo(prog(t, 0.1, 0.8));
@@ -158,7 +160,7 @@ window.setup = function (job) {
 		} };
 	} else if (format === 'R') { // R — "cine": real footage underneath (ffmpeg), letterbox + subtitle, no branding until the very end
 		document.documentElement.style.background = document.body.style.background = 'transparent';
-		const sub = esc(ph[0]).replace(/\*([^*]+)\*/g, '<span style="color:#F6E36B">$1</span>');
+		const sub = esc(ph[0]).replace(/\*([^*]+)\*/g, '<span style="color:#D5FF00">$1</span>');
 		stage.innerHTML = `
 			<div class="abs" style="inset:0;background:radial-gradient(120% 80% at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.45) 100%)"></div>
 			<div class="abs" style="left:0;right:0;top:0;height:250px;background:#000"></div>
@@ -178,7 +180,7 @@ window.setup = function (job) {
 				${[['sun', 760, 230, 210, 10, 'wink'], ['cream', 90, 1200, 170, -14, 'smile'], ['pink', 620, 1250, 140, 8, 'calm']].map(([c, x, y, s, r, m], k) => `<div class="abs float" data-k="${k}" style="left:${x}px;top:${y}px;width:${s}px;height:${s}px;transform:rotate(${r}deg)">${smiley(m, c)}</div>`).join('')}
 				<div class="abs" style="left:80px;top:260px;font:700 34px Inter;letter-spacing:.12em;text-transform:uppercase;opacity:.75">${esc(job.hook[lang])}</div>
 				<div id="big" class="abs display" style="left:80px;right:170px;top:420px;height:760px;display:flex;align-items:center"><div>${words(ph[0])}</div></div>
-			</div>${end.replace('opacity:0', 'opacity:0;background:#FBF8F1;color:#141414')}`;
+			</div>${end.replace('opacity:0', 'opacity:0;background:#FDFDFF;color:#0D0D0E')}`;
 		fitText(document.getElementById('big'), 128, 64);
 		SCENE = { duration: 7, draw(t) {
 			document.querySelectorAll('.float').forEach((f) => { const k = +f.dataset.k; f.style.marginTop = Math.sin(t * 1.4 + k * 2.1) * 22 + 'px'; f.style.marginLeft = Math.cos(t * 1.1 + k) * 10 + 'px'; });
@@ -229,8 +231,8 @@ window.setupK = function (job) {
 		<div id="cap" class="abs display" style="left:60px;right:60px;top:760px;height:420px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;font-size:118px;line-height:1.02;text-transform:uppercase;--hl:${STICKER.sun};text-shadow:0 6px 0 rgba(0,0,0,.35),0 0 40px rgba(0,0,0,.45)"><div id="capin"></div></div>
 		<div id="endc" class="abs" style="inset:0;background:${STICKER.sun};opacity:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px">
 			<div style="width:300px;height:300px">${smiley('wink', 'ink')}</div>
-			<div class="display" style="font-size:110px;color:#141414">GOODPUSH</div>
-			<div class="pill" style="background:#141414;color:#FBF8F1;font-size:40px">${T.bio[lang].replace('goodpush · ', '')} · ${T.free[lang]}</div>
+			<div class="display" style="font-size:110px;color:#0D0D0E">GOODPUSH</div>
+			<div class="pill" style="background:#0D0D0E;color:#FDFDFF;font-size:40px">${T.bio[lang].replace('goodpush · ', '')} · ${T.free[lang]}</div>
 		</div>`;
 	document.querySelectorAll('#cap .hl').forEach((h) => (h.style.textShadow = 'none'));
 	let shown = -1;
@@ -251,8 +253,8 @@ window.setupK = function (job) {
 window.slide = function (job, idx, height = 1350) {
 	document.documentElement.style.height = document.body.style.height = height + 'px';
 	const stage = document.getElementById('stage'); stage.style.height = height + 'px';
-	const { lang, theme } = job; const color = CAT[theme]; const colors = [STICKER[color], '#FBF8F1', STICKER.pink, STICKER.mint, STICKER.sun, '#141414'];
-	const bgc = colors[idx]; const dark = idx === 5 || (idx === 0 && DARK.includes(color)); const fg = dark ? '#FBF8F1' : '#141414';
+	const { lang, theme } = job; const color = CAT[theme]; const colors = [STICKER[color], '#FDFDFF', STICKER.pink, STICKER.mint, STICKER.sun, '#0D0D0E'];
+	const bgc = colors[idx]; const dark = idx === 5 || (idx === 0 && DARK.includes(color)); const fg = dark ? '#FDFDFF' : '#0D0D0E';
 	let inner;
 	if (idx === 0) inner = `<div class="display" style="font-size:96px">${esc(job.hook[lang])}</div><div style="width:200px;height:200px;margin-top:70px">${smiley('wink', dark ? 'cream' : 'ink')}</div>`;
 	else if (idx === 5) inner = `<div style="width:180px;height:180px">${smiley('smile', 'sun')}</div><div class="display" style="font-size:84px;margin-top:50px">${T.bio[lang].replace('goodpush · ', '')}</div><div style="font:600 44px Inter;margin-top:30px;opacity:.8">GoodPush · ${T.free[lang]}</div>`;

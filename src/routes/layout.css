@@ -7,14 +7,19 @@
    =================================================================== */
 
 @theme {
-	--color-ink: #141414;
-	--color-paper: #fbf8f1;
-	--color-cream: #f4efe3;
-	--color-sun: #f6e36b;
-	--color-lime: #c6f36b;
+	/* Brand 2026 — Snow White · Red Orange · Acid Yellow on Ink */
+	--color-ink: #0d0d0e;
+	--color-ink-2: #17171a;
+	--color-ink-3: #232326;
+	--color-paper: #fdfdff;
+	--color-cream: #f1f1f4;
+	--color-sun: #d5ff00;
+	--color-acid: #d5ff00;
+	--color-fire: #f42902;
+	--color-lime: #d5ff00;
 
 	/* sticker palette (one per category) */
-	--color-orange: #ff5b1f;
+	--color-orange: #f42902;
 	--color-yellow: #ffb81c;
 	--color-green: #2f7d4a;
 	--color-mint: #9fdbbe;
@@ -27,7 +32,8 @@
 	--color-lilac: #c7b5f2;
 	--color-sky: #a9c8ff;
 
-	--font-display: 'Unbounded Variable', 'Arial Black', sans-serif;
+	--font-display: 'Anton', Impact, 'Arial Narrow', sans-serif;
+	--font-round: 'Unbounded Variable', 'Arial Black', sans-serif;
 	--font-serif: 'Instrument Serif', Georgia, serif;
 	--font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
 
@@ -68,7 +74,7 @@
 
 @layer components {
 	.display {
-		@apply font-display leading-[1.02] font-extrabold tracking-[-0.035em];
+		@apply font-display leading-[0.92] font-normal tracking-[0.005em] uppercase;
 	}
 	.soft {
 		@apply font-serif italic normal-case tracking-normal;
@@ -83,7 +89,7 @@
 		text-decoration-skip-ink: none;
 	}
 	.btn {
-		@apply inline-flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-[15px] font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_rgb(0_0_0/0.45)] active:translate-y-0 disabled:opacity-40 disabled:hover:translate-y-0;
+		@apply inline-flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-[15px] font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_rgb(0_0_0/0.45)] active:translate-y-0 disabled:opacity-40 disabled:hover:translate-y-0;
 	}
 	.btn-ghost {
 		@apply inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-[15px] font-semibold text-ink ring-1 ring-ink/10 transition duration-300 hover:ring-ink/30;
@@ -137,7 +143,7 @@
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 .glass {
-	background: rgb(251 248 241 / 0.75);
+	background: rgb(253 253 255 / 0.78);
 	backdrop-filter: blur(16px) saturate(1.5);
 	-webkit-backdrop-filter: blur(16px) saturate(1.5);
 }

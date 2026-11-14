@@ -9,15 +9,15 @@ export type SmileyMood = 'smile' | 'wink' | 'calm' | 'meh' | 'sad';
 
 /** Sticker palette — one color per category. */
 export const STICKER = {
-	orange: '#FF5B1F',
+	orange: '#F42902',
 	yellow: '#FFB81C',
 	green: '#2F7D4A',
 	mint: '#9FDBBE',
 	pink: '#F7A6C9',
 	purple: '#6C4DA6',
-	cream: '#EEE7D2',
-	sun: '#F6E36B',
-	ink: '#141414'
+	cream: '#FDFDFF',
+	sun: '#D5FF00',
+	ink: '#0D0D0E'
 } as const;
 export type StickerColor = keyof typeof STICKER;
 
