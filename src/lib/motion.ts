@@ -159,3 +159,39 @@ export function confetti(count = 60) {
 		});
 	}
 }
+
+/** use:wordsUp — headline words rise and settle one by one when scrolled into view (no mask: accents never clip).
+ *  Wrap the element in {#key i.lang} so a language switch rebuilds it. */
+export function wordsUp(node: HTMLElement, opts: { delay?: number; scroll?: boolean } = {}) {
+	if (reduced()) return;
+	const { gsap, SplitText } = motion();
+	let split: SplitText | undefined;
+	let tween: gsap.core.Tween | undefined;
+	document.fonts.ready.then(() => {
+		split = SplitText.create(node, { type: 'words' });
+		tween = gsap.from(split.words, {
+			yPercent: 70,
+			rotate: 4,
+			autoAlpha: 0,
+			duration: 1.1,
+			ease: 'expo.out',
+			stagger: 0.07,
+			delay: opts.delay ?? 0,
+			scrollTrigger: opts.scroll !== false ? { trigger: node, start: 'top 88%', once: true } : undefined
+		});
+	});
+	return { destroy: () => { tween?.kill(); split?.revert(); } };
+}
+
+/** use:popIn — children pop in with a little rotation, like stickers being placed. */
+export function popIn(node: HTMLElement, opts: { stagger?: number; rotate?: number } = {}) {
+	if (reduced()) return;
+	const { gsap } = motion();
+	// fromTo with explicit end values: a plain from() run twice on the same node would animate hidden → hidden
+	const t = gsap.fromTo(
+		Array.from(node.children),
+		{ y: 120, scale: 0.88, rotate: (i: number) => (i % 2 ? 1 : -1) * (opts.rotate ?? 6), autoAlpha: 0 },
+		{ y: 0, scale: 1, rotate: 0, autoAlpha: 1, duration: 1.2, ease: 'expo.out', stagger: opts.stagger ?? 0.12, clearProps: 'transform', scrollTrigger: { trigger: node, start: 'top 85%', once: true } }
+	);
+	return { destroy: () => { t.scrollTrigger?.kill(); t.kill(); } };
+}

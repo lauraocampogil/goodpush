@@ -3,7 +3,7 @@
 	import { PUBLIC_PREMIUM_PRICE } from '$app/env/public';
 	import { Check, Crown } from '#lib/icons.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
-	import { reveal, splitReveal } from '#lib/motion.ts';
+	import { popIn, wordsUp } from '#lib/motion.ts';
 
 	let {
 		onfree,
@@ -14,15 +14,15 @@
 	const i = getI18n();
 </script>
 
-<section id="pricing" class="container-site py-24 sm:py-32">
+<section id="pricing" class="container-site pt-8 pb-40 sm:pb-52">
 	{#if heading}
 		<div class="text-center">
 			<p class="kicker !text-current opacity-60">{i.t('pricing.kicker')}</p>
-			<h2 class="display mx-auto mt-4 max-w-3xl text-[clamp(2.8rem,5.5vw,4.6rem)]">{i.t('pricing.big')}</h2>
+			{#key i.lang}<h2 use:wordsUp class="display mx-auto mt-5 max-w-5xl text-balance text-[clamp(3rem,6vw,5.4rem)]">{i.t('pricing.big')}</h2>{/key}
 		</div>
 	{/if}
 
-	<div class="mx-auto mt-14 grid max-w-4xl gap-5 md:grid-cols-2" use:reveal={{ children: true, stagger: 0.12 }}>
+	<div class="mx-auto mt-16 grid max-w-4xl gap-5 md:grid-cols-2" use:popIn={{ rotate: 4 }}>
 		<article class="flex flex-col rounded-[32px] bg-ink-2 p-8 text-paper sm:p-10">
 			<div class="flex items-center justify-between">
 				<h3 class="text-lg font-semibold">{i.t('premium.free')}</h3>

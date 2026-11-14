@@ -15,7 +15,8 @@ os.makedirs(OUT, exist_ok=True)
 INK, PAPER, SUN, CREAM = '#0D0D0E', '#FDFDFF', '#D5FF00', '#FDFDFF'
 
 # ---------- wordmark as vector paths (Anton, tracking +0.01em) ----------
-font = TTFont(os.path.join(ROOT, 'node_modules/@fontsource/anton/files/anton-latin-400-normal.woff2'))
+font = TTFont(os.path.join(ROOT, 'node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wdth-normal.woff2'))
+font = instantiateVariableFont(font, {a.axisTag: (800 if a.axisTag == 'wght' else 82 if a.axisTag == 'wdth' else a.defaultValue) for a in font['fvar'].axes})
 gs, cmap, upm = font.getGlyphSet(), font.getBestCmap(), font['head'].unitsPerEm
 cap = font['OS/2'].sCapHeight or 700
 
@@ -28,7 +29,7 @@ def wordmark(text='GOODPUSH', size=100):
         pen = SVGPathPen(gs)
         gs[g].draw(TransformPen(pen, (s, 0, 0, -s, x, cap * s)))
         d.append(pen.getCommands())
-        x += gs[g].width * s + 0.01 * size
+        x += gs[g].width * s - 0.03 * size
     return ' '.join(d), x + 0.02 * size, cap * s
 
 def smiley(color=INK, mood='smile'):

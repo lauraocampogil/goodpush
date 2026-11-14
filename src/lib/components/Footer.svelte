@@ -8,6 +8,7 @@
 	import { track } from '#lib/analytics.ts';
 	import { feedback } from '#lib/feedback.svelte.ts';
 	import { ArrowRight, ChatDots, Instagram, TikTok } from '#lib/icons.ts';
+	import { parallax } from '#lib/motion.ts';
 
 	let { onstart }: { onstart?: () => void } = $props();
 	const i = getI18n();
@@ -15,7 +16,7 @@
 
 <footer class="bg-ink text-paper">
 	<!-- CTA band -->
-	<div class="container-site pt-20 pb-14">
+	<div class="container-site pt-10 pb-20">
 		<div class="relative overflow-hidden rounded-[36px] bg-acid px-7 py-12 text-ink sm:px-14 sm:py-16">
 			<div class="relative z-10 max-w-xl">
 				<p class="display text-5xl sm:text-7xl">{i.t('footer.cta')}</p>
@@ -81,5 +82,5 @@
 			<img src="/assets/unix-logo-white.svg" alt="Unix Creative Studio" width="71" height="28" class="h-7 w-auto transition-transform duration-500 ease-[cubic-bezier(0.3,1.6,0.5,1)] group-hover:-rotate-4 group-hover:scale-110" />
 		</a>
 	</div>
-	<p aria-hidden="true" class="display overflow-hidden text-center text-[22vw] leading-[0.78] text-ink-2 select-none">GoodPush</p>
+	<div class="overflow-hidden"><p aria-hidden="true" use:parallax={-0.15} class="display text-center text-[24vw] leading-[0.8] text-ink-2 select-none">GoodPush</p></div>
 </footer>

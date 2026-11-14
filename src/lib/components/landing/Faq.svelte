@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { Plus } from '#lib/icons.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
-	import { reveal, splitReveal } from '#lib/motion.ts';
+	import { reveal, wordsUp } from '#lib/motion.ts';
 
 	const i = getI18n();
 	let open = $state<number | null>(1);
 </script>
 
-<section id="faq" class="container-site grid gap-10 pb-28 sm:pb-36 lg:grid-cols-[0.8fr_1.2fr]">
-	<h2 class="display text-[clamp(2.8rem,5.5vw,4.6rem)]">{i.t('faq.title')}</h2>
+<section id="faq" class="container-site grid gap-12 pb-40 sm:pb-52 lg:grid-cols-[0.8fr_1.2fr]">
+	{#key i.lang}<h2 use:wordsUp class="display text-[clamp(3rem,6vw,5.4rem)]">{i.t('faq.title')}</h2>{/key}
 	<div class="divide-y divide-current/15 border-y border-current/15" use:reveal={{ children: true }}>
 		{#each [1, 2, 3, 4] as n (n)}
 			<div>

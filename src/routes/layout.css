@@ -32,7 +32,7 @@
 	--color-lilac: #c7b5f2;
 	--color-sky: #a9c8ff;
 
-	--font-display: 'Anton', Impact, 'Arial Narrow', sans-serif;
+	--font-display: 'Bricolage Grotesque Variable', 'Inter Variable', sans-serif;
 	--font-round: 'Unbounded Variable', 'Arial Black', sans-serif;
 	--font-serif: 'Instrument Serif', Georgia, serif;
 	--font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
@@ -74,7 +74,8 @@
 
 @layer components {
 	.display {
-		@apply font-display leading-[0.92] font-normal tracking-[0.005em] uppercase;
+		@apply font-display leading-[0.9] font-extrabold tracking-[-0.045em];
+		font-stretch: 82%;
 	}
 	.soft {
 		@apply font-serif italic normal-case tracking-normal;
