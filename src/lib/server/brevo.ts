@@ -52,9 +52,24 @@ export async function subscribeContact(email: string, a: ContactAttrs) {
 type Lang = 'en' | 'es' | 'fr';
 let listCache: Record<Lang, number> | null = null;
 
+/** Creates the contact attributes GoodPush writes, once (Brevo answers 400 when one already exists). */
+async function ensureAttributes() {
+	const attrs: [string, string][] = [['LANGUAGE', 'text'], ['CATEGORIES', 'text'], ['PREMIUM', 'boolean'], ['SOURCE', 'text']];
+	await Promise.all(
+		attrs.map(([name, type]) =>
+			fetch(`${API}/contacts/attributes/normal/${name}`, {
+				method: 'POST',
+				headers: { 'api-key': BREVO_API_KEY!, 'content-type': 'application/json', accept: 'application/json' },
+				body: JSON.stringify({ type })
+			}).catch(() => {})
+		)
+	);
+}
+
 /** One Brevo list per language (created next to your main list the first time). */
 export async function langLists(): Promise<Record<Lang, number>> {
 	if (listCache) return listCache;
+	await ensureAttributes();
 	const all = (await (await call('/contacts/lists?limit=50', 'GET')).json()) as { lists?: { id: number; name: string }[] };
 	const found = Object.fromEntries((all.lists ?? []).map((l) => [l.name, l.id]));
 	const main = (await (await call(`/contacts/lists/${BREVO_LIST_ID}`, 'GET')).json()) as { folderId?: number };
