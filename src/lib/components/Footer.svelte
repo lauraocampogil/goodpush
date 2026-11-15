@@ -16,17 +16,17 @@
 
 <footer class="bg-ink text-paper">
 	<!-- CTA band -->
-	<div class="container-site pt-10 pb-20">
-		<div class="relative overflow-hidden rounded-[36px] bg-acid px-7 py-12 text-ink sm:px-14 sm:py-16">
+	<div class="container-site pt-4 pb-16 sm:pt-10 sm:pb-20">
+		<div class="relative overflow-hidden rounded-[36px] bg-acid px-7 pt-10 pb-36 text-ink sm:px-14 sm:py-16">
 			<div class="relative z-10 max-w-xl">
-				<p class="display text-5xl sm:text-7xl">{i.t('footer.cta')}</p>
+				<p class="display text-[2.7rem] sm:text-7xl">{i.t('footer.cta')}</p>
 				{#if onstart}
 					<button class="btn mt-8" onclick={onstart}>{i.t('hero.cta')} <ArrowRight /></button>
 				{:else}
 					<a href="/" class="btn mt-8">{i.t('hero.cta')} <ArrowRight /></a>
 				{/if}
 			</div>
-			<div class="pointer-events-none absolute -right-6 -bottom-10 flex rotate-[-8deg] sm:right-6 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2" aria-hidden="true">
+			<div class="pointer-events-none absolute right-3 bottom-6 flex rotate-[-8deg] scale-[0.8] origin-bottom-right sm:right-6 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 sm:scale-100" aria-hidden="true">
 				<Smiley size={120} color="orange" class="-mr-8 animate-float" />
 				<Smiley size={120} color="ink" wink class="-mr-8 animate-float [animation-delay:-1.2s]" />
 				<Smiley size={120} color="cream" mood="calm" class="animate-float [animation-delay:-2.4s]" />
@@ -37,8 +37,8 @@
 	<!-- Columns -->
 	<div class="container-site grid gap-10 pb-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
 		<div>
-			<Logo tone="light" />
-			<p class="soft mt-3 text-2xl">{i.t('meta.title').split('—')[1]?.trim() ?? ''}</p>
+			<Logo size="lg" tone="light" />
+			<p class="soft mt-4 text-2xl">{i.t('meta.title').split('—')[1]?.trim() ?? ''}</p>
 			<div class="mt-5 flex gap-1">
 				{#each LANGS as l (l)}
 					<button
@@ -82,5 +82,8 @@
 			<img src="/assets/unix-logo-white.svg" alt="Unix Creative Studio" width="71" height="28" class="h-7 w-auto transition-transform duration-500 ease-[cubic-bezier(0.3,1.6,0.5,1)] group-hover:-rotate-4 group-hover:scale-110" />
 		</a>
 	</div>
-	<div class="overflow-hidden"><p aria-hidden="true" use:parallax={-0.15} class="display text-center text-[24vw] leading-[0.8] text-ink-2 select-none">GoodPush</p></div>
+	<!-- giant brand lockup -->
+	<div class="overflow-hidden pt-6 pb-4 sm:pt-10" aria-hidden="true">
+		<div use:parallax={-0.12} class="flex justify-center select-none"><Logo size="xl" tone="light" class="[&>span:last-child]:text-paper/90" /></div>
+	</div>
 </footer>

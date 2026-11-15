@@ -7,7 +7,7 @@
 	let open = $state<number | null>(1);
 </script>
 
-<section id="faq" class="container-site grid gap-12 pb-40 sm:pb-52 lg:grid-cols-[0.8fr_1.2fr]">
+<section id="faq" class="container-site grid gap-8 pb-24 sm:gap-12 sm:pb-52 lg:grid-cols-[0.8fr_1.2fr]">
 	{#key i.lang}<h2 use:wordsUp class="display text-[clamp(3rem,6vw,5.4rem)]">{i.t('faq.title')}</h2>{/key}
 	<div class="divide-y divide-current/15 border-y border-current/15" use:reveal={{ children: true }}>
 		{#each [1, 2, 3, 4] as n (n)}

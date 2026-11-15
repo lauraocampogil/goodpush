@@ -20,9 +20,9 @@ export function reveal(node: HTMLElement, opts: { y?: number; stagger?: number; 
 	if (reduced()) return;
 	const { gsap } = motion();
 	const targets = opts.children ? Array.from(node.children) : [node];
-	const tween = gsap.from(targets, {
-		y: opts.y ?? 40,
-		autoAlpha: 0,
+	const tween = gsap.fromTo(targets, { y: opts.y ?? 40, autoAlpha: 0 }, {
+		y: 0,
+		autoAlpha: 1,
 		duration: 0.9,
 		ease: 'expo.out',
 		delay: opts.delay ?? 0,

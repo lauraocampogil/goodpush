@@ -33,16 +33,16 @@
 <!-- Dark top bar: transparent on the hero, blurred ink once you scroll -->
 <header class="fixed inset-x-0 top-0 z-40 transition-transform duration-500 {hidden ? '-translate-y-full' : ''}">
 	<nav class="transition-colors duration-500 {scrolled ? 'bg-ink/85 backdrop-blur-xl' : 'bg-transparent'}">
-		<div class="container-site flex items-center justify-between gap-3 py-4">
-			<a href="/" aria-label="GoodPush"><Logo tone="light" /></a>
+		<div class="container-site flex items-center justify-between gap-2 py-3.5 sm:gap-3 sm:py-4">
+			<a href="/" aria-label="GoodPush" class="min-w-0"><Logo tone="light" /></a>
 			<ul class="hidden items-center gap-8 md:flex">
 				{#each links as [href, key] (href)}
 					<li><a {href} class="text-[15px] font-medium text-paper/80 transition hover:text-acid">{i.t(key)}</a></li>
 				{/each}
 			</ul>
-			<div class="flex items-center gap-2">
+			<div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
 				<select
-					class="cursor-pointer appearance-none rounded-full bg-transparent px-3.5 py-2.5 text-xs font-bold text-paper uppercase ring-1 ring-paper/25"
+					class="cursor-pointer appearance-none rounded-full bg-transparent px-2.5 py-2 text-xs sm:px-3.5 sm:py-2.5 font-bold text-paper uppercase ring-1 ring-paper/25"
 					value={i.lang}
 					aria-label="Language"
 					onchange={(e) => {
@@ -53,7 +53,7 @@
 				>
 					{#each LANGS as l (l)}<option value={l} class="text-ink">{l.toUpperCase()}</option>{/each}
 				</select>
-				<button class="rounded-full bg-paper px-4 py-2.5 text-sm font-bold whitespace-nowrap text-ink transition hover:bg-acid sm:px-5" onclick={onstart}>{cta}</button>
+				<button class="rounded-full bg-paper px-3.5 py-2 text-[13px] font-bold sm:py-2.5 sm:text-sm whitespace-nowrap text-ink transition hover:bg-acid sm:px-5" onclick={onstart}>{cta}</button>
 			</div>
 		</div>
 	</nav>

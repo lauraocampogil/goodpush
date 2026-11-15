@@ -29,13 +29,13 @@
 	});
 </script>
 
-<section bind:this={root} class="relative overflow-hidden bg-ink pt-32 pb-28 text-paper sm:pt-40 sm:pb-36 lg:min-h-[100svh]">
-	<div class="container-site grid items-center gap-14 lg:grid-cols-[1fr_1.05fr]">
+<section bind:this={root} class="relative overflow-hidden bg-ink pt-28 pb-16 text-paper sm:pt-40 sm:pb-36 lg:min-h-[100svh]">
+	<div class="container-site grid items-center gap-12 lg:grid-cols-[1fr_1.05fr]">
 		<div class="flex flex-col gap-8">
 			<p data-rise class="inline-flex items-center gap-2.5 self-start rounded-full py-2 pr-4 pl-2.5 text-sm font-semibold ring-1 ring-paper/20">
 				<span class="h-2.5 w-2.5 rounded-full bg-fire"></span>{i.t('h2.kicker')}
 			</p>
-			<h1 data-rise class="display text-[clamp(4rem,9vw,8rem)] leading-[0.86]">
+			<h1 data-rise class="display text-[clamp(3.9rem,9vw,8rem)] leading-[0.86]">
 				{i.t('h2.title.1')}<br /><span class="text-acid">{i.t('h2.title.2')}</span>
 			</h1>
 			<p data-rise class="max-w-md text-lg leading-relaxed text-paper/70">{i.t('h2.lead')}</p>

@@ -14,7 +14,7 @@
 	const i = getI18n();
 </script>
 
-<section id="pricing" class="container-site pt-8 pb-40 sm:pb-52">
+<section id="pricing" class="container-site pt-0 pb-24 sm:pt-8 sm:pb-52">
 	{#if heading}
 		<div class="text-center">
 			<p class="kicker !text-current opacity-60">{i.t('pricing.kicker')}</p>
@@ -22,7 +22,7 @@
 		</div>
 	{/if}
 
-	<div class="mx-auto mt-16 grid max-w-4xl gap-5 md:grid-cols-2" use:popIn={{ rotate: 4 }}>
+	<div class="mx-auto mt-10 grid max-w-4xl gap-4 sm:mt-16 sm:gap-5 md:grid-cols-2" use:popIn={{ rotate: 4 }}>
 		<article class="flex flex-col rounded-[32px] bg-ink-2 p-8 text-paper sm:p-10">
 			<div class="flex items-center justify-between">
 				<h3 class="text-lg font-semibold">{i.t('premium.free')}</h3>
@@ -40,7 +40,7 @@
 		<article class="relative flex flex-col rounded-[32px] bg-acid p-8 text-ink sm:p-10">
 			<div class="flex items-center justify-between">
 				<h3 class="flex items-center gap-2 text-lg font-semibold"><Crown weight="fill" class="text-fire" /> {i.t('premium.pro')}</h3>
-				<span class="pill bg-ink text-acid">{i.t('pricing.popular')}</span>
+				<span class="pill shrink-0 whitespace-nowrap bg-ink text-acid">{i.t('pricing.popular')}</span>
 			</div>
 			<p class="mt-6"><span class="display text-5xl">{PUBLIC_PREMIUM_PRICE}</span><span class="ml-1 text-ink/60">{i.t('premium.month')}</span></p>
 			<ul class="mt-8 flex-1 space-y-3.5 text-[15px]">
