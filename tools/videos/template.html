@@ -9,6 +9,9 @@
 	@font-face { font-family: 'Anton'; src: url('../../node_modules/@fontsource/anton/files/anton-latin-ext-400-normal.woff2') format('woff2'); font-weight: 400; unicode-range: U+0100-024F, U+1E00-1EFF; }
 	@font-face { font-family: 'Inter'; src: url('../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
 	@font-face { font-family: 'Inter'; src: url('../../node_modules/@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2') format('woff2'); font-weight: 100 900; unicode-range: U+0100-024F, U+1E00-1EFF; }
+	@font-face { font-family: 'Bricolage'; src: url('../../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wdth-normal.woff2') format('woff2'); font-weight: 200 800; font-stretch: 75% 100%; }
+	@font-face { font-family: 'Bricolage'; src: url('../../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-ext-wdth-normal.woff2') format('woff2'); font-weight: 200 800; font-stretch: 75% 100%; unicode-range: U+0100-024F, U+1E00-1EFF; }
+	.brico { font-family: 'Bricolage', 'Inter', sans-serif; font-weight: 800; font-stretch: 82%; letter-spacing: -0.035em; line-height: 0.95; }
 	* { box-sizing: border-box; margin: 0; padding: 0; }
 	html, body { width: 1080px; height: 1920px; overflow: hidden; background: #D5FF00; }
 	#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Inter', sans-serif; color: #0D0D0E; }
@@ -248,6 +251,82 @@ window.setupK = function (job) {
 	return document.fonts.ready.then(() => D);
 };
 
+
+
+/* ---------- quote formats: real quotes, footage in a 16:9 band (y 656–1264) ---------- */
+const BAND = { x: 0, y: 656, w: 1080, h: 608 };
+/** "*part*" → acid highlight (text colour, no box: subtitles style) */
+const subs = (t, color) => esc(t).replace(/\*([^*]+)\*/g, `<span style="color:${color}">$1</span>`);
+/** Split a quote into subtitle chunks (≈ 3–6 words), stars kept balanced per chunk. */
+function chunks(text) {
+	const ws = text.split(/\s+/).filter(Boolean); const out = []; let cur = []; let open = false;
+	ws.forEach((w) => {
+		cur.push(w); if (w.startsWith('*')) open = true; if (/\*[.,!?…:;’']*$/.test(w)) open = false;
+		const len = plain(cur.join(' ')).length;
+		if (cur.length >= 6 || len >= 30 || (/[.,!?…:;]$/.test(plain(w)) && cur.length >= 2)) { out.push({ t: cur.join(' '), open }); cur = []; }
+	});
+	if (cur.length) out.push({ t: cur.join(' '), open });
+	// re-balance stars: a chunk that starts inside a highlight gets an opening star, one that ends inside gets a closing one
+	let inside = false;
+	return out.map((c) => { let t = c.t; if (inside && !t.startsWith('*')) t = '*' + t; const n = (t.match(/\*/g) || []).length; if (n % 2) t = t + '*'; inside = c.open; return t; });
+}
+
+/** Format Q — cinematic quote: letterboxed footage cuts, narrator voice, subtitles, author card. job.quote = { text, who, src }, job.lines = [{text,start,end}] */
+window.setupQ = function (job) {
+	const stage = document.getElementById('stage');
+	document.documentElement.style.background = document.body.style.background = 'transparent';
+	const { lang, quote } = job; const END = 1.8;
+	const caps = [];
+	job.lines.forEach((ln) => {
+		const cs = chunks(ln.text); const total = cs.reduce((a, c) => a + plain(c).length + 3, 0); let t = ln.start;
+		cs.forEach((c) => { const d = ((ln.end - ln.start) * (plain(c).length + 3)) / total; caps.push({ h: subs(c, STICKER.sun), a: t, b: t + d }); t += d; });
+	});
+	const last = job.lines[job.lines.length - 1].end; const D = last + 1.6 + END;
+	stage.innerHTML = `
+		<div class="abs" style="left:0;right:0;top:0;height:${BAND.y}px;background:#0D0D0E"></div>
+		<div class="abs" style="left:0;right:0;top:${BAND.y + BAND.h}px;bottom:0;background:#0D0D0E"></div>
+		<div id="hook" class="abs" style="left:80px;right:170px;top:330px;color:#FDFDFF;font:700 50px/1.2 Inter;text-align:center;left:120px;right:120px">${esc(job.hook || '')}</div>
+		<div id="sub" class="abs" style="left:90px;right:90px;top:${BAND.y + BAND.h + 70}px;height:230px;display:flex;align-items:flex-start;justify-content:center;text-align:center;color:#fff;font:800 60px/1.15 Inter"><div id="subin"></div></div>
+		<div id="who" class="abs" style="left:0;right:0;top:${BAND.y + BAND.h + 330}px;text-align:center;color:rgba(253,253,255,.6);font:600 34px Inter;opacity:0">— ${esc(quote.who)} · <span style="font-style:italic">${esc(quote.src)}</span></div>
+		<div id="tag" class="abs pill" style="left:50%;transform:translateX(-50%);top:205px;background:rgba(253,253,255,.08);color:#FDFDFF;padding:10px 24px 10px 12px;font-size:28px"><span style="width:40px;height:40px;display:inline-block">${smiley('smile', 'sun')}</span>goodpush</div>
+		<div id="endc" class="abs" style="inset:0;background:${STICKER.sun};opacity:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px">
+			<div style="width:280px;height:280px">${smiley('wink', 'ink')}</div>
+			<div class="brico" style="font-size:120px;color:#0D0D0E;text-transform:uppercase">GoodPush</div>
+			<div class="pill" style="background:#0D0D0E;color:#FDFDFF;font-size:38px">${T.bio[lang].replace('goodpush · ', '')} · ${T.free[lang]}</div>
+		</div>`;
+	let shown = -1;
+	SCENE = { duration: D, draw(t) {
+		const i = caps.findIndex((c) => t >= c.a && t < c.b + 0.1);
+		const sub = document.getElementById('subin');
+		if (i !== shown) { sub.innerHTML = i >= 0 ? caps[i].h : ''; fitText(document.getElementById('sub'), 60, 40); shown = i; }
+		if (i >= 0) { const p = easeOut(prog(t, caps[i].a, caps[i].a + 0.14)); sub.style.opacity = p; sub.style.transform = `translateY(${(1 - p) * 14}px)`; }
+		const ph = easeExpo(prog(t, 0.05, 0.6)); const hk = document.getElementById('hook'); hk.style.opacity = ph * (1 - prog(t, last + 0.2, last + 0.6) * 0.0); hk.style.transform = `translateY(${(1 - ph) * 30}px)`;
+		const pw = easeExpo(prog(t, last - 0.4, last + 0.3)); const w = document.getElementById('who'); w.style.opacity = pw; w.style.transform = `translateY(${(1 - pw) * 20}px)`;
+		const pe = easeExpo(prog(t, D - END, D - END + 0.25)); const e = document.getElementById('endc'); e.style.opacity = pe; e.style.transform = `scale(${1.08 - 0.08 * pe})`;
+	} };
+	return document.fonts.ready.then(() => D);
+};
+
+/** Format S — satisfying loop: footage in a rounded window, the quote on top, no voice (add a trending sound in the app). */
+window.setupS = function (job) {
+	const stage = document.getElementById('stage');
+	document.documentElement.style.background = document.body.style.background = 'transparent';
+	const { quote } = job;
+	const n = plain(quote.text).split(/\s+/).length; const D = Math.max(7, Math.min(14, 2.2 + n * 0.32));
+	const W = { x: 40, y: 640, w: 1000, h: 640, r: 44 };
+	stage.innerHTML = `
+		<div class="abs" style="left:${W.x}px;top:${W.y}px;width:${W.w}px;height:${W.h}px;border-radius:${W.r}px;box-shadow:0 0 0 2400px #0D0D0E"></div>
+		<div class="abs" style="left:${W.x}px;top:${W.y}px;width:${W.w}px;height:${W.h}px;border-radius:${W.r}px;background:radial-gradient(ellipse at center,rgba(0,0,0,.42),rgba(0,0,0,.18) 70%)"></div>
+		<div id="q" class="abs" style="left:${W.x + 70}px;top:${W.y + 60}px;width:${W.w - 140}px;height:${W.h - 120}px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;font:700 50px/1.22 Inter;text-shadow:0 2px 14px rgba(0,0,0,.6)"><div id="qin">${subs(quote.text, STICKER.sun)}</div></div>
+		<div id="who" class="abs" style="left:0;right:0;top:${W.y + W.h + 50}px;text-align:center;color:rgba(253,253,255,.7);font:600 36px Inter">— ${esc(quote.who)}</div>
+		<div id="tag" class="abs pill" style="left:50%;transform:translateX(-50%);top:${W.y - 150}px;background:${STICKER.sun};color:#0D0D0E;padding:10px 26px 10px 12px;font-size:30px"><span style="width:42px;height:42px;display:inline-block">${smiley('smile', 'ink')}</span>goodpush</div>`;
+	fitText(document.getElementById('q'), 54, 32);
+	SCENE = { duration: D, draw(t) {
+		const p = easeExpo(prog(t, 0.1, 0.8)); const q = document.getElementById('qin'); q.style.opacity = p; q.style.transform = `translateY(${(1 - p) * 24}px)`;
+		const pw = easeExpo(prog(t, 0.6, 1.2)); document.getElementById('who').style.opacity = pw;
+	} };
+	return document.fonts.ready.then(() => D);
+};
 
 /** Carousel slide (1080×1350) for format E. */
 window.slide = function (job, idx, height = 1350) {

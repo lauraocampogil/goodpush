@@ -4,6 +4,7 @@
 // `auto: true` (used by the robot) swaps formats that need a human for ones it can make alone:
 //   C (screen recording) → R (real footage) · some D evenings → R.
 import { PHRASES, TOPIC_PHRASES } from '../../src/lib/data/phrases.ts';
+import { QUOTES, author, srcOf } from './quotes.mjs';
 
 const LANGS = ['en', 'es', 'fr'];
 const P = [...PHRASES, ...TOPIC_PHRASES].filter((p) => !p.premium);
@@ -81,6 +82,7 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 	};
 	const rows = [];
 	let streak = 0;
+	let qi = 0; // global rotation through the quote bank (no repeats until all are used)
 	for (let date = START; date < to; date = addDays(date, 1)) {
 		const wd = weekday(date);
 		const theme = THEMES[wd];
@@ -90,11 +92,27 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 		for (const [slot, f0] of [['Morning', morning], ['Midday', mid], ['Evening', eve]]) {
 			// Robot mode: K = fast cuts + voice-over + big captions (the TikTok edit style) on most slots.
 			// Brand formats keep a few: A on Mon/Thu mornings, B quiz middays, E carousels Wed/Sat evenings, F streak on Sundays.
-			const format = !auto ? f0 : f0 === 'C' || f0 === 'D' ? 'K' : f0 === 'A' && ![0, 3].includes(wd) ? 'K' : f0;
+			// Quote formats (real quotes, other footage): S = satisfying loop most mornings, Q = cinematic quote on D evenings.
+			const format = !auto ? f0 : f0 === 'D' ? 'Q' : f0 === 'A' && ![0, 3].includes(wd) ? 'S' : f0 === 'C' ? 'K' : f0;
 			const n = format === 'B' || format === 'K' ? 3 : format === 'E' ? 4 : 1;
 			const ph = take(theme, n);
 			if (f0 === 'F') streak += 7;
+			const q = format === 'Q' || format === 'S' ? QUOTES[qi++ % QUOTES.length] : null;
 			if (date < from) continue;
+			if (q) {
+				const L2 = (fn) => Object.fromEntries(LANGS.map((l, li) => [l, fn(l, li)]));
+				const dayQ = Math.round((Date.parse(date) - Date.parse(START)) / 864e5);
+				const hookQ = L2((l, li) => HOOK_R[(dayQ * 3 + ['Morning', 'Midday', 'Evening'].indexOf(slot)) % HOOK_R.length][li]);
+				const text = (l) => q[l] ?? q.en;
+				rows.push({
+					date, slot, theme, format, streak: 0, hook: hookQ, quote: q.id,
+					phrases: [L2((l) => text(l))].map((x) => ({ id: q.id, ...x })),
+					caption: L2((l, li) => `“${clean(text(l))}”\n— ${author(q, l)}, ${srcOf(q, l)}\n\n${format === 'Q' ? CTA_LINE[li] : SHARE[li]}`),
+					hashtags: L2((l, li) => `${HASH_THEME[theme][li]} ${HASH_BASE[li]} ${['#stoicism #quotes', '#estoicismo #frases', '#stoicisme #citations'][li]}`),
+					publish: L2((l) => zonedToUtc(date, SCHEDULE[l][slot], SCHEDULE[l].tz))
+				});
+				continue;
+			}
 			const cta = ['A', 'C', 'E', 'F', 'K'].includes(format);
 			const L = (fn) => Object.fromEntries(LANGS.map((l, li) => [l, fn(l, li)]));
 			const dayN = Math.round((Date.parse(date) - Date.parse(START)) / 864e5);

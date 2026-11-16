@@ -23,10 +23,12 @@ def main():
     lang, out, lines = sys.argv[1], sys.argv[2], sys.argv[3:]
     k = Kokoro(*download_models())
     voice, code = VOICE.get(lang, VOICE['en'])
+    voice = os.environ.get('TTS_VOICE_' + lang.upper(), voice)
+    speed = float(os.environ.get('TTS_SPEED', '1.05'))
     chunks, times, t, sr = [], [], 0.35, 24000
     chunks.append(np.zeros(int(0.35 * sr), dtype=np.float32))
     for line in lines:
-        s, sr = k.create(line.replace('*', ''), voice=voice, speed=1.05, lang=code)
+        s, sr = k.create(line.replace('*', ''), voice=voice, speed=speed, lang=code)
         chunks.append(s.astype(np.float32))
         times.append({'start': round(t, 3), 'end': round(t + len(s) / sr, 3)})
         t += len(s) / sr + GAP

@@ -85,3 +85,43 @@ export async function clipsFor(job, root, n = 5) {
 	}
 	return out;
 }
+
+// ---------- landscape footage for the "quote" formats (Q = cinematic cuts, S = satisfying loop) ----------
+export const CINE = {
+	discipline: ['runner sunrise slow motion', 'boxer training dark gym', 'mountain climber summit', 'athlete stairs night'],
+	study: ['library books slow motion', 'writing pen paper close up', 'night city window desk', 'old books candle'],
+	calm: ['ocean waves aerial', 'fog forest morning', 'rain on window night', 'lake mountains sunrise'],
+	sport: ['football stadium night', 'sprinter starting blocks', 'swimmer underwater', 'basketball slow motion'],
+	build: ['city timelapse night aerial', 'construction crane sunset', 'ship sea storm', 'road trip highway sunset'],
+	selflove: ['woman walking field sunset', 'person standing cliff ocean', 'sunlight through trees', 'flowers wind slow motion'],
+	faith: ['sun rays clouds', 'starry night sky timelapse', 'ancient statue', 'mountain sunrise clouds']
+};
+export const SATISFY = ['dominoes falling', 'kinetic sand cutting', 'paint mixing', 'marble run', 'colored pencils falling', 'slime satisfying', 'soap cutting', 'liquid ink in water', 'pottery wheel'];
+
+/** n landscape clips (≥ 1280 wide) for these Pexels queries; cached in marketing/clips/pexels. */
+export async function landscapeClips(queries, seed, root, n = 1) {
+	const key = process.env.PEXELS_API_KEY;
+	if (!key) return [];
+	const cache = join(root, 'marketing', 'clips', 'pexels');
+	mkdirSync(cache, { recursive: true });
+	const out = [], seen = new Set();
+	for (let i = 0; out.length < n && i < n * 3; i++) {
+		const query = queries[(hash(seed) + i) % queries.length];
+		const res = await fetch(`https://api.pexels.com/videos/search?${new URLSearchParams({ query, orientation: 'landscape', size: 'medium', per_page: '30' })}`, { headers: { Authorization: key } });
+		if (!res.ok) break;
+		const { videos = [] } = await res.json();
+		const pool = videos.filter((v) => v.duration >= 5 && v.width > v.height && !seen.has(v.id));
+		if (!pool.length) continue;
+		const v = pool[(hash(seed + i) >>> 3) % pool.length];
+		seen.add(v.id);
+		const f = v.video_files.filter((x) => x.file_type === 'video/mp4' && x.width >= 1280 && x.width > x.height).sort((a, b) => a.width - b.width)[0] ?? v.video_files[0];
+		const file = join(cache, `${v.id}_l.mp4`);
+		if (!existsSync(file)) {
+			const r = await fetch(f.link);
+			if (!r.ok) continue;
+			writeFileSync(file, Buffer.from(await r.arrayBuffer()));
+		}
+		out.push({ file, credit: v.user?.name ?? null });
+	}
+	return out;
+}

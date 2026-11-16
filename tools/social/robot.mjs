@@ -8,7 +8,8 @@ import { mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { basename, join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openRenderer } from '../videos/renderer.mjs';
-import { clipFor, clipsFor } from '../videos/clips.mjs';
+import { clipFor, clipsFor, landscapeClips, CINE, SATISFY } from '../videos/clips.mjs';
+import { QUOTES, author, srcOf } from '../videos/quotes.mjs';
 import { P, queryPosts, read, updatePost } from './notion.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
@@ -89,6 +90,19 @@ for (const page of due) {
 		if (format === 'E') {
 			const { pngs, video } = await r.carousel(job, lang, out, base);
 			igMedia = pngs; ttMedia = [video];
+		} else if (format === 'Q' || format === 'S') {
+			const q = QUOTES.find((x) => x.id === f.quote);
+			if (!q) throw new Error(`Unknown quote id "${f.quote}" (tools/videos/quotes.mjs)`);
+			const qjob = { ...job, hook: f.hook ?? '', quote: { text: q[lang] ?? q.en, who: author(q, lang), src: srcOf(q, lang) } };
+			const file = join(out, `${base}.mp4`);
+			const clips = await landscapeClips(format === 'Q' ? CINE[job.theme] ?? CINE.calm : SATISFY, date + slot, root, format === 'Q' ? 4 : 1).catch(() => []);
+			if (!existsSync(file)) {
+				if (!clips.length) await r.video({ ...job, format: 'D', phrases: [{ [lang]: qjob.quote.text }] }, lang, file); // no footage → branded card
+				else if (format === 'Q') await r.quote(qjob, lang, file, clips.map((c) => c.file));
+				else await r.satisfy(qjob, lang, file, clips[0].file);
+			}
+			if (clips.length) credit = '🎥 Pexels';
+			igMedia = ttMedia = [file];
 		} else if (format === 'K') {
 			const script = f.script?.length ? f.script : [f.hook, ...(f.phrases ?? [])].filter(Boolean);
 			const clips = await clipsFor(job, root, script.length).catch(() => []);
@@ -132,7 +146,7 @@ for (const page of due) {
 				settings: {
 					__type: 'tiktok', title: (f.phrases?.[0] ?? '').replace(/\*/g, '').slice(0, 90), privacy_level: 'PUBLIC_TO_EVERYONE',
 					duet: true, stitch: true, comment: true, autoAddMusic: 'no', brand_content_toggle: false, brand_organic_toggle: false,
-					video_made_with_ai: false, content_posting_method: process.env.POSTIZ_TIKTOK_METHOD || 'DIRECT_POST'
+					video_made_with_ai: false, content_posting_method: process.env.POSTIZ_TIKTOK_METHOD || 'UPLOAD' // UPLOAD = draft in the TikTok inbox (until the app passes TikTok's review); DIRECT_POST after
 				}
 			});
 		}
