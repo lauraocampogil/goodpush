@@ -84,6 +84,6 @@
 	</div>
 	<!-- giant brand lockup -->
 	<div class="overflow-hidden pt-6 pb-4 sm:pt-10" aria-hidden="true">
-		<div use:parallax={-0.12} class="flex justify-center select-none"><Logo size="xl" tone="light" class="[&>span:last-child]:text-paper/90" /></div>
+		<div use:parallax={-0.12} class="flex justify-center opacity-[0.07] grayscale select-none"><Logo size="xl" tone="light" /></div>
 	</div>
 </footer>

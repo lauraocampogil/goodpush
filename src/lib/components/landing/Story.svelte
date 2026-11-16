@@ -18,15 +18,12 @@
 	] as const;
 
 	let band: HTMLElement;
-	let mark: HTMLElement;
 	onMount(() => {
 		if (reduced()) return;
 		const { gsap } = motion();
 		// The topics band tilts and slides a bit with the scroll, on top of its own loop
 		const t = gsap.fromTo(band, { rotate: -4, xPercent: -3 }, { rotate: 1, xPercent: 3, ease: 'none', scrollTrigger: { trigger: band, start: 'top bottom', end: 'bottom top', scrub: true } });
-		const m = gsap.fromTo(mark, { scale: 0.6, rotate: -90 }, { scale: 1, rotate: 0, ease: 'none', scrollTrigger: { trigger: mark, start: 'top bottom', end: 'center 45%', scrub: true } });
-		const s = gsap.to(mark.querySelector('[data-mark]'), { rotate: 360, ease: 'none', scrollTrigger: { trigger: mark, start: 'top bottom', end: 'bottom top', scrub: 1 } });
-		return () => { for (const x of [t, m, s]) { x.scrollTrigger?.kill(); x.kill(); } };
+		return () => { t.scrollTrigger?.kill(); t.kill(); };
 	});
 </script>
 
@@ -52,13 +49,7 @@
 		<div use:parallax={0.5} class="absolute top-24 left-[8%]"><Smiley size={0} color="orange" wink class="animate-float h-20 w-20 [--r:-12deg] sm:h-32 sm:w-32" /></div>
 		<div use:parallax={-0.4} class="absolute top-44 right-[9%]"><Smiley size={0} color="cream" mood="calm" class="animate-float h-16 w-16 [animation-delay:-2s] sm:h-24 sm:w-24" /></div>
 		<div use:parallax={0.35} class="absolute bottom-28 left-[15%]"><Smiley size={0} color="sun" class="animate-float h-14 w-14 [animation-delay:-1s] sm:h-20 sm:w-20" /></div>
-		<span use:parallax={-0.5} class="absolute right-[17%] bottom-24 h-32 w-32 rounded-full ring-2 ring-paper/15"></span>
-	</div>
-	<!-- the brand mark, spinning with the scroll -->
-	<div bind:this={mark} class="relative mx-auto mb-10 grid h-28 w-28 place-items-center sm:mb-12 sm:h-40 sm:w-40" aria-hidden="true">
-		<span class="absolute inset-0 rounded-full bg-acid"></span>
-		<span data-mark class="relative grid h-[74%] w-[74%] place-items-center"><Smiley size={0} color="ink" class="h-full w-full" /></span>
-		<span class="absolute -right-3 -bottom-1 rotate-[-10deg] rounded-full bg-fire px-3 py-1 text-xs font-bold text-paper sm:text-sm">goodpush</span>
+		<div use:parallax={-0.5} class="absolute right-[15%] bottom-24"><Smiley size={0} color="orange" class="animate-float h-24 w-24 [animation-delay:-3s] sm:h-32 sm:w-32" /></div>
 	</div>
 	{#key i.lang}
 		<p use:reveal class="text-sm font-bold tracking-[0.16em] text-fire">{i.t('phrase.kicker')}</p>
