@@ -17,7 +17,7 @@ function encoder(file, { clip, duration, band = null } = {}) {
 	const enc = ['-c:v', 'libx264', '-preset', 'medium', '-crf', '21', '-maxrate', '6M', '-bufsize', '12M', '-pix_fmt', 'yuv420p', '-r', String(FPS), '-movflags', '+faststart'];
 	const a = clip
 		? ['-y', '-loglevel', 'error', '-stream_loop', '-1', '-i', clip, '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'png', '-i', '-',
-			'-filter_complex', `[0:v]${band ? `fps=${FPS},${BAND_F(band.w, band.h, band.y, band.x)}` : `scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=${FPS},setsar=1`},trim=duration=${duration},setpts=PTS-STARTPTS,eq=contrast=1.06:saturation=0.82:brightness=-0.02,colorbalance=rs=0.04:gs=0.0:bs=-0.04:rh=-0.03:bh=0.05[bg];[bg][1:v]overlay=format=auto:shortest=1,noise=alls=6:allf=t,format=yuv420p[v]`,
+			'-filter_complex', `[0:v]${band ? `fps=${FPS},${BAND_F(band.w, band.h, band.y, band.x)}` : `scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=${FPS},setsar=1`},trim=duration=${duration},setpts=PTS-STARTPTS${band ? '' : ',eq=contrast=1.06:saturation=0.82:brightness=-0.02,colorbalance=rs=0.04:gs=0.0:bs=-0.04:rh=-0.03:bh=0.05'}[bg];[bg][1:v]overlay=format=auto:shortest=1${band ? '' : ',noise=alls=6:allf=t'},format=yuv420p[v]`,
 			'-map', '[v]', '-an', '-t', String(duration), ...enc, tmp]
 		: ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-', ...enc, tmp];
 	const p = spawn('ffmpeg', a, { stdio: ['pipe', 'inherit', 'inherit'] });
@@ -41,11 +41,11 @@ const run = (args) => new Promise((ok, ko) => { const p = spawn('ffmpeg', ['-y',
 const BAND_F = (W = 1080, H = 608, Y = 656, X = 0) => `scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,pad=1080:1920:${X}:${Y}:black`;
 
 /** Background for K: one clip per spoken line, hard cuts on the line starts, slow push-in, slightly darker. */
-async function cutsVideo(clips, times, D, file, band = false) {
+async function cutsVideo(clips, times, D, file, band = false, bandY = 656) {
 	const starts = times.map((t, i) => (i === 0 ? 0 : t.start - 0.06));
 	const segs = starts.map((a, i) => ({ a, d: (i + 1 < starts.length ? starts[i + 1] : D) - a }));
 	const inputs = segs.flatMap((_, i) => ['-stream_loop', '-1', '-i', clips[i % clips.length]]);
-	const chains = segs.map((sg, i) => `[${i}:v]trim=duration=${sg.d.toFixed(3)},setpts=PTS-STARTPTS,fps=${FPS},${band ? `scale=w='trunc(1080*(1.0+0.06*t/${sg.d.toFixed(3)})/2)*2':h=-2:eval=frame,${BAND_F()},eq=saturation=0.85:contrast=1.06,colorbalance=rs=0.03:bs=-0.03` : `scale=w='trunc(1080*(1.10+0.08*t/${sg.d.toFixed(3)})/2)*2':h=-2:eval=frame,scale=1188:2112:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,eq=brightness=-0.06:saturation=0.92:contrast=1.05`},format=yuv420p[c${i}]`).join(';');
+	const chains = segs.map((sg, i) => `[${i}:v]trim=duration=${sg.d.toFixed(3)},setpts=PTS-STARTPTS,fps=${FPS},${band ? `scale=w='trunc(1080*(1.0+0.06*t/${sg.d.toFixed(3)})/2)*2':h=-2:eval=frame,${BAND_F(1080, 608, bandY)},eq=contrast=1.04` : `scale=w='trunc(1080*(1.10+0.08*t/${sg.d.toFixed(3)})/2)*2':h=-2:eval=frame,scale=1188:2112:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,eq=brightness=-0.06:saturation=0.92:contrast=1.05`},format=yuv420p[c${i}]`).join(';');
 	await run([...inputs, '-filter_complex', `${chains};${segs.map((_, i) => `[c${i}]`).join('')}concat=n=${segs.length}:v=1:a=0[v]`, '-map', '[v]', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-t', D.toFixed(3), file]);
 }
 
@@ -116,21 +116,17 @@ export async function openRenderer() {
 		/** Format Q: real quote, narrator voice, letterboxed footage cuts. job.quote = { text, who, src } (text for this language) */
 		async quote(job, lang, file, clips) {
 			if (!clips.length) throw new Error('Q needs at least one clip');
-			const tmp = join(tmpdir(), `gpq_${process.pid}_${Date.now()}`);
-			const wav = `${tmp}.wav`, bg = `${tmp}_bg.mp4`;
-			// one spoken line per sentence (keeps the subtitles in step with the voice)
-			const lines = job.quote.text.match(/[^.!?;:]+[.!?;:]+[’'"*]*|[^.!?;:]+$/g).map((x) => x.trim()).filter(Boolean);
-			const env = { ...process.env, TTS_SPEED: '0.9', TTS_VOICE_EN: process.env.TTS_VOICE_EN || 'bm_george' };
-			const times = JSON.parse(execFileSync('python3', [join(here, 'tts.py'), lang, wav, ...lines], { encoding: 'utf8', env }).trim().split('\n').pop());
 			await page.setViewportSize({ width: 1080, height: 1920 });
 			await page.goto(url);
-			const D = await page.evaluate((j) => window.setupQ(j), { ...job, lang, lines: lines.map((text, i) => ({ text, ...times[i] })) });
-			// one clip per sentence, plus one for the author card
-			await cutsVideo(clips, [...times, { start: times[times.length - 1].end + 0.3 }], D, bg, true);
+			const D = await page.evaluate((j) => window.setupQ(j), { ...job, lang });
+			const tmp = join(tmpdir(), `gpq_${process.pid}_${Date.now()}.mp4`);
+			// a cut every ~3 s, footage in the band (y 560)
+			const n = Math.max(1, Math.round(D / 3));
+			await cutsVideo(clips, Array.from({ length: n }, (_, i) => ({ start: (i * D) / n })), D, tmp, true, 560);
 			const part = file.replace(/\.mp4$/, '.part.mp4');
-			const p = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-i', bg, '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'png', '-i', '-', '-i', wav,
-				'-filter_complex', '[0:v][1:v]overlay=format=auto:shortest=1,noise=alls=4:allf=t,format=yuv420p[v]', '-map', '[v]', '-map', '2:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '21', '-maxrate', '6M', '-bufsize', '12M',
-				'-c:a', 'aac', '-b:a', '160k', '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11,apad', '-t', D.toFixed(3), '-r', String(FPS), '-movflags', '+faststart', part], { stdio: ['pipe', 'inherit', 'inherit'] });
+			const p = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-i', tmp, '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'png', '-i', '-',
+				'-filter_complex', '[0:v][1:v]overlay=format=auto:shortest=1,format=yuv420p[v]', '-map', '[v]', '-an', '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-maxrate', '6M', '-bufsize', '12M',
+				'-t', D.toFixed(3), '-r', String(FPS), '-movflags', '+faststart', part], { stdio: ['pipe', 'inherit', 'inherit'] });
 			const done = new Promise((ok, ko) => p.on('exit', (c) => (c === 0 ? (renameSync(part, file), ok()) : ko(new Error('ffmpeg Q ' + c)))));
 			for (let k = 0; k < D * FPS; k++) {
 				await page.evaluate((x) => window.draw(x), k / FPS);
@@ -139,7 +135,7 @@ export async function openRenderer() {
 			}
 			p.stdin.end();
 			await done;
-			rmSync(wav, { force: true }); rmSync(bg, { force: true });
+			rmSync(tmp, { force: true });
 			return file;
 		},
 		/** Format S: satisfying clip in a rounded window + the quote on top. Silent: the trending sound is added in the app. */
@@ -147,7 +143,7 @@ export async function openRenderer() {
 			await page.setViewportSize({ width: 1080, height: 1920 });
 			await page.goto(url);
 			const dur = await page.evaluate((j) => window.setupS(j), { ...job, lang });
-			const enc = encoder(file, { clip, duration: dur, band: { x: 40, y: 640, w: 1000, h: 640 } });
+			const enc = encoder(file, { clip, duration: dur, band: { x: 0, y: 656, w: 1080, h: 608 } });
 			for (let k = 0; k < dur * FPS; k++) {
 				await page.evaluate((x) => window.draw(x), k / FPS);
 				await enc.write(await page.screenshot({ type: 'png', omitBackground: true }));
