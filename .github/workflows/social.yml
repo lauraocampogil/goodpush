@@ -11,11 +11,11 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: 'agent (write posts in Notion) or robot (render + schedule in Postiz)'
+        description: 'agent (write posts in Notion) · robot (render + schedule in Postiz) · preview (render tomorrow, nothing is posted — download the videos below the run)'
         required: true
         default: robot
         type: choice
-        options: [robot, agent]
+        options: [preview, robot, agent]
       from:
         description: 'agent only: first day (YYYY-MM-DD). Empty = next Monday'
         required: false
@@ -38,7 +38,7 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
   robot:
-    if: github.event.schedule == '7 5,17 * * *' || inputs.task == 'robot'
+    if: github.event.schedule == '7 5,17 * * *' || inputs.task == 'robot' || inputs.task == 'preview'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -59,9 +59,16 @@ jobs:
         with:
           path: tools/videos/.tts
           key: kokoro-v1.0
-      - run: node tools/social/robot.mjs
+      - run: node tools/social/robot.mjs ${{ inputs.task == 'preview' && '--preview' || '' }}
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           POSTIZ_URL: ${{ secrets.POSTIZ_URL }}
           POSTIZ_API_KEY: ${{ secrets.POSTIZ_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      - name: Preview videos
+        if: inputs.task == 'preview'
+        uses: actions/upload-artifact@v4
+        with:
+          name: goodpush-preview
+          path: marketing/robot/*.mp4
+          retention-days: 7

@@ -11,9 +11,11 @@ import { openRenderer } from '../videos/renderer.mjs';
 import { clipFor, clipsFor, landscapeClips, CINE, SATISFY } from '../videos/clips.mjs';
 import { QUOTES, author, srcOf } from '../videos/quotes.mjs';
 import { P, queryPosts, read, updatePost } from './notion.mjs';
+import { planRange } from '../videos/plan.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
-const dry = process.argv.includes('--dry');
+const preview = process.argv.includes('--preview'); // render tomorrow's plan from scratch (no Notion, no Postiz) → marketing/robot
+const dry = preview || process.argv.includes('--dry');
 const HORIZON_H = Number(process.env.ROBOT_HORIZON_HOURS ?? 36);
 const BUDGET = Number(process.env.POSTIZ_BUDGET ?? 25); // Postiz public API: 30 requests / hour
 const out = join(root, 'marketing', 'robot');
@@ -54,14 +56,23 @@ const asChannel = (c) => (typeof c === 'string' ? { id: c } : c);
 
 // ---------- run ----------
 const now = Date.now();
-const due = (await queryPosts({
+// Normalised post: { id, title, lang, format, at, platforms, caption, fields }
+const fromNotion = (page) => { const p = page.properties; return { id: page.id, title: read.text(p.Post), lang: (read.select(p.Language) ?? 'EN').toLowerCase(), format: read.select(p.Template) ?? 'D', at: read.date(p['Publish at']), platforms: read.multi(p.Platforms), caption: [read.text(p.Caption), read.text(p.Hashtags)].filter(Boolean).join('\n\n'), fieldsRaw: read.text(p['Fields (JSON)']), postizId: read.text(p['Postiz ID']) }; };
+function fromPlan() {
+	const day = process.env.PREVIEW_DATE || new Date(now + 864e5).toISOString().slice(0, 10);
+	return planRange(day, 1, { auto: true }).flatMap((r) => ['en', 'es'].map((lang) => ({
+		id: null, title: `${r.date} · ${r.slot} · ${r.format} · ${lang.toUpperCase()}`, lang, format: r.format, at: r.publish[lang], platforms: ['Instagram', 'TikTok'], caption: r.caption[lang],
+		fieldsRaw: JSON.stringify({ hook: r.hook[lang], phrases: r.phrases.map((x) => x[lang]), ...(r.script ? { script: r.script[lang] } : {}), ...(r.quote ? { quote: r.quote } : {}), theme: r.theme, streak: r.streak })
+	})));
+}
+const due = preview ? fromPlan() : (await queryPosts({
 	and: [
 		{ property: 'Status', status: { equals: 'Approved' } },
 		{ property: 'Publish at', date: { on_or_before: new Date(now + HORIZON_H * 3600_000).toISOString() } },
 		{ property: 'Publish at', date: { on_or_after: new Date(now - 30 * 60_000).toISOString() } }
 	]
-})).sort((a, b) => read.date(a.properties['Publish at']).localeCompare(read.date(b.properties['Publish at'])));
-console.log(`${due.length} approved posts due in the next ${HORIZON_H} h`);
+})).map(fromNotion).sort((a, b) => a.at.localeCompare(b.at));
+console.log(`${due.length} ${preview ? 'preview' : 'approved'} posts due`);
 if (!due.length) process.exit(0);
 
 const chans = dry ? {} : await channels();
@@ -70,16 +81,10 @@ const r = await openRenderer();
 let scheduled = 0;
 
 for (const page of due) {
-	const p = page.properties;
-	const title = read.text(p.Post);
-	const lang = (read.select(p.Language) ?? 'EN').toLowerCase();
-	const format = read.select(p.Template) ?? 'D';
-	const at = read.date(p['Publish at']);
-	const platforms = read.multi(p.Platforms);
-	const caption = [read.text(p.Caption), read.text(p.Hashtags)].filter(Boolean).join('\n\n');
+	const { title, lang, format, at, platforms, caption } = page;
 	try {
-		if (read.text(p['Postiz ID'])) continue;
-		const f = JSON.parse(read.text(p['Fields (JSON)']) || '{}');
+		if (page.postizId) continue;
+		const f = JSON.parse(page.fieldsRaw || '{}');
 		const [date, slot] = /^(\d{4}-\d{2}-\d{2}) · (\w+)/.exec(title)?.slice(1) ?? [at.slice(0, 10), 'Morning'];
 		const job = { date, slot, theme: f.theme ?? 'discipline', format, streak: f.streak ?? 0, hook: { [lang]: f.hook ?? '' }, phrases: (f.phrases ?? []).map((t) => ({ [lang]: t })) };
 		if (!job.phrases.length) throw new Error('Fields (JSON) has no phrases');
