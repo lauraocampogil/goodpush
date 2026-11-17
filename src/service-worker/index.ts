@@ -76,9 +76,9 @@ self.addEventListener('push', (event) => {
 				badge: '/icons/badge-96.png',
 				tag: 'goodpush-daily',
 				data: { url, id: data.id },
-				// Shown on Android / desktop; iOS ignores actions.
+				// Buttons under the notification (Android, desktop; iOS web push has no buttons — a tap opens the app and counts the streak).
 				actions: [
-					{ action: 'save', title: data.actions?.[0] ?? '♥ Save' },
+					{ action: 'streak', title: data.actions?.[0] ?? '🔥 Keep my streak' },
 					{ action: 'share', title: data.actions?.[1] ?? '↗ Share' }
 				]
 			} as NotificationOptions),
@@ -93,6 +93,7 @@ self.addEventListener('notificationclick', (event) => {
 	const data = (event.notification.data ?? {}) as { url?: string; id?: string };
 	const target = new URL(data.url ?? '/today', self.location.origin);
 	if (event.action === 'save' && data.id) target.searchParams.set('fav', data.id);
+	if (event.action === 'streak') target.searchParams.set('streak', '1');
 	if (event.action === 'share') target.searchParams.set('share', '1');
 
 	event.waitUntil(

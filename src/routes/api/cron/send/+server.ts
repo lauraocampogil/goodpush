@@ -41,7 +41,7 @@ const TRIAL_TITLE = {
 	fr: (n: number) => `⏳ Plus que ${n} ${n === 1 ? 'jour' : 'jours'} gratuit${n === 1 ? '' : 's'}`
 } as const;
 
-const ACTIONS = { en: ['♥ Save', '↗ Share'], es: ['♥ Guardar', '↗ Compartir'], fr: ['♥ Garder', '↗ Partager'] } as const;
+const ACTIONS = { en: ['🔥 Keep my streak', '↗ Share'], es: ['🔥 Sumar a mi racha', '↗ Compartir'], fr: ['🔥 Garder ma série', '↗ Partager'] } as const;
 
 /**
  * Called every hour (Supabase pg_cron or Vercel Cron).

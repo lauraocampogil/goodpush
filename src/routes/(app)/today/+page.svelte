@@ -85,6 +85,12 @@
 		const favId = url.searchParams.get('fav');
 		if (favId && !app.favorites.includes(favId)) app.toggleFavorite(favId);
 		if (url.searchParams.get('share')) highlightShare = true;
+		if (url.searchParams.get('streak')) {
+			// "🔥 Keep my streak" button on the notification: opening today already counts the day — celebrate it
+			toast = `🔥 ${app.currentStreak} ${i.t('tile.streak')}`;
+			setTimeout(() => confetti(60), 500);
+			track('streak_from_push', { days: app.currentStreak });
+		}
 		if (url.searchParams.get('premium') === 'success') {
 			app.refreshPremium().then((ok) => {
 				if (ok) {
