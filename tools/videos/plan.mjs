@@ -22,6 +22,7 @@ const HOOK = {
 	D: ['Read this before you give up', 'Lee esto antes de rendirte', "Lis ça avant d'abandonner"],
 	R: ['Read this before you give up', 'Lee esto antes de rendirte', "Lis ça avant d'abandonner"],
 	E: ['{t}: 4 reminders you needed', '{t}: 4 frases que necesitabas', '{t} : 4 rappels dont tu avais besoin'],
+	M: ['Remember this 💛', 'Recuérdalo siempre 💛', 'Souviens-toi 💛'],
 	F: ['Day {n} of a good push every day 🔥', 'Día {n} recibiendo un buen empujón 🔥', "Jour {n} d'un bon push chaque jour 🔥"]
 };
 // "Cine" posts (R) talk like TikTok, not like an ad — one hook per day, rotating
@@ -93,7 +94,9 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 			// Robot mode: K = fast cuts + voice-over + big captions (the TikTok edit style) on most slots.
 			// Brand formats keep a few: A on Mon/Thu mornings, B quiz middays, E carousels Wed/Sat evenings, F streak on Sundays.
 			// Quote formats (real quotes, other footage): S = satisfying loop most mornings, Q = cinematic quote on D evenings.
-			const format = !auto ? f0 : f0 === 'D' ? 'Q' : f0 === 'A' && ![0, 3].includes(wd) ? 'S' : f0 === 'C' ? 'K' : f0;
+			// Robot mode: S (satisfying + quote) mornings, K (silent word-by-word over footage) or M (pastel mascot card) middays,
+			// Q (cinematic quote) evenings; E carousels Wed/Sat evenings, F streak Sunday mornings.
+			const format = !auto ? f0 : slot === 'Morning' ? (f0 === 'F' ? 'F' : 'S') : slot === 'Midday' ? ([1, 3, 5].includes(wd) ? 'M' : 'K') : f0 === 'E' ? 'E' : 'Q';
 			const n = format === 'B' || format === 'K' ? 3 : format === 'E' ? 4 : 1;
 			const ph = take(theme, n);
 			if (f0 === 'F') streak += 7;
@@ -122,7 +125,7 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 				date, slot, theme, format, streak: format === 'F' ? streak : 0,
 				hook,
 				phrases: ph.map((p) => ({ id: p.id, en: p.en, es: p.es, fr: p.fr })),
-				caption: L((l, li) => `${n === 1 || format === 'K' ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : format === 'R' ? SHARE[li] : SOFT[li]}`),
+				caption: L((l, li) => `${n === 1 || format === 'K' ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : ['R', 'M'].includes(format) ? SHARE[li] : SOFT[li]}`),
 				...(format === 'K' ? { script: L((l, li) => [((h) => `${h[0].toUpperCase()}${h.slice(1)}.`)(hook[l].replace(/^pov ?: ?/i, '')).replace(/([.!?])\.$/, '$1'), ...ph.map((p) => p[l]), CLOSER[dayN % CLOSER.length][li]]) } : {}),
 				hashtags: L((l, li) => `${HASH_THEME[theme][li]} ${HASH_BASE[li]}`),
 				publish: L((l) => zonedToUtc(date, SCHEDULE[l][slot], SCHEDULE[l].tz))

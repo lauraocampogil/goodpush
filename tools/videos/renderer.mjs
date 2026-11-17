@@ -151,6 +151,43 @@ export async function openRenderer() {
 			await enc.close();
 			return file;
 		},
+		/** Format K, silent processlaw style: portrait footage cuts (~2.5 s) + the message 1–3 words at a time. */
+		async pulse(job, lang, file, clips) {
+			if (!clips.length) throw new Error('K needs at least one clip');
+			await page.setViewportSize({ width: 1080, height: 1920 });
+			await page.goto(url);
+			const D = await page.evaluate((j) => window.setupP(j), { ...job, lang });
+			const tmp = join(tmpdir(), `gpp_${process.pid}_${Date.now()}.mp4`);
+			const n = Math.max(1, Math.round(D / 2.6));
+			await cutsVideo(clips, Array.from({ length: n }, (_, i) => ({ start: (i * D) / n })), D, tmp);
+			const part = file.replace(/\.mp4$/, '.part.mp4');
+			const p = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-i', tmp, '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'png', '-i', '-',
+				'-filter_complex', '[0:v][1:v]overlay=format=auto:shortest=1,format=yuv420p[v]', '-map', '[v]', '-an', '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-maxrate', '6M', '-bufsize', '12M',
+				'-t', D.toFixed(3), '-r', String(FPS), '-movflags', '+faststart', part], { stdio: ['pipe', 'inherit', 'inherit'] });
+			const done = new Promise((ok, ko) => p.on('exit', (c) => (c === 0 ? (renameSync(part, file), ok()) : ko(new Error('ffmpeg K ' + c)))));
+			for (let k = 0; k < D * FPS; k++) {
+				await page.evaluate((x) => window.draw(x), k / FPS);
+				const buf = await page.screenshot({ type: 'png', omitBackground: true });
+				if (!p.stdin.write(buf)) await new Promise((r) => p.stdin.once('drain', r));
+			}
+			p.stdin.end();
+			await done;
+			rmSync(tmp, { force: true });
+			return file;
+		},
+		/** Format M: pastel card with the smiley mascot (no footage). */
+		async mascotCard(job, lang, file) {
+			await page.setViewportSize({ width: 1080, height: 1920 });
+			await page.goto(url);
+			const dur = await page.evaluate((j) => window.setupM(j), { ...job, lang });
+			const enc = encoder(file);
+			for (let k = 0; k < dur * FPS; k++) {
+				await page.evaluate((x) => window.draw(x), k / FPS);
+				await enc.write(await page.screenshot({ type: 'jpeg', quality: 92 }));
+			}
+			await enc.close();
+			return file;
+		},
 		close: () => browser.close()
 	};
 }

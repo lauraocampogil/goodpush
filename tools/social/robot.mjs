@@ -103,12 +103,16 @@ for (const page of due) {
 			}
 			if (clips.length) credit = '🎥 Pexels';
 			igMedia = ttMedia = [file];
+		} else if (format === 'M') {
+			const file = join(out, `${base}.mp4`);
+			if (!existsSync(file)) await r.mascotCard(job, lang, file);
+			igMedia = ttMedia = [file];
 		} else if (format === 'K') {
 			const script = f.script?.length ? f.script : [f.hook, ...(f.phrases ?? [])].filter(Boolean);
 			const clips = await clipsFor(job, root, script.length).catch(() => []);
 			const file = join(out, `${base}.mp4`);
 			if (clips.length) {
-				if (!existsSync(file)) await r.kinetic({ ...job, script: { [lang]: script } }, lang, file, clips.map((c) => c.file));
+				if (!existsSync(file)) await r.pulse({ ...job, lines: script }, lang, file, clips.map((c) => c.file));
 				credit = '🎥 Pexels';
 			} else if (!existsSync(file)) await r.video({ ...job, format: 'D' }, lang, file); // no footage available → branded version
 			igMedia = ttMedia = [file];
