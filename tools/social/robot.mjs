@@ -102,7 +102,7 @@ for (const page of due) {
 			const file = join(out, `${base}.mp4`);
 			const clips = await landscapeClips(format === 'Q' ? CINE[job.theme] ?? CINE.calm : SATISFY, date + slot, root, format === 'Q' ? 4 : 1).catch(() => []);
 			if (!existsSync(file)) {
-				if (!clips.length) await r.pulse({ ...job, lines: [`${qjob.quote.text.replace(/\*/g, '')} — ${qjob.quote.who}`] }, lang, file); // no footage → word by word on black
+				if (!clips.length) await r.pulse({ ...job, lines: [qjob.quote.text.replace(/\*/g, '')] }, lang, file); // no footage → word by word on black
 				else if (format === 'Q') await r.quote(qjob, lang, file, clips.map((c) => c.file));
 				else await r.satisfy(qjob, lang, file, clips[0].file);
 			}

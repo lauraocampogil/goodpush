@@ -288,15 +288,13 @@ window.setupQ = function (job) {
 		<div class="abs" style="left:0;right:0;top:0;height:${Y}px;background:#0D0D0E"></div>
 		<div class="abs" style="left:0;right:0;top:${Y + H}px;bottom:0;background:#0D0D0E"></div>
 		<div class="abs" style="left:0;right:0;top:${Y - 110}px;display:flex;justify-content:center;align-items:center;gap:12px;color:#FDFDFF;font-family:Bricolage,Inter;font-weight:800;font-stretch:82%;font-size:32px;text-transform:uppercase"><span style="width:42px;height:42px;display:inline-block">${smiley('smile', 'sun')}</span>GoodPush</div>
-		<div id="sub" class="abs display" style="left:70px;right:70px;top:${Y + H + 60}px;height:260px;display:flex;align-items:flex-start;justify-content:center;text-align:center;color:#fff;font-size:68px;line-height:1.08"><div id="subin"></div></div>
-		<div id="who" class="abs" style="left:0;right:0;top:${Y + H + 360}px;text-align:center;color:rgba(255,255,255,.55);font:600 32px Inter;opacity:0">— ${esc(quote.who)}</div>`;
+		<div id="sub" class="abs display" style="left:70px;right:70px;top:${Y + H + 60}px;height:260px;display:flex;align-items:flex-start;justify-content:center;text-align:center;color:#fff;font-size:68px;line-height:1.08"><div id="subin"></div></div>`;
 	let shown = -1;
 	SCENE = { duration: D, draw(t) {
 		const i = caps.findIndex((c) => t >= c.a && t < c.b);
 		const sub = document.getElementById('subin');
 		if (i !== shown) { sub.innerHTML = i >= 0 ? caps[i].h : ''; fitText(document.getElementById('sub'), 68, 44); shown = i; }
 		if (i >= 0) sub.style.opacity = easeOut(prog(t, caps[i].a, caps[i].a + 0.12));
-		document.getElementById('who').style.opacity = easeOut(prog(t, last - 0.2, last + 0.4));
 	} };
 	return document.fonts.ready.then(() => D);
 };
@@ -312,12 +310,10 @@ window.setupS = function (job) {
 		<div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(13,13,14,.6),rgba(13,13,14,.35) 35%,rgba(13,13,14,.4) 65%,rgba(13,13,14,.75))"></div>
 		<div class="abs" style="left:70px;right:70px;top:120px;height:8px;border-radius:8px;background:rgba(253,253,255,.18)"><div id="bar" style="height:100%;width:0;border-radius:8px;background:#D5FF00"></div></div>
 		<div id="q" class="abs" style="left:90px;right:90px;top:620px;height:560px;display:flex;align-items:center;justify-content:center;text-align:center;color:#FDFDFF;font-family:Bricolage,Inter;font-weight:800;font-stretch:75%;letter-spacing:-0.01em;text-transform:uppercase;font-size:92px;line-height:1.02;text-shadow:0 2px 24px rgba(0,0,0,.45)"><div id="qin">${hl(quote.text)}</div></div>
-		<div id="who" class="abs" style="left:0;right:0;top:1210px;text-align:center;color:rgba(253,253,255,.75);font:600 36px Inter">— ${esc(quote.who)}</div>
-		<div class="abs" style="left:0;right:0;top:1330px;display:flex;justify-content:center;align-items:center;gap:12px;color:#FDFDFF;font-family:Bricolage,Inter;font-weight:800;font-stretch:82%;font-size:34px;text-transform:uppercase"><span style="width:44px;height:44px;display:inline-block">${smiley('smile', 'sun')}</span>GoodPush</div>`;
+		<div class="abs" style="left:0;right:0;top:1240px;display:flex;justify-content:center;align-items:center;gap:12px;color:#FDFDFF;font-family:Bricolage,Inter;font-weight:800;font-stretch:82%;font-size:34px;text-transform:uppercase"><span style="width:44px;height:44px;display:inline-block">${smiley('smile', 'sun')}</span>GoodPush</div>`;
 	fitText(document.getElementById('q'), 92, 52);
 	SCENE = { duration: D, draw(t) {
 		const p = easeOut(prog(t, 0.15, 0.7)); const q = document.getElementById('qin'); q.style.opacity = p; q.style.transform = `scale(${0.94 + 0.06 * p})`;
-		document.getElementById('who').style.opacity = easeOut(prog(t, 0.8, 1.3));
 		document.getElementById('bar').style.width = `${clamp(t / D) * 100}%`;
 	} };
 	return document.fonts.ready.then(() => D);
