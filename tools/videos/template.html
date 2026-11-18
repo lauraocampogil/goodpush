@@ -166,8 +166,8 @@ window.setup = function (job) {
 		const sub = esc(ph[0]).replace(/\*([^*]+)\*/g, '<span style="color:#D5FF00">$1</span>');
 		stage.innerHTML = `
 			<div class="abs" style="inset:0;background:radial-gradient(120% 80% at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.45) 100%)"></div>
-			<div class="abs" style="left:0;right:0;top:0;height:250px;background:#000"></div>
-			<div class="abs" style="left:0;right:0;bottom:0;height:250px;background:#000"></div>
+			<div class="abs" style="left:0;right:0;top:0;height:250px;background:#0D0D0E"></div>
+			<div class="abs" style="left:0;right:0;bottom:0;height:250px;background:#0D0D0E"></div>
 			<div id="hook" class="abs" style="left:70px;right:70px;top:150px;font:600 38px/1.2 Inter;color:rgba(255,255,255,.92);text-align:center;letter-spacing:.01em">${esc(job.hook[lang]).toLowerCase()}</div>
 			<div id="sub" class="abs" style="left:110px;right:110px;top:1180px;height:380px;display:flex;align-items:center;justify-content:center;text-align:center;font:600 60px/1.28 Inter;color:#fff;text-shadow:0 2px 3px rgba(0,0,0,.9),0 0 24px rgba(0,0,0,.6)"><div>${sub}</div></div>
 			<div id="mark" class="abs" style="right:70px;bottom:95px;display:flex;align-items:center;gap:14px;font:700 30px Inter;color:rgba(255,255,255,.85);opacity:0"><span style="width:40px;height:40px;display:inline-block">${smiley('smile', 'sun')}</span>goodpush</div>`;
@@ -285,9 +285,9 @@ window.setupQ = function (job) {
 	}
 	const last = caps[caps.length - 1].b; const D = last + 1.8;
 	stage.innerHTML = `
-		<div class="abs" style="left:0;right:0;top:0;height:${Y}px;background:#000"></div>
-		<div class="abs" style="left:0;right:0;top:${Y + H}px;bottom:0;background:#000"></div>
-		<div class="abs" style="left:28px;top:${Y + H - 52}px;color:rgba(255,255,255,.55);font:700 24px Inter;letter-spacing:.02em">goodpush</div>
+		<div class="abs" style="left:0;right:0;top:0;height:${Y}px;background:#0D0D0E"></div>
+		<div class="abs" style="left:0;right:0;top:${Y + H}px;bottom:0;background:#0D0D0E"></div>
+		<div class="abs" style="left:0;right:0;top:${Y - 110}px;display:flex;justify-content:center;align-items:center;gap:12px;color:#FDFDFF;font-family:Bricolage,Inter;font-weight:800;font-stretch:82%;font-size:32px;text-transform:uppercase"><span style="width:42px;height:42px;display:inline-block">${smiley('smile', 'sun')}</span>GoodPush</div>
 		<div id="sub" class="abs display" style="left:70px;right:70px;top:${Y + H + 60}px;height:260px;display:flex;align-items:flex-start;justify-content:center;text-align:center;color:#fff;font-size:68px;line-height:1.08"><div id="subin"></div></div>
 		<div id="who" class="abs" style="left:0;right:0;top:${Y + H + 360}px;text-align:center;color:rgba(255,255,255,.55);font:600 32px Inter;opacity:0">— ${esc(quote.who)}</div>`;
 	let shown = -1;
@@ -309,12 +309,12 @@ window.setupS = function (job) {
 	const n = plain(quote.text).split(/\s+/).length; const D = Math.max(7, Math.min(14, 2.5 + n * 0.3));
 	const W = { x: 0, y: 656, w: 1080, h: 608 };
 	stage.innerHTML = `
-		<div class="abs" style="left:0;right:0;top:0;height:${W.y}px;background:#000"></div>
-		<div class="abs" style="left:0;right:0;top:${W.y + W.h}px;bottom:0;background:#000"></div>
+		<div class="abs" style="left:0;right:0;top:0;height:${W.y}px;background:#0D0D0E"></div>
+		<div class="abs" style="left:0;right:0;top:${W.y + W.h}px;bottom:0;background:#0D0D0E"></div>
 		<div class="abs" style="left:0;top:${W.y}px;width:${W.w}px;height:${W.h}px;background:rgba(0,0,0,.28)"></div>
 		<div id="q" class="abs" style="left:110px;top:${W.y + 50}px;width:${W.w - 220}px;height:${W.h - 100}px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;font-family:Bricolage,Inter;font-weight:700;font-stretch:88%;letter-spacing:-0.01em;font-size:46px;line-height:1.18;text-shadow:0 2px 10px rgba(0,0,0,.55)"><div>${subs(quote.text, '#fff')}</div></div>
 		<div class="abs" style="left:0;right:0;top:${W.y + W.h + 40}px;text-align:center;color:rgba(255,255,255,.5);font:600 30px Inter">— ${esc(quote.who)}</div>
-		<div class="abs" style="right:28px;top:${W.y + W.h - 50}px;color:rgba(255,255,255,.55);font:700 24px Inter">goodpush</div>`;
+		<div class="abs" style="left:0;right:0;top:${W.y - 110}px;display:flex;justify-content:center;align-items:center;gap:12px;color:#FDFDFF;font-family:Bricolage,Inter;font-weight:800;font-stretch:82%;font-size:32px;text-transform:uppercase"><span style="width:42px;height:42px;display:inline-block">${smiley('smile', 'sun')}</span>GoodPush</div>`;
 	fitText(document.getElementById('q'), 50, 30);
 	SCENE = { duration: D, draw() {} };
 	return document.fonts.ready.then(() => D);
@@ -336,16 +336,31 @@ window.setupP = function (job) {
 	const caps = []; let t = 0.5;
 	groups.forEach((g) => { const d = per(g) * k; caps.push({ g, a: t, b: t + d }); t += d; });
 	const D = t + 1.2;
-	stage.innerHTML = `
-		<div class="abs" style="inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,.35),rgba(0,0,0,.62))"></div>
-		<div id="cap" class="abs" style="left:90px;right:90px;top:820px;height:220px;display:flex;align-items:center;justify-content:center;text-align:center;color:#F4F1E8;font-family:Bricolage,Inter;font-weight:800;font-stretch:75%;letter-spacing:-0.01em;text-transform:uppercase;font-size:96px;line-height:1;text-shadow:0 2px 24px rgba(0,0,0,.5)"><div id="capin"></div></div>
-		<div class="abs" style="left:0;right:0;top:1130px;text-align:center;color:#F4F1E8;font-family:Bricolage,Inter;font-weight:800;font-stretch:80%;letter-spacing:.06em;font-size:30px">GOODPUSH®</div>`;
+	// the last word of each sentence lights up in acid (brand accent)
+	caps.forEach((c) => { c.hl = /[.!?…]$/.test(c.g); });
+	const lockup = `<span style="display:inline-flex;align-items:center;gap:12px"><span style="width:44px;height:44px;display:inline-block">${smiley('smile', 'sun')}</span><span style="font-family:Bricolage,Inter;font-weight:800;font-stretch:82%;letter-spacing:-0.02em;font-size:34px;text-transform:uppercase">GoodPush</span></span>`;
+	const solid = job.solid ? `
+		<div class="abs" style="inset:0;background:#0D0D0E"></div>
+		<div id="bgA" class="abs" style="left:-260px;top:120px;width:760px;height:760px;opacity:.07">${smiley('smile', 'sun')}</div>
+		<div id="bgB" class="abs" style="right:-300px;bottom:180px;width:820px;height:820px;opacity:.06">${smiley('wink', 'orange')}</div>
+		<div class="abs" style="left:50%;top:50%;width:900px;height:900px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(213,255,0,.10),rgba(213,255,0,0) 60%)"></div>` : `
+		<div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(13,13,14,.55),rgba(13,13,14,.25) 35%,rgba(13,13,14,.3) 65%,rgba(13,13,14,.7))"></div>`;
+	stage.innerHTML = `${solid}
+		<div class="abs" style="left:70px;right:70px;top:120px;height:8px;border-radius:8px;background:rgba(253,253,255,.18)"><div id="bar" style="height:100%;width:0;border-radius:8px;background:#D5FF00"></div></div>
+		<div id="cap" class="abs" style="left:90px;right:90px;top:800px;height:260px;display:flex;align-items:center;justify-content:center;text-align:center;color:#FDFDFF;font-family:Bricolage,Inter;font-weight:800;font-stretch:75%;letter-spacing:-0.01em;text-transform:uppercase;font-size:104px;line-height:1;text-shadow:0 2px 24px rgba(0,0,0,.45)"><div id="capin"></div></div>
+		<div class="abs" style="left:0;right:0;top:1150px;display:flex;justify-content:center;color:#FDFDFF">${lockup}</div>`;
 	let shown = -1;
 	SCENE = { duration: D, draw(t) {
 		let i = caps.findIndex((c) => t >= c.a && t < c.b); if (i < 0 && t >= caps[caps.length - 1].a) i = caps.length - 1;
 		const cap = document.getElementById('capin');
-		if (i !== shown) { cap.textContent = i >= 0 ? caps[i].g : ''; fitText(document.getElementById('cap'), 96, 56); shown = i; }
-		if (i >= 0) cap.style.opacity = easeOut(prog(t, caps[i].a, caps[i].a + 0.08));
+		if (i !== shown) {
+			if (i >= 0) { const ws = caps[i].g.split(' '); const last = ws.pop(); cap.innerHTML = caps[i].hl ? `${esc(ws.join(' '))} <span style="color:#D5FF00">${esc(last)}</span>` : esc(caps[i].g); } else cap.innerHTML = '';
+			fitText(document.getElementById('cap'), 104, 56); shown = i;
+		}
+		if (i >= 0) { const p = easeOut(prog(t, caps[i].a, caps[i].a + 0.1)); cap.style.opacity = p; cap.style.transform = `scale(${0.94 + 0.06 * p})`; }
+		document.getElementById('bar').style.width = `${clamp(t / D) * 100}%`;
+		const A = document.getElementById('bgA'), B = document.getElementById('bgB');
+		if (A) { A.style.transform = `rotate(${t * 6}deg)`; B.style.transform = `rotate(${-t * 5}deg)`; }
 	} };
 	return document.fonts.ready.then(() => D);
 };

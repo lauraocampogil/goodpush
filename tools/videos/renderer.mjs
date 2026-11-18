@@ -157,6 +157,7 @@ export async function openRenderer() {
 				const black = join(tmpdir(), `gp_black_${process.pid}.mp4`);
 				await run(['-f', 'lavfi', '-i', `color=c=0x0B0B0B:s=1080x1920:r=${FPS}`, '-t', '4', '-pix_fmt', 'yuv420p', black]);
 				clips = [black];
+				job = { ...job, solid: true }; // branded animated background instead
 			}
 			await page.setViewportSize({ width: 1080, height: 1920 });
 			await page.goto(url);
