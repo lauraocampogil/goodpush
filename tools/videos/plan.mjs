@@ -5,6 +5,8 @@
 //   C (screen recording) → R (real footage) · some D evenings → R.
 import { PHRASES, TOPIC_PHRASES } from '../../src/lib/data/phrases.ts';
 import { QUOTES, author, srcOf } from './quotes.mjs';
+import { SCRIPTS, sentences } from './scripts.mjs';
+const SHORT_Q = QUOTES.filter((q) => q.en.replace(/\*/g, '').split(/\s+/).length <= 16);
 
 const LANGS = ['en', 'es', 'fr'];
 const P = [...PHRASES, ...TOPIC_PHRASES].filter((p) => !p.premium);
@@ -83,7 +85,8 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 	};
 	const rows = [];
 	let streak = 0;
-	let qi = 0; // global rotation through the quote bank (no repeats until all are used)
+	let qi = 0;
+	let si = 0; // rotation through the original K scripts // global rotation through the quote bank (no repeats until all are used)
 	for (let date = START; date < to; date = addDays(date, 1)) {
 		const wd = weekday(date);
 		const theme = THEMES[wd];
@@ -94,13 +97,14 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 			// Robot mode: K = fast cuts + voice-over + big captions (the TikTok edit style) on most slots.
 			// Brand formats keep a few: A on Mon/Thu mornings, B quiz middays, E carousels Wed/Sat evenings, F streak on Sundays.
 			// Quote formats (real quotes, other footage): S = satisfying loop most mornings, Q = cinematic quote on D evenings.
-			// Robot mode: S (satisfying + quote) mornings, K (silent word-by-word over footage) or M (pastel mascot card) middays,
-			// Q (cinematic quote) evenings; E carousels Wed/Sat evenings, F streak Sunday mornings.
-			const format = !auto ? f0 : slot === 'Morning' ? (f0 === 'F' ? 'F' : 'S') : slot === 'Midday' ? ([1, 3, 5].includes(wd) ? 'M' : 'K') : f0 === 'E' ? 'E' : 'Q';
+			// Robot mode: S (satisfying + short quote) mornings, K (processlaw style: message word by word over footage) middays + most evenings,
+			// M (pastel card) Wednesday middays, Q (cinematic quote) Mon/Thu evenings, F streak Sunday mornings.
+			const format = !auto ? f0 : slot === 'Morning' ? (f0 === 'F' ? 'F' : 'S') : slot === 'Midday' ? (wd === 2 ? 'M' : 'K') : [0, 3].includes(wd) ? 'Q' : 'K';
 			const n = format === 'B' || format === 'K' ? 3 : format === 'E' ? 4 : 1;
 			const ph = take(theme, n);
 			if (f0 === 'F') streak += 7;
-			const q = format === 'Q' || format === 'S' ? QUOTES[qi++ % QUOTES.length] : null;
+			const q = format === 'Q' || format === 'S' ? SHORT_Q[qi++ % SHORT_Q.length] : null;
+			const sc = format === 'K' ? SCRIPTS[si++ % SCRIPTS.length] : null;
 			if (date < from) continue;
 			if (q) {
 				const L2 = (fn) => Object.fromEntries(LANGS.map((l, li) => [l, fn(l, li)]));
@@ -125,8 +129,8 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 				date, slot, theme, format, streak: format === 'F' ? streak : 0,
 				hook,
 				phrases: ph.map((p) => ({ id: p.id, en: p.en, es: p.es, fr: p.fr })),
-				caption: L((l, li) => `${n === 1 || format === 'K' ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : ['R', 'M'].includes(format) ? SHARE[li] : SOFT[li]}`),
-				...(format === 'K' ? { script: L((l, li) => [((h) => `${h[0].toUpperCase()}${h.slice(1)}.`)(hook[l].replace(/^pov ?: ?/i, '')).replace(/([.!?])\.$/, '$1'), ...ph.map((p) => p[l]), CLOSER[dayN % CLOSER.length][li]]) } : {}),
+				caption: L((l, li) => `${format === 'K' ? sentences(sc[l] ?? sc.en)[0] : n === 1 ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : ['R', 'M'].includes(format) ? SHARE[li] : SOFT[li]}`),
+				...(format === 'K' ? { script: L((l) => sentences(sc[l] ?? sc.en)) } : {}),
 				hashtags: L((l, li) => `${HASH_THEME[theme][li]} ${HASH_BASE[li]}`),
 				publish: L((l) => zonedToUtc(date, SCHEDULE[l][slot], SCHEDULE[l].tz))
 			});

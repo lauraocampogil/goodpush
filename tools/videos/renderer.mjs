@@ -152,8 +152,12 @@ export async function openRenderer() {
 			return file;
 		},
 		/** Format K, silent processlaw style: portrait footage cuts (~2.5 s) + the message 1–3 words at a time. */
-		async pulse(job, lang, file, clips) {
-			if (!clips.length) throw new Error('K needs at least one clip');
+		async pulse(job, lang, file, clips = []) {
+			if (!clips.length) { // no footage → plain black, like @processlaw
+				const black = join(tmpdir(), `gp_black_${process.pid}.mp4`);
+				await run(['-f', 'lavfi', '-i', `color=c=0x0B0B0B:s=1080x1920:r=${FPS}`, '-t', '4', '-pix_fmt', 'yuv420p', black]);
+				clips = [black];
+			}
 			await page.setViewportSize({ width: 1080, height: 1920 });
 			await page.goto(url);
 			const D = await page.evaluate((j) => window.setupP(j), { ...job, lang });

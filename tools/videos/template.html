@@ -352,12 +352,7 @@ window.setupP = function (job) {
 
 /** Format M (like a pastel "reminder" card): soft background, the phrase, the GoodPush smiley celebrating, sparkles. No footage. */
 function mascot(color = 'sun') {
-	return `<svg viewBox="0 0 200 240" style="width:100%;height:100%;overflow:visible">
-		<path d="M46 138 C26 120 18 96 16 70" stroke="#0D0D0E" stroke-width="10" stroke-linecap="round" fill="none"/>
-		<path d="M154 138 C174 120 182 96 184 70" stroke="#0D0D0E" stroke-width="10" stroke-linecap="round" fill="none"/>
-		<circle cx="16" cy="62" r="12" fill="#0D0D0E"/><circle cx="184" cy="62" r="12" fill="#0D0D0E"/>
-		<path d="M84 196 L78 232 M116 196 L122 232" stroke="#0D0D0E" stroke-width="10" stroke-linecap="round"/>
-		<g transform="translate(40 80) scale(1.2)">${smiley('smile', color).replace('class="smiley"', 'width="100" height="100"')}</g></svg>`;
+	return `<div style="width:100%;height:100%">${smiley('smile', color)}</div>`;
 }
 const sparkle = (x, y, s, col, d) => `<svg class="abs spk" data-d="${d}" style="left:${x}px;top:${y}px;width:${s}px;height:${s}px" viewBox="0 0 100 100"><path d="M50 0 C54 36 64 46 100 50 C64 54 54 64 50 100 C46 64 36 54 0 50 C36 46 46 36 50 0Z" fill="${col}"/></svg>`;
 window.setupM = function (job) {
@@ -371,7 +366,7 @@ window.setupM = function (job) {
 	stage.innerHTML = `
 		${sparkle(120, 260, 120, '#FFFFFF', 0)}${sparkle(840, 760, 90, '#FFFFFF', 0.7)}${sparkle(170, 1120, 70, '#0D0D0E', 1.3)}${sparkle(850, 1260, 130, '#FFFFFF', 0.4)}${sparkle(800, 300, 50, '#0D0D0E', 1.8)}${sparkle(230, 1420, 90, '#FFFFFF', 1.1)}
 		<div id="txt" class="abs" style="left:110px;right:110px;top:430px;height:420px;display:flex;align-items:center;justify-content:center;text-align:center;color:#0D0D0E;font-family:Bricolage,Inter;font-weight:700;font-stretch:90%;letter-spacing:-0.015em;font-size:72px;line-height:1.12">${esc(plain(phrase))}</div>
-		<div id="mas" class="abs" style="left:340px;top:930px;width:400px;height:440px">${mascot(col)}</div>`;
+		<div id="mas" class="abs" style="left:390px;top:960px;width:300px;height:300px">${mascot(col)}</div>`;
 	fitText(document.getElementById('txt'), 72, 44);
 	SCENE = { duration: D, draw(t) {
 		document.getElementById('mas').style.transform = `translateY(${Math.sin(t * 2.2) * 14}px) rotate(${Math.sin(t * 1.1) * 3}deg)`;
