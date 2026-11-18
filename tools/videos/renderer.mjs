@@ -143,7 +143,7 @@ export async function openRenderer() {
 			await page.setViewportSize({ width: 1080, height: 1920 });
 			await page.goto(url);
 			const dur = await page.evaluate((j) => window.setupS(j), { ...job, lang });
-			const enc = encoder(file, { clip, duration: dur, band: { x: 0, y: 656, w: 1080, h: 608 } });
+			const enc = encoder(file, { clip, duration: dur });
 			for (let k = 0; k < dur * FPS; k++) {
 				await page.evaluate((x) => window.draw(x), k / FPS);
 				await enc.write(await page.screenshot({ type: 'png', omitBackground: true }));
