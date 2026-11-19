@@ -157,7 +157,7 @@ for (const page of due) {
 		}
 		const res = await postiz('/posts', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ type: 'schedule', date: new Date(at).toISOString(), shortLink: false, tags: [], posts: items }) });
 		const ids = (Array.isArray(res) ? res : [res]).map((x) => x.postId ?? x.id ?? x.group).filter(Boolean).join(', ');
-		await updatePost(page.id, { Status: P.status('Scheduled'), 'Postiz ID': P.text(ids || 'scheduled'), Preview: P.url(items[0]?.value[0].image[0]?.path), Error: P.text('') });
+		await updatePost(page.id, { Status: P.status('Scheduled'), 'Texto TikTok (copiar)': P.text(caption), 'Postiz ID': P.text(ids || 'scheduled'), Preview: P.url(items[0]?.value[0].image[0]?.path), Error: P.text('') });
 		scheduled++;
 		console.log(`→ scheduled ${base} for ${at} (${platforms.filter((pl) => !missing.includes(pl)).join(' + ')})`);
 	} catch (e) {

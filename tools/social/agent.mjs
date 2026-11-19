@@ -37,7 +37,8 @@ for (const r of rows) {
 			'Publish at': P.date(at),
 			Caption: P.text(caption),
 			Hashtags: P.text(r.hashtags[lang]),
-			'Fields (JSON)': P.text(JSON.stringify(fields))
+			'Fields (JSON)': P.text(JSON.stringify(fields)),
+			'Texto TikTok (copiar)': P.text([caption, r.hashtags[lang]].filter(Boolean).join('\n\n'))
 		});
 		made++;
 	}
