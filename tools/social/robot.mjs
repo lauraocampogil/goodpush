@@ -133,14 +133,16 @@ for (const page of due) {
 		const c = chans[lang] ?? {};
 		const items = [];
 		const text = credit ? `${caption}\n\n${credit}` : caption;
-		if (platforms.includes('Instagram')) {
-			if (!c.instagram) throw new Error(`No Instagram channel for goodpush.${lang} in Postiz`);
+		// A missing channel (e.g. TikTok goodpush.es not created yet) is skipped; the post still goes out on the others
+		const missing = platforms.filter((pl) => (pl === 'Instagram' && !c.instagram) || (pl === 'TikTok' && !c.tiktok));
+		if (missing.length) console.warn(`  ! no ${missing.join(' + ')} channel for goodpush.${lang} in Postiz — skipped`);
+		if (missing.length === platforms.length) throw new Error(`No ${platforms.join(' / ')} channel for goodpush.${lang} in Postiz`);
+		if (platforms.includes('Instagram') && c.instagram) {
 			const media = await Promise.all(igMedia.map(upload));
 			const ch = asChannel(c.instagram);
 			items.push({ integration: { id: ch.id }, value: [{ content: text, image: media }], settings: { __type: ch.identifier ?? 'instagram-standalone', post_type: 'post', is_trial_reel: false, collaborators: [] } });
 		}
-		if (platforms.includes('TikTok')) {
-			if (!c.tiktok) throw new Error(`No TikTok channel for goodpush.${lang} in Postiz`);
+		if (platforms.includes('TikTok') && c.tiktok) {
 			const media = igMedia === ttMedia && items.length ? items[0].value[0].image : await Promise.all(ttMedia.map(upload));
 			const ch = asChannel(c.tiktok);
 			items.push({
@@ -157,7 +159,7 @@ for (const page of due) {
 		const ids = (Array.isArray(res) ? res : [res]).map((x) => x.postId ?? x.id ?? x.group).filter(Boolean).join(', ');
 		await updatePost(page.id, { Status: P.status('Scheduled'), 'Postiz ID': P.text(ids || 'scheduled'), Preview: P.url(items[0]?.value[0].image[0]?.path), Error: P.text('') });
 		scheduled++;
-		console.log(`→ scheduled ${base} for ${at} (${platforms.join(' + ')})`);
+		console.log(`→ scheduled ${base} for ${at} (${platforms.filter((pl) => !missing.includes(pl)).join(' + ')})`);
 	} catch (e) {
 		if (e.budget) { console.log('Postiz hourly limit reached — the rest goes in the next run'); break; }
 		console.error(`✗ ${title}: ${e.message}`);
