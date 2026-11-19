@@ -44,8 +44,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     env:
-      # Expressive open-source voice (Chatterbox, MIT). Falls back to Kokoro if it can't run.
-      TTS_ENGINE: chatterbox
+      # Voice: Kokoro (EN am_michael, ES em_alex with Latin American pronunciation). Laura's choice.
+      # Set to 'chatterbox' to try the Chatterbox voice again (also re-enable its install step).
+      TTS_ENGINE: kokoro
       CB_PYTHON: ${{ github.workspace }}/.venv-cb/bin/python
     steps:
       - uses: actions/checkout@v4
@@ -69,6 +70,7 @@ jobs:
             .venv-cb
           key: voices-kokoro-v1.0-chatterbox-0.1.7
       - name: Install Chatterbox (CPU)
+        if: env.TTS_ENGINE != 'kokoro'
         run: |
           if [ ! -x .venv-cb/bin/python ]; then
             python3 -m venv .venv-cb
