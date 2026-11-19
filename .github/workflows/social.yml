@@ -55,7 +55,7 @@ jobs:
           npm i --no-save playwright
           npx playwright install --with-deps chromium
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-noto-color-emoji
-          pip install --quiet --break-system-packages kokoro-onnx soundfile
+          pip install --quiet --break-system-packages kokoro-onnx soundfile scipy
       - name: Voice models cache
         uses: actions/cache@v4
         with:

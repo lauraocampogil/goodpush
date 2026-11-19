@@ -9,7 +9,7 @@ HERE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.tts')
 BASE = 'https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/'
 FILES = ['kokoro-v1.0.int8.onnx', 'voices-v1.0.bin']
 VOICE = {'en': ('am_michael', 'en-us'), 'es': ('em_alex', 'es'), 'fr': ('ff_siwis', 'fr-fr')}
-GAP = 0.28  # breath between lines
+GAP = float(os.environ.get('TTS_GAP', '0.28'))  # breath between lines
 
 def download_models():
     os.makedirs(HERE, exist_ok=True)

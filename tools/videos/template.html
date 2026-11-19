@@ -382,7 +382,7 @@ window.setupV = function (job) {
 		const total = groups.reduce((a, g) => a + g.length + 2, 0); let t = ln.start;
 		groups.forEach((g, gi) => { const d = ((ln.end - ln.start) * (g.length + 2)) / total; caps.push({ g, a: t, b: t + d, li, last: gi === groups.length - 1 }); t += d; });
 	});
-	const D = job.lines[job.lines.length - 1].end + 1.3;
+	const D = job.lines[job.lines.length - 1].end + 2.4;
 	stage.innerHTML = `
 		<div id="bg" class="abs" style="inset:0"></div>
 		<div id="sA" class="abs" style="left:-280px;top:90px;width:780px;height:780px;opacity:.10"></div>

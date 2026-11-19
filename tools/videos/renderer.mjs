@@ -198,14 +198,21 @@ export async function openRenderer() {
 			const tmp = join(tmpdir(), `gpv_${process.pid}_${Date.now()}`);
 			const wav = `${tmp}.wav`;
 			const speakable = lines.map((l) => l.replace(/\*/g, ''));
-			const times = JSON.parse(execFileSync('python3', [join(here, 'tts.py'), lang, wav, ...speakable], { encoding: 'utf8', env: { ...process.env, TTS_SPEED: process.env.TTS_SPEED || '0.95' } }).trim().split('\n').pop());
+			const times = JSON.parse(execFileSync('python3', [join(here, 'tts.py'), lang, wav, ...speakable], { encoding: 'utf8', env: { ...process.env, TTS_SPEED: process.env.TTS_SPEED || '0.92', TTS_GAP: process.env.TTS_GAP || '0.6' } }).trim().split('\n').pop());
 			await page.setViewportSize({ width: 1080, height: 1920 });
 			await page.goto(url);
 			const D = await page.evaluate((j) => window.setupV(j), { ...job, lang, lines: speakable.map((text, i) => ({ text, ...times[i] })) });
+			// Original score (music.py): sad piano + strings that swell, ducked under the voice
+			const mus = `${tmp}_m.wav`;
+			let music = true;
+			try { execFileSync('python3', [join(here, 'music.py'), mus, D.toFixed(2), String(job.seed ?? file)]); } catch (e) { music = false; console.warn('[voice] music skipped', e.message); }
+			const audio = music
+				? ['-filter_complex', `[1:a]aformat=channel_layouts=stereo,aresample=44100,apad,asplit=2[vo][sc];[2:a]volume=0.32[bg];[bg][sc]sidechaincompress=threshold=0.04:ratio=5:attack=40:release=450[duck];[vo][duck]amix=inputs=2:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[a]`, '-map', '0:v', '-map', '[a]']
+				: ['-af', 'loudnorm=I=-14:TP=-1.5:LRA=11,apad', '-map', '0:v', '-map', '1:a'];
 			const part = file.replace(/\.mp4$/, '.part.mp4');
-			const p = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-', '-i', wav,
-				'-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-r', String(FPS),
-				'-c:a', 'aac', '-b:a', '160k', '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11,apad', '-t', D.toFixed(3), '-movflags', '+faststart', part], { stdio: ['pipe', 'inherit', 'inherit'] });
+			const p = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-', '-i', wav, ...(music ? ['-i', mus] : []),
+				...audio, '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-r', String(FPS),
+				'-c:a', 'aac', '-b:a', '160k', '-t', D.toFixed(3), '-movflags', '+faststart', part], { stdio: ['pipe', 'inherit', 'inherit'] });
 			const done = new Promise((ok, ko) => p.on('exit', (c) => (c === 0 ? (renameSync(part, file), ok()) : ko(new Error('ffmpeg voice ' + c)))));
 			for (let k = 0; k < D * FPS; k++) {
 				await page.evaluate((x) => window.draw(x), k / FPS);
@@ -215,6 +222,7 @@ export async function openRenderer() {
 			p.stdin.end();
 			await done;
 			rmSync(wav, { force: true });
+			rmSync(mus, { force: true });
 			return file;
 		},
 		close: () => browser.close()
