@@ -2,7 +2,7 @@
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
 	import type { CategoryId } from '#lib/data/categories.ts';
-	import { TOPICS, TOPIC_EMOJI, type TopicId } from '#lib/data/topics.ts';
+	import { TOPICS, TOPIC_EMOJI, isMovieTopic, type TopicId } from '#lib/data/topics.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import CatIcon from './CatIcon.svelte';
 
@@ -16,7 +16,8 @@
 		<div in:fly={{ y: 16, duration: 400, easing: backOut }}>
 			<p class="mb-2 flex items-center gap-1.5 text-xs font-semibold tracking-wider text-ink/50 uppercase"><CatIcon cat={c} /> {i.cat(c)}</p>
 			<div class="flex flex-wrap gap-2">
-				{#each TOPICS[c] as t (t)}
+				<!-- movie lines are added to every vibe automatically, so they're not a choice here -->
+				{#each TOPICS[c].filter((t) => !isMovieTopic(t)) as t (t)}
 					<button class="chip px-4 py-2 text-sm transition-transform active:scale-95" aria-pressed={topics.includes(t)} onclick={() => ontoggle(t)}>
 						<span aria-hidden="true">{TOPIC_EMOJI[t]}</span> {i.topic(t)}
 					</button>

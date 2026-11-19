@@ -123,3 +123,10 @@ export async function deleteContact(email: string) {
 	if (!brevoReady()) return;
 	await call(`/contacts/${encodeURIComponent(email)}`, 'DELETE');
 }
+
+/** One transactional email (e.g. "your free trial has ended"). Needs only BREVO_API_KEY + a verified sender. */
+export async function sendEmail(o: { to: string; subject: string; html: string; senderEmail: string }) {
+	if (!BREVO_API_KEY) return false;
+	await call('/smtp/email', 'POST', { sender: { name: 'GoodPush', email: o.senderEmail }, to: [{ email: o.to }], subject: o.subject, htmlContent: o.html });
+	return true;
+}

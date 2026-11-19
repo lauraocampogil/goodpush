@@ -193,6 +193,30 @@ export async function openRenderer() {
 			await enc.close();
 			return file;
 		},
+		/** GoodPush voice video (K, S, Q): brand colours + logo + AI voice, words in sync. lines = sentences. */
+		async voice(job, lang, file, lines) {
+			const tmp = join(tmpdir(), `gpv_${process.pid}_${Date.now()}`);
+			const wav = `${tmp}.wav`;
+			const speakable = lines.map((l) => l.replace(/\*/g, ''));
+			const times = JSON.parse(execFileSync('python3', [join(here, 'tts.py'), lang, wav, ...speakable], { encoding: 'utf8', env: { ...process.env, TTS_SPEED: process.env.TTS_SPEED || '0.95' } }).trim().split('\n').pop());
+			await page.setViewportSize({ width: 1080, height: 1920 });
+			await page.goto(url);
+			const D = await page.evaluate((j) => window.setupV(j), { ...job, lang, lines: speakable.map((text, i) => ({ text, ...times[i] })) });
+			const part = file.replace(/\.mp4$/, '.part.mp4');
+			const p = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-', '-i', wav,
+				'-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-r', String(FPS),
+				'-c:a', 'aac', '-b:a', '160k', '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11,apad', '-t', D.toFixed(3), '-movflags', '+faststart', part], { stdio: ['pipe', 'inherit', 'inherit'] });
+			const done = new Promise((ok, ko) => p.on('exit', (c) => (c === 0 ? (renameSync(part, file), ok()) : ko(new Error('ffmpeg voice ' + c)))));
+			for (let k = 0; k < D * FPS; k++) {
+				await page.evaluate((x) => window.draw(x), k / FPS);
+				const buf = await page.screenshot({ type: 'jpeg', quality: 92 });
+				if (!p.stdin.write(buf)) await new Promise((r) => p.stdin.once('drain', r));
+			}
+			p.stdin.end();
+			await done;
+			rmSync(wav, { force: true });
+			return file;
+		},
 		close: () => browser.close()
 	};
 }

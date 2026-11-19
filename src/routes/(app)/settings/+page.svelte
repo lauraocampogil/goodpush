@@ -8,12 +8,12 @@
 	import { setPerson, track } from '#lib/analytics.ts';
 	import TopicPicker from '#lib/components/TopicPicker.svelte';
 	import { TOPIC_CAT, type TopicId } from '#lib/data/topics.ts';
-	import { CATEGORY_IDS, LANGS, SEND_HOURS, type CategoryId, type Lang } from '#lib/data/categories.ts';
+	import { CATEGORY_IDS, LANGS, type CategoryId, type Lang } from '#lib/data/categories.ts';
+	import TimeField from '#lib/components/TimeField.svelte';
 	import { LANG_LABEL } from '#lib/i18n/dict.ts';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
-	import { dayKey, phraseForDay, pushBody, pushTitle } from '#lib/phrase.ts';
 	import { openPortal } from '#lib/premium.ts';
-	import { disablePush, enablePush, syncProfile, testNotification } from '#lib/push.ts';
+	import { disablePush, enablePush, syncProfile } from '#lib/push.ts';
 	import { app, type ShareTheme } from '#lib/store.svelte.ts';
 
 	const i = getI18n();
@@ -59,22 +59,37 @@
 		persist('topic_toggled', { topic: t, on, from: 'settings' });
 	}
 
-	function setHour(h: number) {
+	function setTime(h: number, m: number) {
 		p.hour = h;
-		p.extraHours = p.extraHours.filter((x) => x !== h);
-		persist('hour_selected', { hour: h, from: 'settings' });
+		p.minute = m;
+		persist('hour_selected', { hour: h, minute: m, from: 'settings' });
 	}
 
-	function toggleExtra(h: number) {
-		if (!app.access) return goto('/premium');
-		if (h === p.hour) return;
-		const on = !p.extraHours.includes(h);
-		p.extraHours = on ? [...p.extraHours, h].slice(-2).sort((a, b) => a - b) : p.extraHours.filter((x) => x !== h);
-		persist('extra_hour_toggled', { hour: h, on });
+	// Extra pushes (Pass only): up to 2 more times a day
+	const extras = $derived(p.extraHours.map((h, k) => ({ h, m: p.extraMinutes?.[k] ?? 0 })));
+	function setExtra(k: number, h: number, m: number) {
+		if (!app.premium) return goto('/premium');
+		const list = extras.map((x, n) => (n === k ? { h, m } : x));
+		p.extraHours = list.map((x) => x.h);
+		p.extraMinutes = list.map((x) => x.m);
+		persist('extra_hour_toggled', { hour: h, minute: m, on: true });
+	}
+	function addExtra() {
+		if (!app.premium) return goto('/premium');
+		if (extras.length >= 2) return;
+		const h = (p.hour + 6 + extras.length * 4) % 24;
+		p.extraHours = [...p.extraHours, h];
+		p.extraMinutes = [...(p.extraMinutes ?? extras.map(() => 0)), p.minute ?? 0];
+		persist('extra_hour_toggled', { hour: h, on: true });
+	}
+	function removeExtra(k: number) {
+		p.extraHours = p.extraHours.filter((_, n) => n !== k);
+		p.extraMinutes = (p.extraMinutes ?? []).filter((_, n) => n !== k);
+		persist('extra_hour_toggled', { on: false });
 	}
 
 	function setTheme(t: ShareTheme) {
-		if (t !== 'cream' && !app.access) return goto('/premium');
+		if (t !== 'cream' && !app.premium) return goto('/premium');
 		p.theme = t;
 		persist('theme_changed', { theme: t });
 	}
@@ -115,12 +130,6 @@
 	function pause(daysCount: number) {
 		p.pausedUntil = daysCount ? new Date(Date.now() + daysCount * 86_400_000).toISOString() : null;
 		persist(daysCount ? 'push_paused' : 'push_resumed', { days: daysCount });
-	}
-
-	async function test() {
-		const ph = phraseForDay(p.categories, dayKey(), { topics: p.topics });
-		await testNotification(pushTitle({ lang: i.lang, streak: app.currentStreak, label: i.cat(ph.cat), kind: 'daily' }), pushBody(ph, i.lang));
-		track('push_test');
 	}
 
 	async function manage() {
@@ -175,21 +184,25 @@
 
 	<section class="card p-5">
 		<h2 class="mb-3 text-sm font-extrabold uppercase tracking-wider">{i.t('settings.time')}</h2>
-		<div class="flex flex-wrap gap-2">
-			{#each SEND_HOURS as h (h)}
-				<button class="chip tabular-nums" aria-pressed={p.hour === h} onclick={() => setHour(h)}>{String(h).padStart(2, '0')}:00</button>
-			{/each}
-		</div>
-		<h2 class="mb-3 mt-6 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider">
+		<TimeField hour={p.hour} minute={p.minute ?? 0} label={i.t('settings.time')} onchange={setTime} />
+		<h2 class="mb-3 mt-7 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider">
 			{i.t('settings.extra')} <span class="inline-flex items-center gap-1 rounded-full bg-ink px-2 py-0.5 text-[10px] text-sun"><Crown weight="fill" /> {i.t('premium.locked')}</span>
 		</h2>
-		<div class="flex flex-wrap gap-2 {app.access ? '' : 'opacity-50'}">
-			{#each SEND_HOURS.filter((h) => h !== p.hour) as h (h)}
-				<button class="chip tabular-nums" aria-pressed={p.extraHours.includes(h)} onclick={() => toggleExtra(h)}>
-					{#if !app.access}<Lock />{/if}{String(h).padStart(2, '0')}:00
-				</button>
-			{/each}
-		</div>
+		{#if app.premium}
+			<div class="space-y-3">
+				{#each extras as x, k (k)}
+					<div class="flex items-center gap-3">
+						<div class="flex-1"><TimeField size="md" hour={x.h} minute={x.m} label={i.t('settings.extra')} onchange={(h, m) => setExtra(k, h, m)} /></div>
+						<button class="chip px-4 py-3 text-sm" onclick={() => removeExtra(k)} aria-label="✕">✕</button>
+					</div>
+				{/each}
+				{#if extras.length < 2}<button class="btn-ghost w-full" onclick={addExtra}>+ {i.t('settings.extra.add')}</button>{/if}
+			</div>
+		{:else}
+			<a href="/premium" class="flex items-center gap-3 rounded-2xl bg-cream p-4 text-sm font-semibold" onclick={() => track('premium_click', { from: 'settings_extra' })}>
+				<Lock size={18} /> <span class="flex-1">{i.t('settings.extra.locked')}</span> <ArrowRight />
+			</a>
+		{/if}
 	</section>
 
 	<section class="card p-5">
@@ -206,7 +219,7 @@
 					onclick={() => setTheme(t.id)}
 				>
 					<span class="display text-xl" style="color:{t.fg}">Aa</span>
-					{#if t.id !== 'cream' && !app.access}<span class="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full bg-white/90 text-ink"><Lock size={12} /></span>{/if}
+					{#if t.id !== 'cream' && !app.premium}<span class="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full bg-white/90 text-ink"><Lock size={12} /></span>{/if}
 				</button>
 			{/each}
 		</div>
@@ -256,7 +269,6 @@
 					<button class="chip justify-center text-xs" onclick={() => pause(30)}>{i.t('pause.1m')}</button>
 				</div>
 			{/if}
-			<button class="mt-5 text-sm font-bold text-orange underline" onclick={test}>{i.t('settings.notif.test')}</button>
 		{/if}
 		<p class="mt-4 text-xs text-ink/45">{i.t('notif.off.hint')}</p>
 	</section>

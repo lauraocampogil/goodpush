@@ -8,8 +8,9 @@ import { mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { basename, join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openRenderer } from '../videos/renderer.mjs';
-import { clipFor, clipsFor, landscapeClips, CINE, SATISFY } from '../videos/clips.mjs';
-import { QUOTES, author, srcOf } from '../videos/quotes.mjs';
+import { clipFor } from '../videos/clips.mjs';
+import { QUOTES } from '../videos/quotes.mjs';
+import { sentences } from '../videos/scripts.mjs';
 import { P, queryPosts, read, updatePost } from './notion.mjs';
 import { planRange } from '../videos/plan.mjs';
 
@@ -95,29 +96,24 @@ for (const page of due) {
 		if (format === 'E') {
 			const { pngs, video } = await r.carousel(job, lang, out, base);
 			igMedia = pngs; ttMedia = [video];
-		} else if (format === 'Q' || format === 'S') {
-			const q = QUOTES.find((x) => x.id === f.quote);
-			if (!q) throw new Error(`Unknown quote id "${f.quote}" (tools/videos/quotes.mjs)`);
-			const qjob = { ...job, hook: f.hook ?? '', quote: { text: q[lang] ?? q.en, who: author(q, lang), src: srcOf(q, lang) } };
+		} else if (format === 'Q' || format === 'S' || format === 'K') {
+			// GoodPush voice videos: brand colours that change every sentence, the logo, AI voice, words in sync — no footage
+			let lines;
+			if (format === 'K') lines = f.script?.length ? f.script : [f.hook, ...(f.phrases ?? [])].filter(Boolean);
+			else {
+				const q = QUOTES.find((x) => x.id === f.quote);
+				if (!q) throw new Error(`Unknown quote id "${f.quote}" (tools/videos/quotes.mjs)`);
+				lines = sentences((q[lang] ?? q.en).replace(/\*/g, ''));
+			}
 			const file = join(out, `${base}.mp4`);
-			const clips = await landscapeClips(format === 'Q' ? CINE[job.theme] ?? CINE.calm : SATISFY, date + slot, root, format === 'Q' ? 4 : 1).catch(() => []);
 			if (!existsSync(file)) {
-				if (!clips.length) await r.pulse({ ...job, lines: [qjob.quote.text.replace(/\*/g, '')] }, lang, file); // no footage → word by word on black
-				else if (format === 'Q') await r.quote(qjob, lang, file, clips.map((c) => c.file));
-				else await r.satisfy(qjob, lang, file, clips[0].file);
+				try { await r.voice({ ...job, seed: base }, lang, file, lines); }
+				catch (e) { console.warn(`voice failed (${e.message}) → silent version`); await r.pulse({ ...job, lines }, lang, file); }
 			}
 			igMedia = ttMedia = [file];
 		} else if (format === 'M') {
 			const file = join(out, `${base}.mp4`);
 			if (!existsSync(file)) await r.mascotCard(job, lang, file);
-			igMedia = ttMedia = [file];
-		} else if (format === 'K') {
-			const script = f.script?.length ? f.script : [f.hook, ...(f.phrases ?? [])].filter(Boolean);
-			const clips = await clipsFor(job, root, script.length).catch(() => []);
-			const file = join(out, `${base}.mp4`);
-			if (clips.length) {
-				if (!existsSync(file)) await r.pulse({ ...job, lines: script }, lang, file, clips.map((c) => c.file));
-			} else if (!existsSync(file)) await r.pulse({ ...job, lines: script }, lang, file); // no footage → word by word on black
 			igMedia = ttMedia = [file];
 		} else {
 			let clip = null;

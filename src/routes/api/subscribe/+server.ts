@@ -27,8 +27,11 @@ export const POST: RequestHandler = async ({ request }) => {
 	const hour = Number.isInteger(body.hour) && body.hour >= 0 && body.hour <= 23 ? body.hour : 8;
 	// Premium extra pushes: max 2 distinct hours (enforced again by the cron)
 	const extraHours = (Array.isArray(body.extraHours) ? body.extraHours : [])
-		.filter((h: unknown) => Number.isInteger(h) && (h as number) >= 0 && (h as number) <= 23 && h !== hour)
+		.filter((h: unknown) => Number.isInteger(h) && (h as number) >= 0 && (h as number) <= 23)
 		.slice(0, 2);
+	// Exact minutes (08:15…); the extra pushes' minutes line up with extraHours
+	const minute = Number.isInteger(body.minute) && body.minute >= 0 && body.minute <= 59 ? body.minute : 0;
+	const extraMinutes = (Array.isArray(body.extraMinutes) ? body.extraMinutes : []).map((m: unknown) => (Number.isInteger(m) && (m as number) >= 0 && (m as number) <= 59 ? (m as number) : 0));
 	const days = (Array.isArray(body.days) ? body.days : [0, 1, 2, 3, 4, 5, 6]).filter(
 		(d: unknown) => Number.isInteger(d) && (d as number) >= 0 && (d as number) <= 6
 	);
@@ -44,8 +47,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	if (!supabase) return json({ ok: true, demo: true });
 
 	const user = await getUser(request);
-	const { error: e } = await supabase.from('subscribers').upsert(
-		{
+	const row = {
 			id: body.deviceId,
 			...(user ? { user_id: user.id } : {}),
 			name: typeof body.name === 'string' ? body.name.trim().slice(0, 40) : null,
@@ -54,7 +56,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			...(trialStart ? { trial_started_at: trialStart } : {}),
 			...(streakCount !== null ? { streak_count: streakCount, streak_last: streakLast } : {}),
 			hour,
-			extra_hours: [...new Set(extraHours)],
+			extra_hours: extraHours,
 			days: days.length ? [...new Set(days)] : [0, 1, 2, 3, 4, 5, 6],
 			paused_until: pausedUntil,
 			time_zone: timeZone,
@@ -65,9 +67,11 @@ export const POST: RequestHandler = async ({ request }) => {
 			auth: sub.keys.auth,
 			active: true,
 			updated_at: new Date().toISOString()
-		},
-		{ onConflict: 'id', ignoreDuplicates: false }
-	);
+	};
+	const save = (r: Record<string, unknown>) => supabase.from('subscribers').upsert(r, { onConflict: 'id', ignoreDuplicates: false });
+	let { error: e } = await save({ ...row, minute, extra_minutes: extraMinutes.slice(0, extraHours.length) });
+	// Database without the minute columns yet (migration 0012) → save whole hours
+	if (e && /minute/.test(e.message ?? '')) ({ error: e } = await save(row));
 	if (e) {
 		console.error('[subscribe]', e);
 		error(500, 'Could not save');

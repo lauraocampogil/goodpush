@@ -11,7 +11,7 @@
 	import { app } from '#lib/store.svelte.ts';
 	import { track } from '#lib/analytics.ts';
 
-	type Device = { id: string; hour: number; extra_hours: number[]; categories: CategoryId[]; active: boolean; paused_until: string | null; updated_at: string };
+	type Device = { id: string; hour: number; minute?: number | null; extra_hours: number[]; categories: CategoryId[]; active: boolean; paused_until: string | null; updated_at: string };
 	type Account = { email: string; provider: string; marketing: boolean; devices: Device[]; premium: boolean };
 
 	const i = getI18n();
@@ -57,6 +57,7 @@
 		track('marketing_consent', { optIn: v });
 	}
 
+	const fmtTime = (d: Device) => `${String(d.hour).padStart(2, '0')}:${String(d.minute ?? 0).padStart(2, '0')}`;
 	const isPaused = (d: Device) => !!d.paused_until && new Date(d.paused_until) > new Date();
 	const fmtDate = (iso: string) => new Intl.DateTimeFormat(i.lang, { day: 'numeric', month: 'short' }).format(new Date(iso));
 
@@ -120,28 +121,32 @@
 				{/if}
 				<ul class="divide-y divide-ink/5">
 					{#each account?.devices ?? [] as d (d.id)}
-						<li class="flex items-center gap-3 py-3">
-							<div class="flex -space-x-1.5">
-								{#each d.categories.slice(0, 3) as c (c)}<span class="grid h-7 w-7 place-items-center rounded-full bg-cream ring-2 ring-white"><CatIcon cat={c} size={14} /></span>{/each}
+						<li class="py-4">
+							<div class="flex items-center gap-3">
+								<div class="flex shrink-0 -space-x-1.5">
+									{#each d.categories.slice(0, 3) as c (c)}<span class="grid h-8 w-8 place-items-center rounded-full bg-cream ring-2 ring-white"><CatIcon cat={c} size={14} /></span>{/each}
+								</div>
+								<div class="min-w-0 flex-1">
+									<p class="truncate text-sm font-semibold">
+										{d.id === app.profile.deviceId ? i.t('acc.device.this') : `📱 ${d.id.slice(0, 6)}`} · {fmtTime(d)}
+									</p>
+									{#if d.active && isPaused(d)}
+										<p class="text-xs text-orange">{i.t('acc.device.paused')} {fmtDate(d.paused_until!)}</p>
+									{:else}
+										<p class="text-xs {d.active ? 'text-green' : 'text-ink/40'}">{d.active ? i.t('acc.device.on') : i.t('acc.device.off')}</p>
+									{/if}
+								</div>
 							</div>
-							<div class="min-w-0 flex-1">
-								<p class="text-sm font-semibold">
-									{d.id === app.profile.deviceId ? i.t('acc.device.this') : `📱 ${d.id.slice(0, 6)}`} · {String(d.hour).padStart(2, '0')}:00
-								</p>
-								{#if d.active && isPaused(d)}
-									<p class="text-xs text-orange">{i.t('acc.device.paused')} {fmtDate(d.paused_until!)}</p>
-								{:else}
-									<p class="text-xs {d.active ? 'text-green' : 'text-ink/40'}">{d.active ? i.t('acc.device.on') : i.t('acc.device.off')}</p>
+							<div class="mt-3 grid grid-cols-2 gap-2">
+								{#if d.active}
+									<button class="chip justify-center py-2 text-xs" disabled={busy} onclick={() => pauseDevice(d, isPaused(d) ? 0 : 7)}>
+										{isPaused(d) ? i.t('pause.resume') : i.t('pause.1w')}
+									</button>
 								{/if}
-							</div>
-							{#if d.active}
-								<button class="chip px-3 py-1.5 text-xs" disabled={busy} onclick={() => pauseDevice(d, isPaused(d) ? 0 : 7)}>
-									{isPaused(d) ? i.t('pause.resume') : i.t('pause.1w')}
+								<button class="chip justify-center py-2 text-xs {d.active ? '' : 'col-span-2'}" disabled={busy} onclick={() => toggleDevice(d)}>
+									{d.active ? i.t('acc.device.turnoff') : i.t('acc.device.turnon')}
 								</button>
-							{/if}
-							<button class="chip px-3 py-1.5 text-xs" disabled={busy} onclick={() => toggleDevice(d)}>
-								{d.active ? i.t('acc.device.turnoff') : i.t('acc.device.turnon')}
-							</button>
+							</div>
 						</li>
 					{/each}
 				</ul>

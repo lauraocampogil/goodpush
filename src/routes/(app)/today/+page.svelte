@@ -39,7 +39,7 @@
 	const color = $derived(CATEGORY_COLOR[phrase.cat]);
 	const dark = $derived(['green', 'purple', 'orange'].includes(color));
 	const pick = $derived(PICKS[phrase.cat]?.[0]);
-	const hourLabel = $derived(`${String(app.profile.hour).padStart(2, '0')}:00`);
+	const hourLabel = $derived(`${String(app.profile.hour).padStart(2, '0')}:${String(app.profile.minute ?? 0).padStart(2, '0')}`);
 	let highlightShare = $state(false);
 	let showRules = $state(false);
 	let askRating = $state(false);

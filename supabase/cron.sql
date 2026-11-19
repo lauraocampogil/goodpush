@@ -17,8 +17,8 @@ revoke all on function public.goodpush_call(text, int) from public, anon, authen
 
 select cron.unschedule(jobname) from cron.job where jobname in ('goodpush-hourly-send', 'goodpush-daily-quotes', 'goodpush-weekly-newsletter', 'goodpush-social');
 
--- Every hour: everyone gets their push at their own local hour
-select cron.schedule('goodpush-hourly-send', '0 * * * *', $$ select public.goodpush_call('/api/cron/send', 30000) $$);
+-- Every 5 minutes: everyone gets their push at their own local time (08:15, 08:30…)
+select cron.schedule('goodpush-hourly-send', '*/5 * * * *', $$ select public.goodpush_call('/api/cron/send', 30000) $$);
 -- Every day 03:00 UTC: AI finds real quotes (news + movies) — does nothing until ANTHROPIC_API_KEY is set
 select cron.schedule('goodpush-daily-quotes', '0 3 * * *', $$ select public.goodpush_call('/api/cron/quotes', 300000) $$);
 -- Every Sunday 08:00 UTC: "The Good Weekly" newsletter — does nothing until Brevo is set

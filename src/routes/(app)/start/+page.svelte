@@ -10,7 +10,8 @@
 	import PhraseText from '#lib/components/PhraseText.svelte';
 	import Smiley from '#lib/components/Smiley.svelte';
 	import Stepper from '#lib/components/Stepper.svelte';
-	import { CATEGORY_IDS, SEND_HOURS, type CategoryId } from '#lib/data/categories.ts';
+	import { CATEGORY_IDS, type CategoryId } from '#lib/data/categories.ts';
+	import TimeField from '#lib/components/TimeField.svelte';
 	import { getI18n } from '#lib/i18n/index.svelte.ts';
 	import { confetti } from '#lib/motion.ts';
 	import { dayKey, phraseForDay } from '#lib/phrase.ts';
@@ -58,9 +59,10 @@
 		track('topic_toggled', { topic: t, on });
 	}
 
-	function setHour(h: number) {
+	function setTime(h: number, m: number) {
 		p.hour = h;
-		track('hour_selected', { hour: h });
+		p.minute = m;
+		track('hour_selected', { hour: h, minute: m });
 	}
 
 	async function enable() {
@@ -152,12 +154,8 @@
 				{:else if step === 3}
 					<h1 class="display text-4xl sm:text-[2.6rem]">{i.t('ob.time.t')}</h1>
 					<p class="soft mt-2 text-2xl">{i.t('ob.time.d')}</p>
-					<div class="mt-8 grid grid-cols-4 gap-3 sm:grid-cols-7">
-						{#each SEND_HOURS as h, k (h)}
-							<button class="chip justify-center py-3 text-base tabular-nums" aria-pressed={p.hour === h} onclick={() => setHour(h)} in:fly={{ y: 20, delay: 40 * k }}>
-								{String(h).padStart(2, '0')}:00
-							</button>
-						{/each}
+					<div class="mt-8 max-w-sm" in:fly={{ y: 20 }}>
+						<TimeField hour={p.hour} minute={p.minute ?? 0} label={i.t('ob.time.t')} onchange={(h, m) => setTime(h, m)} />
 					</div>
 					<p class="mt-6 flex items-center gap-2 text-sm font-semibold text-ink/60"><Crown weight="fill" class="text-orange" /> {i.t('ob.time.extra')}</p>
 				{:else if step === 5}
@@ -168,7 +166,7 @@
 					<h1 class="display text-4xl sm:text-[2.6rem]">{i.t('ob.notif.t')}</h1>
 					<p class="soft mt-2 text-2xl">{i.t('ob.notif.d')}</p>
 					<div class="mt-8 -rotate-1" in:fly={{ y: -120, delay: 250, duration: 900, easing: backOut }}>
-						<NotifCard label={i.cat(preview.cat)} time="{String(p.hour).padStart(2, '0')}:00">
+						<NotifCard label={i.cat(preview.cat)} time="{String(p.hour).padStart(2, '0')}:{String(p.minute ?? 0).padStart(2, '0')}">
 							<p class="display text-2xl">
 								{#if p.name}<span class="soft text-3xl">{p.name},</span>{/if}
 								<PhraseText text={preview[i.lang]} />

@@ -363,6 +363,64 @@ window.setupP = function (job) {
 	return document.fonts.ready.then(() => D);
 };
 
+/** GoodPush voice format (K, S, Q): no footage — the logo, brand colours that change with every sentence,
+    the message 1–3 words at a time in sync with the AI voice. job.lines = [{ text, start, end }] (TTS timings). */
+const PALETTE = [
+	{ bg: '#0D0D0E', fg: '#FDFDFF', acc: '#D5FF00', smiley: 'sun' },
+	{ bg: '#D5FF00', fg: '#0D0D0E', acc: '#F42902', smiley: 'ink' },
+	{ bg: '#F42902', fg: '#FDFDFF', acc: '#D5FF00', smiley: 'sun' },
+	{ bg: '#FDFDFF', fg: '#0D0D0E', acc: '#F42902', smiley: 'sun' }
+];
+window.setupV = function (job) {
+	const stage = document.getElementById('stage');
+	const off = Math.abs([...(job.seed || 'gp')].reduce((h, c) => h * 31 + c.charCodeAt(0), 7)) % PALETTE.length;
+	const caps = [];
+	job.lines.forEach((ln, li) => {
+		const ws = plain(ln.text).split(/\s+/).filter(Boolean); const groups = []; let cur = [];
+		ws.forEach((w) => { cur.push(w); if (cur.length >= 3 || cur.join(' ').length >= 14 || /[.,!?…:;]$/.test(w)) { groups.push(cur.join(' ')); cur = []; } });
+		if (cur.length) groups.push(cur.join(' '));
+		const total = groups.reduce((a, g) => a + g.length + 2, 0); let t = ln.start;
+		groups.forEach((g, gi) => { const d = ((ln.end - ln.start) * (g.length + 2)) / total; caps.push({ g, a: t, b: t + d, li, last: gi === groups.length - 1 }); t += d; });
+	});
+	const D = job.lines[job.lines.length - 1].end + 1.3;
+	stage.innerHTML = `
+		<div id="bg" class="abs" style="inset:0"></div>
+		<div id="sA" class="abs" style="left:-280px;top:90px;width:780px;height:780px;opacity:.10"></div>
+		<div id="sB" class="abs" style="right:-320px;bottom:150px;width:860px;height:860px;opacity:.08"></div>
+		<div class="abs" style="left:70px;right:70px;top:120px;height:8px;border-radius:8px;background:rgba(127,127,127,.25)"><div id="bar" style="height:100%;width:0;border-radius:8px"></div></div>
+		<div id="cap" class="abs" style="left:90px;right:90px;top:790px;height:280px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Bricolage,Inter;font-weight:800;font-stretch:75%;letter-spacing:-0.01em;text-transform:uppercase;font-size:110px;line-height:1"><div id="capin"></div></div>
+		<div id="logo" class="abs" style="left:0;right:0;top:1160px;display:flex;justify-content:center;align-items:center;gap:14px;font-family:Bricolage,Inter;font-weight:800;font-stretch:82%;letter-spacing:-0.02em;font-size:38px;text-transform:uppercase"><span id="logoS" style="width:52px;height:52px;display:inline-block"></span>GoodPush</div>`;
+	let shownCap = -1, shownCol = -1;
+	const paint = (k) => {
+		const c = PALETTE[(off + k) % PALETTE.length];
+		document.getElementById('bg').style.background = c.bg;
+		document.getElementById('cap').style.color = c.fg;
+		document.getElementById('logo').style.color = c.fg;
+		document.getElementById('bar').style.background = c.acc;
+		document.getElementById('logoS').innerHTML = smiley('smile', c.smiley === 'ink' ? 'ink' : c.bg === '#D5FF00' ? 'ink' : 'sun');
+		document.getElementById('sA').innerHTML = smiley('smile', c.bg === '#0D0D0E' ? 'sun' : 'ink');
+		document.getElementById('sB').innerHTML = smiley('wink', c.bg === '#0D0D0E' ? 'orange' : 'ink');
+		return c;
+	};
+	let col = paint(0);
+	SCENE = { duration: D, draw(t) {
+		// the chunk being said (or the last one said, during the breath between sentences)
+		let i = 0; for (let n = 0; n < caps.length; n++) if (caps[n].a <= t) i = n;
+		const li = caps[i].li;
+		if (li !== shownCol) { col = paint(li); shownCol = li; }
+		const cap = document.getElementById('capin');
+		if (i !== shownCap) {
+			const ws = caps[i].g.split(' '); const lastW = ws.pop();
+			cap.innerHTML = caps[i].last ? `${esc(ws.join(' '))} <span style="color:${col.acc}">${esc(lastW)}</span>` : esc(caps[i].g);
+			fitText(document.getElementById('cap'), 110, 60); shownCap = i;
+		}
+		const p = easeOut(prog(t, caps[i].a, caps[i].a + 0.1)); cap.style.opacity = t < caps[0].a ? 0 : p; cap.style.transform = `scale(${0.92 + 0.08 * p})`;
+		document.getElementById('bar').style.width = `${clamp(t / D) * 100}%`;
+		document.getElementById('sA').style.transform = `rotate(${t * 6}deg)`; document.getElementById('sB').style.transform = `rotate(${-t * 5}deg)`;
+	} };
+	return document.fonts.ready.then(() => D);
+};
+
 /** Format M (like a pastel "reminder" card): soft background, the phrase, the GoodPush smiley celebrating, sparkles. No footage. */
 function mascot(color = 'sun') {
 	return `<div style="width:100%;height:100%">${smiley('smile', color)}</div>`;

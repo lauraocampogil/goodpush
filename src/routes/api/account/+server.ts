@@ -20,13 +20,15 @@ export const GET: RequestHandler = async ({ request, url }) => {
 	const { supabase, user } = await requireUser(request);
 	const deviceId = url.searchParams.get('deviceId');
 
+	const cols = 'id,hour,extra_hours,categories,time_zone,active,paused_until,days,created_at,updated_at';
+	const devicesQuery = async () => {
+		// `minute` exists once supabase/migrations/…_minutes.sql has run; older databases fall back to whole hours
+		const withMin = await supabase.from('subscribers').select(`${cols},minute`).eq('user_id', user.id).order('updated_at', { ascending: false });
+		return withMin.error ? supabase.from('subscribers').select(cols).eq('user_id', user.id).order('updated_at', { ascending: false }) : withMin;
+	};
 	const [{ data: profile }, { data: devices }] = await Promise.all([
 		supabase.from('profiles').select('data,lang,marketing_opt_in').eq('user_id', user.id).maybeSingle(),
-		supabase
-			.from('subscribers')
-			.select('id,hour,extra_hours,categories,time_zone,active,paused_until,days,created_at,updated_at')
-			.eq('user_id', user.id)
-			.order('updated_at', { ascending: false })
+		devicesQuery()
 	]);
 
 	return json({

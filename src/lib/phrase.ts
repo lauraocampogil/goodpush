@@ -12,6 +12,12 @@ export function dayKey(date = new Date(), timeZone?: string): string {
 	}).format(date);
 }
 
+/** Minutes since local midnight (08:15 → 495) in a time zone. */
+export function localMinutes(date: Date, timeZone: string): number {
+	const [h, m] = new Intl.DateTimeFormat('en-GB', { timeZone, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(date).split(':').map(Number);
+	return h * 60 + m;
+}
+
 /** Local hour (0–23) in a time zone. */
 export function localHour(date: Date, timeZone: string): number {
 	const h = new Intl.DateTimeFormat('en-GB', { timeZone, hour: '2-digit', hourCycle: 'h23' }).format(date);
@@ -103,4 +109,19 @@ export function pushTitle(o: { lang: Lang; streak: number; label: string; kind: 
 export function liveStreak(count: number | null, last: string | null, today: string): number {
 	if (!count || !last) return 0;
 	return last === today || last === shiftDay(today, -1) ? count : 0;
+}
+
+/**
+ * The notification's small second line (the phrase itself is the bold title, so it stands out among other apps):
+ * 🔥 12 días seguidos · Disciplina — or just the vibe when there's no streak yet.
+ */
+export function pushMeta(o: { lang: Lang; streak: number; label: string; kind: 'daily' | 'extra' | 'news' | 'movie'; author?: string | null }): string {
+	const icon = { daily: '', extra: '✦ ', news: '🗞 ', movie: '🎬 ' }[o.kind];
+	const who = o.author ? `— ${o.author} · ` : '';
+	if (o.streak > 0 && o.kind === 'daily') return `${who}🔥 ${o.streak} ${STREAK_WORD[o.lang][o.streak === 1 ? 0 : 1]} · ${o.label}`;
+	return `${who}${icon}${o.label}`;
+}
+/** The phrase as a notification title (no quotes/author — the author goes in pushMeta). */
+export function pushHeadline(p: Phrase, lang: Lang): string {
+	return plain(phraseText(p, lang));
 }

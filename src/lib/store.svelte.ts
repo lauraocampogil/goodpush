@@ -10,11 +10,15 @@ export type Profile = {
 	/** Optional sub-topics (football, exams…) inside the chosen categories. */
 	topics: TopicId[];
 	hour: number;
+	/** Minute of the daily push (08:15 → hour 8, minute 15). */
+	minute: number;
 	timeZone: string;
 	onboarded: boolean;
 	pushEnabled: boolean;
 	/** Premium only: up to 2 extra local hours for extra pushes. */
 	extraHours: number[];
+	/** Minutes for each extra push (same order as extraHours). */
+	extraMinutes: number[];
 	/** Share-card theme (cream is free, the rest are Premium). */
 	theme: ShareTheme;
 	/** Pause notifications until this ISO date (null = not paused). */
@@ -58,10 +62,12 @@ class AppStore {
 		categories: [],
 		topics: [],
 		hour: 8,
+		minute: 0,
 		timeZone: 'UTC',
 		onboarded: false,
 		pushEnabled: false,
 		extraHours: [],
+		extraMinutes: [],
 		theme: 'cream',
 		pausedUntil: null,
 		days: [0, 1, 2, 3, 4, 5, 6],
@@ -115,9 +121,9 @@ class AppStore {
 
 	/** Snapshot that is synced to the account. */
 	exportData() {
-		const { name, categories, topics, hour, extraHours, theme, trialStart } = this.profile;
+		const { name, categories, topics, hour, minute, extraHours, extraMinutes, theme, trialStart } = this.profile;
 		return {
-			profile: { name, categories, topics, hour, extraHours, theme, trialStart },
+			profile: { name, categories, topics, hour, minute, extraHours, extraMinutes, theme, trialStart },
 			quotes: this.quotes,
 			favorites: this.favorites,
 			history: this.history,
@@ -257,6 +263,7 @@ class AppStore {
 			this.premium = premium;
 			if (!this.access) {
 				this.profile.extraHours = [];
+				this.profile.extraMinutes = [];
 				this.profile.theme = 'cream';
 			}
 			this.save();

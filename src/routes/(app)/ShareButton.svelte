@@ -27,7 +27,7 @@
 				text: phrase.author ? `“${phrase[i.lang]}” — ${phrase.author}` : phrase[i.lang],
 				name: phrase.author ? undefined : app.profile.name || undefined,
 				category: i.cat(phrase.cat),
-				time: `${String(app.profile.hour).padStart(2, '0')}:00`,
+				time: `${String(app.profile.hour).padStart(2, '0')}:${String(app.profile.minute ?? 0).padStart(2, '0')}`,
 				site,
 				theme,
 				badge: CATEGORY_COLOR[phrase.cat],
