@@ -11,7 +11,8 @@ const STATUS = process.env.AGENT_STATUS || 'Approved';
 const addDays = (d, n) => { const x = new Date(d + 'T12:00:00Z'); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10); };
 const today = new Date().toISOString().slice(0, 10);
 const nextMonday = addDays(today, ((8 - new Date(today + 'T12:00:00Z').getUTCDay()) % 7) || 7);
-const [from = nextMonday, days = '7'] = process.argv.slice(2);
+const [from = process.env.AGENT_START_TODAY ? today : nextMonday, days = process.env.AGENT_START_TODAY ? String(8 + ((8 - new Date(today + 'T12:00:00Z').getUTCDay()) % 7)) : '7'] = process.argv.slice(2);
+// AGENT_START_TODAY=1 → from today up to the end of next week (the Sunday run then continues as usual)
 
 const rows = planRange(from, Number(days), { auto: true });
 const startIso = new Date(from + 'T00:00:00Z').toISOString();

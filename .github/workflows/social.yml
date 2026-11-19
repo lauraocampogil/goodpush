@@ -11,11 +11,11 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: 'agent (write posts in Notion) · robot (render + schedule in Postiz) · preview (render tomorrow, nothing is posted — download the videos below the run)'
+        description: 'start (posts from today on + schedule the next 36 h, in one click) · agent (write posts in Notion) · robot (render + schedule in Postiz) · preview (render tomorrow, nothing is posted — download the videos below the run)'
         required: true
         default: robot
         type: choice
-        options: [preview, robot, agent]
+        options: [start, preview, robot, agent]
       from:
         description: 'agent only: first day (YYYY-MM-DD). Empty = next Monday'
         required: false
@@ -26,7 +26,7 @@ on:
 concurrency: social
 jobs:
   agent:
-    if: github.event.schedule == '23 18 * * 0' || inputs.task == 'agent'
+    if: github.event.schedule == '23 18 * * 0' || inputs.task == 'agent' || inputs.task == 'start'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -37,8 +37,10 @@ jobs:
       - run: node tools/social/agent.mjs ${{ inputs.from }} ${{ inputs.from && inputs.days || '' }}
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          AGENT_START_TODAY: ${{ inputs.task == 'start' && '1' || '' }}
   robot:
-    if: github.event.schedule == '7 5,17 * * *' || inputs.task == 'robot' || inputs.task == 'preview'
+    needs: agent
+    if: always() && needs.agent.result != 'failure' && (github.event.schedule == '7 5,17 * * *' || inputs.task == 'robot' || inputs.task == 'preview' || inputs.task == 'start')
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
