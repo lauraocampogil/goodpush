@@ -198,7 +198,14 @@ export async function openRenderer() {
 			const tmp = join(tmpdir(), `gpv_${process.pid}_${Date.now()}`);
 			const wav = `${tmp}.wav`;
 			const speakable = lines.map((l) => l.replace(/\*/g, ''));
-			const times = JSON.parse(execFileSync('python3', [join(here, 'tts.py'), lang, wav, ...speakable], { encoding: 'utf8', env: { ...process.env, TTS_SPEED: process.env.TTS_SPEED || '0.92', TTS_GAP: process.env.TTS_GAP || '0.6' } }).trim().split('\n').pop());
+			// Voice: Chatterbox (expressive, native accent per language) when installed, else Kokoro
+			const env = { ...process.env, TTS_SPEED: process.env.TTS_SPEED || '0.92', TTS_GAP: process.env.TTS_GAP || '0.6' };
+			const speak = (py, script) => JSON.parse(execFileSync(py, [join(here, script), lang, wav, ...speakable], { encoding: 'utf8', env, maxBuffer: 64 << 20 }).trim().split('\n').pop());
+			let times;
+			if ((process.env.TTS_ENGINE || '') === 'chatterbox') {
+				try { times = speak(process.env.CB_PYTHON || 'python3', 'cb_tts.py'); } catch (e) { console.warn('[voice] chatterbox failed, using kokoro', e.message); }
+			}
+			times ??= speak('python3', 'tts.py');
 			await page.setViewportSize({ width: 1080, height: 1920 });
 			await page.goto(url);
 			const D = await page.evaluate((j) => window.setupV(j), { ...job, lang, lines: speakable.map((text, i) => ({ text, ...times[i] })) });

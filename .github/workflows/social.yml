@@ -11,11 +11,11 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: 'start (posts from today on + schedule the next 36 h, in one click) · agent (write posts in Notion) · robot (render + schedule in Postiz) · preview (render tomorrow, nothing is posted — download the videos below the run)'
+        description: 'start (posts from today on + schedule the next 36 h, in one click) · agent (write posts in Notion) · robot (render + schedule in Postiz) · preview (render tomorrow, nothing is posted — download the videos below the run) · voices (same text with each AI voice, to choose by ear)'
         required: true
         default: robot
         type: choice
-        options: [start, preview, robot, agent]
+        options: [start, preview, robot, agent, voices]
       from:
         description: 'agent only: first day (YYYY-MM-DD). Empty = next Monday'
         required: false
@@ -40,9 +40,13 @@ jobs:
           AGENT_START_TODAY: ${{ inputs.task == 'start' && '1' || '' }}
   robot:
     needs: agent
-    if: always() && needs.agent.result != 'failure' && (github.event.schedule == '7 5,17 * * *' || inputs.task == 'robot' || inputs.task == 'preview' || inputs.task == 'start')
+    if: always() && needs.agent.result != 'failure' && (github.event.schedule == '7 5,17 * * *' || inputs.task == 'robot' || inputs.task == 'preview' || inputs.task == 'start' || inputs.task == 'voices')
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
+    env:
+      # Expressive open-source voice (Chatterbox, MIT). Falls back to Kokoro if it can't run.
+      TTS_ENGINE: chatterbox
+      CB_PYTHON: ${{ github.workspace }}/.venv-cb/bin/python
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -59,9 +63,23 @@ jobs:
       - name: Voice models cache
         uses: actions/cache@v4
         with:
-          path: tools/videos/.tts
-          key: kokoro-v1.0
+          path: |
+            tools/videos/.tts
+            ~/.cache/huggingface
+            .venv-cb
+          key: voices-kokoro-v1.0-chatterbox-0.1.7
+      - name: Install Chatterbox (CPU)
+        run: |
+          if [ ! -x .venv-cb/bin/python ]; then
+            python3 -m venv .venv-cb
+            .venv-cb/bin/pip install --quiet --extra-index-url https://download.pytorch.org/whl/cpu chatterbox-tts==0.1.7 soundfile
+          fi
+          .venv-cb/bin/python -c "from chatterbox.mtl_tts import ChatterboxMultilingualTTS; ChatterboxMultilingualTTS.from_pretrained(device='cpu')" || echo "chatterbox not ready — robot will use Kokoro"
+      - name: Voice test
+        if: inputs.task == 'voices'
+        run: node tools/videos/voice-test.mjs
       - run: node tools/social/robot.mjs ${{ inputs.task == 'preview' && '--preview' || '' }}
+        if: inputs.task != 'voices'
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           POSTIZ_URL: ${{ secrets.POSTIZ_URL }}
@@ -69,7 +87,7 @@ jobs:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
       - name: Preview videos
-        if: inputs.task == 'preview'
+        if: inputs.task == 'preview' || inputs.task == 'voices'
         uses: actions/upload-artifact@v4
         with:
           name: goodpush-preview
