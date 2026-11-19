@@ -202,7 +202,10 @@ export async function openRenderer() {
 			const env = { ...process.env, TTS_SPEED: process.env.TTS_SPEED || '0.92', TTS_GAP: process.env.TTS_GAP || '0.6' };
 			const speak = (py, script) => JSON.parse(execFileSync(py, [join(here, script), lang, wav, ...speakable], { encoding: 'utf8', env, maxBuffer: 64 << 20 }).trim().split('\n').pop());
 			let times;
-			if ((process.env.TTS_ENGINE || '') === 'chatterbox') {
+			if (process.env.ELEVENLABS_API_KEY && process.env[`ELEVENLABS_VOICE_${lang.toUpperCase()}`] && process.env.TTS_ENGINE !== 'kokoro' && process.env.TTS_ENGINE !== 'chatterbox-only') {
+				try { times = speak('node', 'el_tts.mjs'); } catch (e) { console.warn('[voice] elevenlabs failed, trying next engine', e.message); }
+			}
+			if (!times && (process.env.TTS_ENGINE || '').startsWith('chatterbox')) {
 				try { times = speak(process.env.CB_PYTHON || 'python3', 'cb_tts.py'); } catch (e) { console.warn('[voice] chatterbox failed, using kokoro', e.message); }
 			}
 			times ??= speak('python3', 'tts.py');

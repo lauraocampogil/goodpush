@@ -7,8 +7,9 @@ import { SCRIPTS, sentences } from './scripts.mjs';
 const out = new URL('../../marketing/robot/', import.meta.url).pathname;
 mkdirSync(out, { recursive: true });
 const VARIANTS = [
-	{ name: 'chatterbox-intensa', env: { TTS_ENGINE: 'chatterbox', CB_EXAGGERATION: '0.9' } },
-	{ name: 'chatterbox-calida', env: { TTS_ENGINE: 'chatterbox', CB_EXAGGERATION: '0.6' } },
+	...(process.env.ELEVENLABS_API_KEY ? [{ name: 'elevenlabs', env: { TTS_ENGINE: 'chatterbox' } }] : []),
+	{ name: 'chatterbox-intensa', env: { TTS_ENGINE: 'chatterbox-only', CB_EXAGGERATION: '0.9' } },
+	{ name: 'chatterbox-calida', env: { TTS_ENGINE: 'chatterbox-only', CB_EXAGGERATION: '0.6' } },
 	{ name: 'kokoro-actual', env: { TTS_ENGINE: 'kokoro' } }
 ];
 const r = await openRenderer();

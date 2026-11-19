@@ -78,6 +78,10 @@ jobs:
       - name: Voice test
         if: inputs.task == 'voices'
         run: node tools/videos/voice-test.mjs
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          ELEVENLABS_VOICE_EN: ${{ vars.ELEVENLABS_VOICE_EN }}
+          ELEVENLABS_VOICE_ES: ${{ vars.ELEVENLABS_VOICE_ES }}
       - run: node tools/social/robot.mjs ${{ inputs.task == 'preview' && '--preview' || '' }}
         if: inputs.task != 'voices'
         env:
@@ -86,6 +90,9 @@ jobs:
           POSTIZ_API_KEY: ${{ secrets.POSTIZ_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          ELEVENLABS_VOICE_EN: ${{ vars.ELEVENLABS_VOICE_EN }}
+          ELEVENLABS_VOICE_ES: ${{ vars.ELEVENLABS_VOICE_ES }}
       - name: Preview videos
         if: inputs.task == 'preview' || inputs.task == 'voices'
         uses: actions/upload-artifact@v4
