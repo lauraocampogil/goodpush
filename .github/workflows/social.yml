@@ -2,7 +2,7 @@
 #  • Sunday 18:23 UTC  — the agent writes next week's posts into Notion (Posts, status Approved)
 #  • Every day 05:07 + 17:07 UTC — the robot renders what's due in the next 36 h and schedules it in Postiz
 # Secrets (GitHub → Settings → Secrets and variables → Actions):
-#   NOTION_TOKEN, POSTIZ_URL, POSTIZ_API_KEY, PEXELS_API_KEY (optional)
+#   NOTION_TOKEN, POSTIZ_URL, POSTIZ_API_KEY, PIXABAY_API_KEY or PEXELS_API_KEY (stock footage)
 name: Social — agent + robot
 on:
   schedule:
@@ -65,6 +65,7 @@ jobs:
           POSTIZ_URL: ${{ secrets.POSTIZ_URL }}
           POSTIZ_API_KEY: ${{ secrets.POSTIZ_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
       - name: Preview videos
         if: inputs.task == 'preview'
         uses: actions/upload-artifact@v4

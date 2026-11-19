@@ -2,7 +2,7 @@
 //   node tools/social/robot.mjs            → posts due in the next 36 h (GitHub Actions runs it twice a day)
 //   node tools/social/robot.mjs --dry      → renders only, nothing sent to Postiz / Notion
 // Env: NOTION_TOKEN, POSTIZ_URL (your Postiz, e.g. https://postiz.example.com — or https://api.postiz.com for Postiz Cloud),
-//      POSTIZ_API_KEY (Postiz → Settings → Public API), PEXELS_API_KEY (real footage for template R, optional)
+//      POSTIZ_API_KEY (Postiz → Settings → Public API), PIXABAY_API_KEY or PEXELS_API_KEY (stock footage, optional)
 //      POSTIZ_CHANNELS (optional JSON {"en":{"instagram":"id","tiktok":"id"},"es":{…}} — otherwise matched by name "goodpush.en"/"goodpush.es")
 import { mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { basename, join, resolve, dirname } from 'node:path';
@@ -106,7 +106,6 @@ for (const page of due) {
 				else if (format === 'Q') await r.quote(qjob, lang, file, clips.map((c) => c.file));
 				else await r.satisfy(qjob, lang, file, clips[0].file);
 			}
-			if (clips.length) credit = '🎥 Pexels';
 			igMedia = ttMedia = [file];
 		} else if (format === 'M') {
 			const file = join(out, `${base}.mp4`);
@@ -118,7 +117,6 @@ for (const page of due) {
 			const file = join(out, `${base}.mp4`);
 			if (clips.length) {
 				if (!existsSync(file)) await r.pulse({ ...job, lines: script }, lang, file, clips.map((c) => c.file));
-				credit = '🎥 Pexels';
 			} else if (!existsSync(file)) await r.pulse({ ...job, lines: script }, lang, file); // no footage → word by word on black
 			igMedia = ttMedia = [file];
 		} else {
