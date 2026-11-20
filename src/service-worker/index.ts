@@ -20,7 +20,7 @@ self.addEventListener('activate', (event) => {
 	event.waitUntil(
 		caches
 			.keys()
-			.then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+			.then((keys) => Promise.all(keys.filter((k) => k !== CACHE && k !== 'gp-today').map((k) => caches.delete(k))))
 			.then(() => self.clients.claim())
 	);
 });
@@ -58,7 +58,7 @@ self.addEventListener('fetch', (event) => {
 	);
 });
 
-type PushData = { title?: string; body?: string; id?: string; url?: string; streak?: number; actions?: [string, string] };
+type PushData = { title?: string; body?: string; id?: string; url?: string; streak?: number; actions?: [string, string]; day?: string; phrase?: unknown };
 
 self.addEventListener('push', (event) => {
 	let data: PushData = {};
@@ -82,6 +82,10 @@ self.addEventListener('push', (event) => {
 					{ action: 'share', title: data.actions?.[1] ?? '↗ Share' }
 				]
 			} as NotificationOptions),
+			// Keep today's phrase so the app shows the SAME one all day (not a new one when opened later)
+			data.day && data.phrase
+				? caches.open('gp-today').then((c) => c.put('/__today', new Response(JSON.stringify({ day: data.day, phrase: data.phrase }), { headers: { 'content-type': 'application/json' } })))
+				: Promise.resolve(),
 			// The icon shows your streak number (or a dot when there's none yet)
 			self.navigator.setAppBadge?.(data.streak && data.streak > 0 ? data.streak : undefined)
 		])

@@ -150,6 +150,8 @@ export const GET: RequestHandler = async ({ request, url }) => {
 						title: '',
 						body: pushHeadline(phrase, r.lang),
 						id: phrase.id,
+						// The app shows exactly this phrase all day (the service worker keeps it for /today)
+						...(slot === 0 ? { day: today, phrase } : {}),
 						streak,
 						actions: ACTIONS[r.lang] ?? ACTIONS.en,
 						url: !premium && slot === 0 && trialLeft <= 2 ? `/premium?utm_source=push_trial&left=${trialLeft}` : `/today?utm_source=push&slot=${slot}`

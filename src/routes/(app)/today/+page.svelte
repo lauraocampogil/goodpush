@@ -57,12 +57,25 @@
 
 	const MILESTONES = [3, 7, 14, 30, 50, 100, 365];
 
+	async function pushedToday(): Promise<Phrase | null> {
+		try {
+			const r = await (await caches.open('gp-today')).match('/__today');
+			const j = r ? ((await r.json()) as { day?: string; phrase?: Phrase }) : null;
+			return j?.day === today && j.phrase?.id ? j.phrase : null;
+		} catch {
+			return null;
+		}
+	}
+
 	onMount(() => {
 		if (!app.profile.onboarded) {
 			goto('/start', { replaceState: true });
 			return;
 		}
-		todaysQuote(today, app.profile.topics, app.profile.categories).then((q) => {
+		// 1) The phrase today's push delivered (kept by the service worker) — the same one all day
+		pushedToday()
+			.then((p) => p ?? todaysQuote(today, app.profile.topics, app.profile.categories))
+			.then((q) => {
 			if (q) {
 				quote = q;
 				app.rememberQuote(q);
