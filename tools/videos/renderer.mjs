@@ -199,7 +199,7 @@ export async function openRenderer() {
 			const wav = `${tmp}.wav`;
 			const speakable = lines.map((l) => l.replace(/\*/g, ''));
 			// Voice: Chatterbox (expressive, native accent per language) when installed, else Kokoro
-			const env = { ...process.env, TTS_SPEED: process.env.TTS_SPEED || '0.92', TTS_GAP: process.env.TTS_GAP || '0.6' };
+			const env = { ...process.env, TTS_SPEED: process.env.TTS_SPEED || '0.92', TTS_GAP: process.env.TTS_GAP || '0.45' };
 			const speak = (py, script) => JSON.parse(execFileSync(py, [join(here, script), lang, wav, ...speakable], { encoding: 'utf8', env, maxBuffer: 64 << 20 }).trim().split('\n').pop());
 			let times;
 			if (process.env.ELEVENLABS_API_KEY && process.env[`ELEVENLABS_VOICE_${lang.toUpperCase()}`] && process.env.TTS_ENGINE !== 'kokoro' && process.env.TTS_ENGINE !== 'chatterbox-only') {

@@ -99,7 +99,8 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 			// Quote formats (real quotes, other footage): S = satisfying loop most mornings, Q = cinematic quote on D evenings.
 			// Robot mode: S (satisfying + short quote) mornings, K (processlaw style: message word by word over footage) middays + most evenings,
 			// M (pastel card) Wednesday middays, Q (cinematic quote) Mon/Thu evenings, F streak Sunday mornings.
-			const format = !auto ? f0 : slot === 'Morning' ? (f0 === 'F' ? 'F' : 'S') : slot === 'Midday' ? (wd === 2 ? 'M' : 'K') : [0, 3].includes(wd) ? 'Q' : 'K';
+			// Mostly real-life voice scripts (K); a Roman quote (S) only twice a week (Wed + Sat mornings)
+			const format = !auto ? f0 : slot === 'Morning' ? ([3, 6].includes(wd) ? 'S' : 'K') : slot === 'Midday' ? (wd === 2 ? 'M' : 'K') : 'K';
 			const n = format === 'B' || format === 'K' ? 3 : format === 'E' ? 4 : 1;
 			const ph = take(theme, n);
 			if (f0 === 'F') streak += 7;

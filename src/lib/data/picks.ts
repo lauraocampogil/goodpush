@@ -22,6 +22,6 @@ export const PICKS: Record<CategoryId, Pick[]> = {
 
 export function pickUrl(p: Pick): string {
 	if (p.url) return p.url;
-	const tag = PUBLIC_AMAZON_TAG ? `&tag=${encodeURIComponent(PUBLIC_AMAZON_TAG)}` : '';
+	const tag = `&tag=${encodeURIComponent(PUBLIC_AMAZON_TAG || 'goodpush-21')}`; // Laura's Amazon.com.be Associates ID (public: it's in every link)
 	return `${AMAZON_DOMAIN}/s?k=${encodeURIComponent(p.query)}${tag}`;
 }
