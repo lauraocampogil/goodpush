@@ -1,13 +1,12 @@
 import { error, json } from '@sveltejs/kit';
 import { CRON_SECRET } from '$app/env/private';
 import type { CategoryId, Lang } from '#lib/data/categories.ts';
-import { dayKey, dayNumber, liveStreak, localMinutes, phraseForDay, pushHeadline, pushMeta, shiftDay } from '#lib/phrase.ts';
+import { dayKey, dayNumber, liveStreak, localMinutes, phraseForDay, pushHeadline, shiftDay } from '#lib/phrase.ts';
 import { PUBLIC_CONTACT_EMAIL, PUBLIC_SITE_URL } from '$app/env/public';
 import { sendEmail } from '#lib/server/brevo.ts';
-import { CATEGORY_LABEL } from '#lib/i18n/dict.ts';
 import { pickQuote, quoteToPhrase, type QuoteRow } from '#lib/quotes.ts';
 import type { Phrase } from '#lib/data/phrases.ts';
-import { isMovieTopic, type TopicId } from '#lib/data/topics.ts';
+import { type TopicId } from '#lib/data/topics.ts';
 import { db } from '#lib/server/supabase.ts';
 import { pushReady, sendPush } from '#lib/server/webpush.ts';
 import { captureServer } from '#lib/server/analytics.ts';
@@ -40,11 +39,6 @@ type Row = {
 };
 
 const TRIAL_DAYS = 14;
-const TRIAL_TITLE = {
-	en: (n: number) => `⏳ ${n} free ${n === 1 ? 'day' : 'days'} left`,
-	es: (n: number) => `⏳ Te ${n === 1 ? 'queda 1 día' : `quedan ${n} días`} gratis`,
-	fr: (n: number) => `⏳ Plus que ${n} ${n === 1 ? 'jour' : 'jours'} gratuit${n === 1 ? '' : 's'}`
-} as const;
 
 const TRIAL_END = {
 	en: { push: ['Your 14 free days are over', 'Keep your daily push for €4.99 a year → tap here'], subject: 'Your GoodPush free days are over', h: 'Your 14 free days are over', p: 'We hope those pushes helped. Keep yours coming every day — the GoodPush Pass is €4.99 a year, less than a coffee.', cta: 'Keep my daily push' },
@@ -151,15 +145,10 @@ export const GET: RequestHandler = async ({ request, url }) => {
 				if (dryRun) return void sent++;
 				try {
 					await sendPush(r, {
-						// The phrase is the bold title (it's what should hit); streak + vibe go on the small line under it
-						title: pushHeadline(phrase, r.lang),
-						body: !premium && slot === 0 && trialLeft <= 2 ? (TRIAL_TITLE[r.lang] ?? TRIAL_TITLE.en)(trialLeft) : pushMeta({
-							lang: r.lang,
-							streak,
-							label: CATEGORY_LABEL[r.lang]?.[phrase.cat] ?? 'GoodPush',
-							kind: news ? (news.topic && isMovieTopic(news.topic) ? 'movie' : 'news') : slot === 0 ? 'daily' : 'extra',
-							author: phrase.author
-						}),
+						// Only the phrase — no author, vibe or streak. It goes in the body because iOS cuts the bold
+						// title to one line; with an empty title the whole phrase is visible.
+						title: '',
+						body: pushHeadline(phrase, r.lang),
 						id: phrase.id,
 						streak,
 						actions: ACTIONS[r.lang] ?? ACTIONS.en,
