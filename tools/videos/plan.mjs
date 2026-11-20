@@ -6,7 +6,7 @@
 import { PHRASES, TOPIC_PHRASES } from '../../src/lib/data/phrases.ts';
 import { QUOTES, author, srcOf } from './quotes.mjs';
 import { SCRIPTS, sentences } from './scripts.mjs';
-const SHORT_Q = QUOTES.filter((q) => q.en.replace(/\*/g, '').split(/\s+/).length <= 16);
+const SHORT_Q = QUOTES.filter((q) => q.en.replace(/\*/g, '').split(/\s+/).length <= 25);
 
 const LANGS = ['en', 'es', 'fr'];
 const P = [...PHRASES, ...TOPIC_PHRASES].filter((p) => !p.premium);

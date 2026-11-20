@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { openRenderer } from '../videos/renderer.mjs';
 import { clipFor } from '../videos/clips.mjs';
 import { QUOTES } from '../videos/quotes.mjs';
+import { quoteScript } from '../videos/pushes.mjs';
 import { sentences } from '../videos/scripts.mjs';
 import { P, queryPosts, read, updatePost } from './notion.mjs';
 import { planRange } from '../videos/plan.mjs';
@@ -103,7 +104,8 @@ for (const page of due) {
 			else {
 				const q = QUOTES.find((x) => x.id === f.quote);
 				if (!q) throw new Error(`Unknown quote id "${f.quote}" (tools/videos/quotes.mjs)`);
-				lines = sentences((q[lang] ?? q.en).replace(/\*/g, ''));
+				// intro → the real quote → what it means for you today → move (tools/videos/pushes.mjs)
+				lines = quoteScript(q, lang, sentences((q[lang] ?? q.en).replace(/\*/g, '')), base);
 			}
 			const file = join(out, `${base}.mp4`);
 			if (!existsSync(file)) {
