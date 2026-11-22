@@ -1,7 +1,7 @@
 import { CATEGORY_IDS, type CategoryId, type Lang } from './data/categories';
 import { PHRASES, TOPIC_PHRASES, type Phrase } from './data/phrases';
-import type { TopicId } from './data/topics';
-import { JOY } from './data/joy';
+import { TOPICS as CATEGORY_TOPICS, type TopicId } from './data/topics';
+import { JOY, JOY_CAT, JOY_TOPIC } from './data/joy';
 
 /** 'YYYY-MM-DD' for a given time zone (defaults to the device's). */
 export function dayKey(date = new Date(), timeZone?: string): string {
@@ -49,7 +49,19 @@ export function phraseForDay(
 	if (slot === 0) {
 		const cs = (categories.length ? categories : [...CATEGORY_IDS]).filter((c) => CATEGORY_IDS.includes(c));
 		const n0 = dayNumber(key);
-		return { ...JOY[n0 % JOY.length], cat: cs[n0 % cs.length] };
+		const cat = cs[n0 % cs.length];
+		// Your sub-topics first (2 days out of 3): football → football lines, exams → study lines…
+		const mine = (opts.topics ?? []).filter((t) => JOY_TOPIC[t]?.length && (CATEGORY_TOPICS[cat] as readonly string[] | undefined)?.includes(t));
+		const any = (opts.topics ?? []).filter((t) => JOY_TOPIC[t]?.length);
+		const pickFrom = mine.length ? mine : any;
+		if (pickFrom.length && n0 % 3 !== 2) {
+			const k = n0 - Math.floor((n0 + 1) / 3); // counts only the topic days → a new line every time
+			const t = pickFrom[k % pickFrom.length];
+			const list = JOY_TOPIC[t];
+			return { ...list[Math.floor(k / pickFrom.length) % list.length], cat, topic: t };
+		}
+		const pool = JOY_CAT[cat]?.length ? JOY_CAT[cat] : JOY.map((_, i) => i);
+		return { ...JOY[pool[Math.floor(n0 / cs.length) % pool.length]], cat };
 	}
 	const cats = (categories.length ? categories : [...CATEGORY_IDS]).filter((c) =>
 		CATEGORY_IDS.includes(c)

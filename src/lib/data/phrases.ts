@@ -1,6 +1,6 @@
 import type { CategoryId, Lang } from './categories';
 import type { TopicId } from './topics';
-import { JOY } from './joy.ts';
+import { JOY, JOY_TOPIC } from './joy.ts';
 
 /**
  * The phrase library. Wrap ONE key word in *asterisks* — it gets the pink tape.
@@ -181,4 +181,4 @@ export const TOPIC_PHRASES: Phrase[] = [
 	{ id: 'thb2', cat: 'selflove', topic: 'heartbreak', en: 'Choose *you* today.', es: 'Hoy elígete *a ti*.', fr: 'Aujourd’hui, choisis-*toi*.' }
 ];
 
-export const PHRASE_BY_ID = new Map<string, Phrase>([...PHRASES, ...TOPIC_PHRASES, ...JOY.map((j) => ({ ...j, cat: 'selflove' as CategoryId }))].map((p) => [p.id, p]));
+export const PHRASE_BY_ID = new Map<string, Phrase>([...PHRASES, ...TOPIC_PHRASES, ...[...JOY, ...Object.values(JOY_TOPIC).flat()].map((j) => ({ ...j, cat: 'selflove' as CategoryId }))].map((p) => [p.id, p]));
