@@ -2,7 +2,7 @@
 // job = { date, slot, theme, format: A|B|D|R|E|F, hook: {lang}, phrases: [{lang}], streak }
 import { createRequire } from 'node:module';
 import { spawn, execFileSync } from 'node:child_process';
-import { renameSync, rmSync } from 'node:fs';
+import { readFileSync, renameSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -267,6 +267,58 @@ export async function openRenderer() {
 				'-map', '[v]', '-map', `${n + 1}:a`, '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-r', String(FPS), '-c:a', 'aac', '-b:a', '160k', '-t', String(D), '-movflags', '+faststart', part]);
 			renameSync(part, file);
 			rmSync(png, { force: true }); rmSync(mus, { force: true });
+			return file;
+		},
+		/** Format J without footage: the GoodPush app icon + logo, ONE positive phrase, upbeat music; everything moves on the beat. */
+		async joyBrand(job, lang, file, phrase, D = 12, bpm = 120) {
+			const tmp = join(tmpdir(), `gpjb_${process.pid}_${Date.now()}`);
+			const svg = (n) => readFileSync(join(here, '../../static/brand', n), 'utf8');
+			const font = (f) => pathToFileURL(join(here, '../../node_modules/@fontsource-variable', f)).href;
+			await page.setViewportSize({ width: 1080, height: 1920 });
+			await page.goto(url); // same origin as the template → local fonts load
+			await page.evaluate(({ icon, logoDark, logoLight, text, bpm, f1, f2 }) => {
+				document.head.insertAdjacentHTML('beforeend', `<style>
+					@font-face{font-family:'Bri';src:url('${f1}') format('woff2');font-weight:200 800;font-stretch:75% 100%}
+					@font-face{font-family:'Bri';src:url('${f2}') format('woff2');font-weight:200 800;font-stretch:75% 100%;unicode-range:U+0100-024F,U+1E00-1EFF}
+					#jb{position:fixed;inset:0;width:1080px;height:1920px;overflow:hidden;transition:none}
+					#jb .icon{position:absolute;left:50%;top:430px;width:300px;height:300px;margin-left:-150px}
+					#jb .icon svg{width:100%;height:100%;filter:drop-shadow(0 18px 40px rgba(0,0,0,.25))}
+					#jb .t{position:absolute;left:90px;right:90px;top:860px;text-align:center;font-family:'Bri';font-weight:800;font-stretch:82%;font-size:104px;line-height:1.02;letter-spacing:-.03em}
+					#jb .t span{display:inline-block;margin:0 .12em}
+					#jb .logo{position:absolute;left:50%;bottom:170px;width:520px;margin-left:-260px}
+					#jb .logo svg{width:100%;height:auto}
+				</style>`);
+				document.body.innerHTML = `<div id="jb"><div class="icon">${icon}</div><div class="t">${text.split(/\s+/).map((w) => `<span>${w}</span>`).join(' ')}</div><div class="logo"></div></div>`;
+				const jb = document.getElementById('jb'), ic = jb.querySelector('.icon'), lg = jb.querySelector('.logo'), words = [...jb.querySelectorAll('.t span')];
+				const beat = 60 / bpm;
+				const THEMES = [ { bg: '#0D0D0E', fg: '#FDFDFF', logo: logoLight }, { bg: '#D5FF00', fg: '#0D0D0E', logo: logoDark }, { bg: '#F42902', fg: '#FDFDFF', logo: logoLight }, { bg: '#FDFDFF', fg: '#0D0D0E', logo: logoDark } ];
+				let cur = -1;
+				window.draw = (t) => {
+					const b = t / beat, bi = Math.floor(b), ph = b - bi; // beat index + phase
+					const th = THEMES[Math.floor(bi / 8) % THEMES.length]; // new colour every 2 bars
+					if (th !== cur) { cur = th; jb.style.background = th.bg; jb.style.color = th.fg; lg.innerHTML = th.logo; }
+					const kick = Math.exp(-ph * 7); // punch on every beat
+					ic.style.transform = `translateY(${-38 * Math.sin(Math.PI * Math.min(1, ph * 1.6))}px) scale(${1 + 0.1 * kick}) rotate(${(bi % 2 ? 1 : -1) * 6 * kick}deg)`;
+					words.forEach((w, k) => { const a = Math.min(1, Math.max(0, (t - 0.35 - k * beat / 2) / 0.18)); const pop = a < 1 ? 0.6 + 0.4 * a + 0.15 * Math.sin(a * Math.PI) : 1 + 0.035 * kick; w.style.opacity = a; w.style.transform = `translateY(${(1 - a) * 40}px) scale(${pop})`; });
+					lg.style.transform = `scale(${1 + 0.03 * kick})`;
+				};
+			}, { icon: svg('goodpush-app-icon.svg'), logoDark: svg('goodpush-logo.svg'), logoLight: svg('goodpush-logo-light.svg'), text: phrase.replace(/\*/g, ''), bpm,
+				f1: font('bricolage-grotesque/files/bricolage-grotesque-latin-wdth-normal.woff2'), f2: font('bricolage-grotesque/files/bricolage-grotesque-latin-ext-wdth-normal.woff2') });
+			await page.evaluate(() => document.fonts.ready);
+			const mus = `${tmp}.wav`;
+			execFileSync('python3', [join(here, 'music.py'), mus, String(D), String(job.seed ?? file), 'happy', String(bpm)]);
+			const part = file.replace(/\.mp4$/, '.part.mp4');
+			const p = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-', '-i', mus, '-map', '0:v', '-map', '1:a',
+				'-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-r', String(FPS), '-c:a', 'aac', '-b:a', '160k', '-t', String(D), '-movflags', '+faststart', part], { stdio: ['pipe', 'inherit', 'inherit'] });
+			const done = new Promise((ok, ko) => p.on('exit', (c) => (c === 0 ? (renameSync(part, file), ok()) : ko(new Error('ffmpeg joyBrand ' + c)))));
+			for (let k = 0; k < D * FPS; k++) {
+				await page.evaluate((x) => window.draw(x), k / FPS);
+				const buf = await page.screenshot({ type: 'jpeg', quality: 92 });
+				if (!p.stdin.write(buf)) await new Promise((r) => p.stdin.once('drain', r));
+			}
+			p.stdin.end();
+			await done;
+			rmSync(mus, { force: true });
 			return file;
 		},
 		close: () => browser.close()

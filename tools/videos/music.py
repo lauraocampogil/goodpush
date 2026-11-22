@@ -50,13 +50,14 @@ def drum(kind, vel=1.0):
     n = np.random.default_rng(5).standard_normal(len(t))  # hat
     return sosfilt(butter(2, 7000, 'high', fs=SR, output='sos'), n) * np.exp(-t * 60) * 0.25 * vel
 
+BPM = 0
 def happy(out, seconds, seed):
     """Upbeat, feel-good loop: major key, four-on-the-floor, claps, bouncy bass and bright plucks."""
     h = int(hashlib.md5(seed.encode()).hexdigest(), 16)
     rng = np.random.default_rng(h % 2**32)
     key = [60, 62, 65, 67, 57][h % 5]
     prog = [[(0, 'M'), (7, 'M'), (9, 'm'), (5, 'M')], [(0, 'M'), (5, 'M'), (7, 'M'), (5, 'M')], [(9, 'm'), (5, 'M'), (0, 'M'), (7, 'M')]][(h >> 8) % 3]
-    bpm = 112 + (h >> 16) % 12
+    bpm = BPM or (112 + (h >> 16) % 12)
     beat = 60 / bpm
     n = int((seconds + 2) * SR)
     buf = {k: np.zeros(n) for k in ('drums', 'bass', 'pluck', 'pad')}
@@ -99,6 +100,8 @@ def happy(out, seconds, seed):
 def main():
     out, seconds, seed = sys.argv[1], float(sys.argv[2]), sys.argv[3]
     if len(sys.argv) > 4 and sys.argv[4] == 'happy':
+        global BPM
+        BPM = int(sys.argv[5]) if len(sys.argv) > 5 else 0
         return happy(out, seconds, seed)
     h = int(hashlib.md5(seed.encode()).hexdigest(), 16)
     rng = np.random.default_rng(h % 2**32)

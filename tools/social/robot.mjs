@@ -117,9 +117,10 @@ for (const page of due) {
 			// @legat.matteo style: happy real footage + ONE positive phrase + upbeat music (no voice)
 			const file = join(out, `${base}.mp4`);
 			if (!existsSync(file)) {
-				const clips = (await joyClips(base, root, 2).catch(() => [])).map((c) => c.file);
-				if (!clips.length) throw new Error('No footage for J (PIXABAY_API_KEY / marketing/clips/joy)');
-				await r.joy({ ...job, seed: base }, lang, file, clips, f.phrases[0]);
+				// Default: GoodPush icon + logo + phrase on the beat. JOY_FOOTAGE=1 → real happy footage instead.
+				const clips = process.env.JOY_FOOTAGE === '1' ? (await joyClips(base, root, 2).catch(() => [])).map((c) => c.file) : [];
+				if (clips.length) await r.joy({ ...job, seed: base }, lang, file, clips, f.phrases[0]);
+				else await r.joyBrand({ ...job, seed: base }, lang, file, f.phrases[0]);
 			}
 			igMedia = ttMedia = [file];
 		} else if (format === 'M') {
