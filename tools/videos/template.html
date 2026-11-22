@@ -411,7 +411,10 @@ window.setupV = function (job) {
 		const cap = document.getElementById('capin');
 		if (i !== shownCap) {
 			const ws = caps[i].g.split(' '); const lastW = ws.pop();
-			cap.innerHTML = caps[i].last ? `${esc(ws.join(' '))} <span style="color:${col.acc}">${esc(lastW)}</span>` : esc(caps[i].g);
+			if (job.full) { // one phrase that builds up and stays (format J)
+				const prev = caps.slice(0, i).map((c) => esc(c.g)).join(' ');
+				cap.innerHTML = `${prev} ${caps[i].last ? `${esc(ws.join(' '))} <span style="color:${col.acc}">${esc(lastW)}</span>` : esc(caps[i].g)}`;
+			} else cap.innerHTML = caps[i].last ? `${esc(ws.join(' '))} <span style="color:${col.acc}">${esc(lastW)}</span>` : esc(caps[i].g);
 			fitText(document.getElementById('cap'), 110, 60); shownCap = i;
 		}
 		const p = easeOut(prog(t, caps[i].a, caps[i].a + 0.1)); cap.style.opacity = t < caps[0].a ? 0 : p; cap.style.transform = `scale(${0.92 + 0.08 * p})`;

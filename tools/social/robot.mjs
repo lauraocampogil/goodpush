@@ -4,7 +4,7 @@
 // Env: NOTION_TOKEN, POSTIZ_URL (your Postiz, e.g. https://postiz.example.com — or https://api.postiz.com for Postiz Cloud),
 //      POSTIZ_API_KEY (Postiz → Settings → Public API), PIXABAY_API_KEY or PEXELS_API_KEY (stock footage, optional)
 //      POSTIZ_CHANNELS (optional JSON {"en":{"instagram":"id","tiktok":"id"},"es":{…}} — otherwise matched by name "goodpush.en"/"goodpush.es")
-import { mkdirSync, readFileSync, existsSync } from 'node:fs';
+import { mkdirSync, readFileSync, existsSync, readdirSync } from 'node:fs';
 import { basename, join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openRenderer } from '../videos/renderer.mjs';
@@ -114,15 +114,16 @@ for (const page of due) {
 			}
 			igMedia = ttMedia = [file];
 		} else if (format === 'J') {
-			// @legat.matteo style: happy real footage + ONE positive phrase + upbeat music (no voice)
-			const file = join(out, `${base}.mp4`);
-			if (!existsSync(file)) {
-				// Default: GoodPush icon + logo + phrase on the beat. JOY_FOOTAGE=1 → real happy footage instead.
-				const clips = process.env.JOY_FOOTAGE === '1' ? (await joyClips(base, root, 2).catch(() => [])).map((c) => c.file) : [];
-				if (clips.length) await r.joy({ ...job, seed: base }, lang, file, clips, f.phrases[0]);
-				else await r.joyBrand({ ...job, seed: base }, lang, file, f.phrases[0]);
-			}
-			igMedia = ttMedia = [file];
+			// One positive phrase in the usual GoodPush design, no voice.
+			// TikTok gets it SILENT → Laura adds a trending song (Happy, MJ…) when she publishes the draft (TikTok licenses those).
+			// Instagram is posted automatically, so it gets a royalty-free track from marketing/music/ (or none if the folder is empty).
+			const tt = join(out, `${base}_tt.mp4`), ig = join(out, `${base}.mp4`);
+			if (!existsSync(tt)) await r.phrase({ ...job, seed: base }, lang, tt, f.phrases[0], null);
+			const musicDir = join(root, 'marketing', 'music');
+			const tracks = existsSync(musicDir) ? readdirSync(musicDir).filter((x) => /\.(mp3|m4a|wav)$/i.test(x)).sort() : [];
+			const track = tracks.length ? join(musicDir, tracks[[...base].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % tracks.length]) : null;
+			if (!existsSync(ig)) await r.phrase({ ...job, seed: base }, lang, ig, f.phrases[0], track);
+			igMedia = [ig]; ttMedia = [tt];
 		} else if (format === 'M') {
 			const file = join(out, `${base}.mp4`);
 			if (!existsSync(file)) await r.mascotCard(job, lang, file);

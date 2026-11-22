@@ -321,6 +321,27 @@ export async function openRenderer() {
 			rmSync(mus, { force: true });
 			return file;
 		},
+		/** Format J in the usual GoodPush design (setupV look): ONE phrase building up word by word, no voice.
+		 *  audio = an mp3/wav to put under it, or null for a silent track (TikTok: add a trending sound when publishing). */
+		async phrase(job, lang, file, phrase, audio = null) {
+			await page.setViewportSize({ width: 1080, height: 1920 });
+			await page.goto(url);
+			const D = await page.evaluate((j) => window.setupV(j), { ...job, lang, full: true, lines: [{ text: phrase.replace(/\*/g, ''), start: 0.5, end: 6.5 }] });
+			const part = file.replace(/\.mp4$/, '.part.mp4');
+			const aIn = audio ? ['-stream_loop', '-1', '-i', audio] : ['-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo'];
+			const af = audio ? ['-af', `loudnorm=I=-14:TP=-1.5,afade=t=out:st=${(D - 1.2).toFixed(2)}:d=1.2`] : [];
+			const p = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-', ...aIn, '-map', '0:v', '-map', '1:a', ...af,
+				'-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-r', String(FPS), '-c:a', 'aac', '-b:a', '160k', '-t', D.toFixed(3), '-movflags', '+faststart', part], { stdio: ['pipe', 'inherit', 'inherit'] });
+			const done = new Promise((ok, ko) => p.on('exit', (c) => (c === 0 ? (renameSync(part, file), ok()) : ko(new Error('ffmpeg phrase ' + c)))));
+			for (let k = 0; k < D * FPS; k++) {
+				await page.evaluate((x) => window.draw(x), k / FPS);
+				const buf = await page.screenshot({ type: 'jpeg', quality: 92 });
+				if (!p.stdin.write(buf)) await new Promise((r) => p.stdin.once('drain', r));
+			}
+			p.stdin.end();
+			await done;
+			return file;
+		},
 		close: () => browser.close()
 	};
 }
