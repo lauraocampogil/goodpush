@@ -314,7 +314,8 @@ window.setupS = function (job) {
 	fitText(document.getElementById('q'), 92, 52);
 	SCENE = { duration: D, draw(t) {
 		const p = easeOut(prog(t, 0.15, 0.7)); const q = document.getElementById('qin'); q.style.opacity = p; q.style.transform = `scale(${0.94 + 0.06 * p})`;
-		document.getElementById('bar').style.width = `${clamp(t / D) * 100}%`;
+		document.getElementById('bar').style.width = job.still ? '0%' : `${clamp(t / D) * 100}%`;
+		if (job.still) document.getElementById('bar').parentNode.style.display = 'none';
 	} };
 	return document.fonts.ready.then(() => D);
 };
@@ -356,7 +357,8 @@ window.setupP = function (job) {
 			fitText(document.getElementById('cap'), 104, 56); shown = i;
 		}
 		if (i >= 0) { const p = easeOut(prog(t, caps[i].a, caps[i].a + 0.1)); cap.style.opacity = p; cap.style.transform = `scale(${0.94 + 0.06 * p})`; }
-		document.getElementById('bar').style.width = `${clamp(t / D) * 100}%`;
+		document.getElementById('bar').style.width = job.still ? '0%' : `${clamp(t / D) * 100}%`;
+		if (job.still) document.getElementById('bar').parentNode.style.display = 'none';
 		const A = document.getElementById('bgA'), B = document.getElementById('bgB');
 		if (A) { A.style.transform = `rotate(${t * 6}deg)`; B.style.transform = `rotate(${-t * 5}deg)`; }
 	} };
@@ -417,8 +419,9 @@ window.setupV = function (job) {
 			} else cap.innerHTML = caps[i].last ? `${esc(ws.join(' '))} <span style="color:${col.acc}">${esc(lastW)}</span>` : esc(caps[i].g);
 			fitText(document.getElementById('cap'), 110, 60); shownCap = i;
 		}
-		const p = easeOut(prog(t, caps[i].a, caps[i].a + 0.1)); cap.style.opacity = t < caps[0].a ? 0 : p; cap.style.transform = `scale(${0.92 + 0.08 * p})`;
-		document.getElementById('bar').style.width = `${clamp(t / D) * 100}%`;
+		const p = job.still ? 1 : easeOut(prog(t, caps[i].a, caps[i].a + 0.1)); cap.style.opacity = !job.still && t < caps[0].a ? 0 : p; cap.style.transform = `scale(${0.92 + 0.08 * p})`;
+		document.getElementById('bar').style.width = job.still ? '0%' : `${clamp(t / D) * 100}%`;
+		if (job.still) document.getElementById('bar').parentNode.style.display = 'none';
 		document.getElementById('sA').style.transform = `rotate(${t * 6}deg)`; document.getElementById('sB').style.transform = `rotate(${-t * 5}deg)`;
 	} };
 	return document.fonts.ready.then(() => D);
