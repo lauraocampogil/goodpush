@@ -8,7 +8,7 @@ import { mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { basename, join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openRenderer } from '../videos/renderer.mjs';
-import { clipFor } from '../videos/clips.mjs';
+import { clipFor, joyClips } from '../videos/clips.mjs';
 import { QUOTES } from '../videos/quotes.mjs';
 import { quoteScript } from '../videos/pushes.mjs';
 import { sentences } from '../videos/scripts.mjs';
@@ -111,6 +111,15 @@ for (const page of due) {
 			if (!existsSync(file)) {
 				try { await r.voice({ ...job, seed: base }, lang, file, lines); }
 				catch (e) { console.warn(`voice failed (${e.message}) → silent version`); await r.pulse({ ...job, lines }, lang, file); }
+			}
+			igMedia = ttMedia = [file];
+		} else if (format === 'J') {
+			// @legat.matteo style: happy real footage + ONE positive phrase + upbeat music (no voice)
+			const file = join(out, `${base}.mp4`);
+			if (!existsSync(file)) {
+				const clips = (await joyClips(base, root, 2).catch(() => [])).map((c) => c.file);
+				if (!clips.length) throw new Error('No footage for J (PIXABAY_API_KEY / marketing/clips/joy)');
+				await r.joy({ ...job, seed: base }, lang, file, clips, f.phrases[0]);
 			}
 			igMedia = ttMedia = [file];
 		} else if (format === 'M') {

@@ -235,6 +235,40 @@ export async function openRenderer() {
 			rmSync(mus, { force: true });
 			return file;
 		},
+		/** Format J (@legat.matteo style): real happy footage, ONE short positive phrase, upbeat music, ~12 s. */
+		async joy(job, lang, file, clips, phrase, D = 12) {
+			const tmp = join(tmpdir(), `gpj_${process.pid}_${Date.now()}`);
+			// 1) the phrase as a transparent PNG (TikTok-like caption: yellow, soft shadow, upper third)
+			await page.setViewportSize({ width: 1080, height: 1920 });
+			await page.setContent(`<html><head><style>
+				@font-face { font-family: 'Inter'; src: url('${pathToFileURL(join(here, '../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2')).href}') format('woff2'); font-weight: 100 900; }
+				@font-face { font-family: 'Inter'; src: url('${pathToFileURL(join(here, '../../node_modules/@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2')).href}') format('woff2'); font-weight: 100 900; unicode-range: U+0100-024F, U+1E00-1EFF; }
+				html,body{margin:0;background:transparent}
+				#t{position:absolute;left:110px;right:110px;top:560px;text-align:center;font:600 64px/1.18 Inter,sans-serif;color:#FFE94D;
+				   text-shadow:0 2px 6px rgba(0,0,0,.55),0 0 2px rgba(0,0,0,.6);letter-spacing:-0.01em}
+				#b{position:absolute;left:0;right:0;bottom:120px;text-align:center;font:800 30px Inter,sans-serif;color:rgba(255,255,255,.75);letter-spacing:.06em;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+			</style></head><body><div id="t"></div><div id="b">GOODPUSH</div></body></html>`);
+			await page.evaluate((t) => { document.getElementById('t').textContent = t; }, phrase.replace(/\*/g, ''));
+			await page.evaluate(() => document.fonts.ready);
+			const png = `${tmp}.png`;
+			await page.screenshot({ path: png, omitBackground: true });
+			// 2) happy upbeat score
+			const mus = `${tmp}.wav`;
+			execFileSync('python3', [join(here, 'music.py'), mus, String(D), String(job.seed ?? file), 'happy']);
+			// 3) footage: 1–3 clips, cut on the beat-ish, cropped to 9:16, a touch brighter/warmer
+			const list = clips.slice(0, 3);
+			const seg = D / list.length;
+			const inputs = list.flatMap((c) => ['-stream_loop', '-1', '-i', c]);
+			const chains = list.map((_, i) => `[${i}:v]trim=duration=${seg.toFixed(3)},setpts=PTS-STARTPTS,fps=${FPS},scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,eq=brightness=0.02:saturation=1.08,format=yuv420p[c${i}]`).join(';');
+			const n = list.length;
+			const part = file.replace(/\.mp4$/, '.part.mp4');
+			await run([...inputs, '-loop', '1', '-i', png, '-i', mus, '-filter_complex',
+				`${chains};${list.map((_, i) => `[c${i}]`).join('')}concat=n=${n}:v=1:a=0[bg];[bg][${n}:v]overlay=0:0:format=auto,format=yuv420p[v]`,
+				'-map', '[v]', '-map', `${n + 1}:a`, '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-r', String(FPS), '-c:a', 'aac', '-b:a', '160k', '-t', String(D), '-movflags', '+faststart', part]);
+			renameSync(part, file);
+			rmSync(png, { force: true }); rmSync(mus, { force: true });
+			return file;
+		},
 		close: () => browser.close()
 	};
 }

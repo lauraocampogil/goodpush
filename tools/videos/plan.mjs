@@ -100,7 +100,8 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 			// Robot mode: S (satisfying + short quote) mornings, K (processlaw style: message word by word over footage) middays + most evenings,
 			// M (pastel card) Wednesday middays, Q (cinematic quote) Mon/Thu evenings, F streak Sunday mornings.
 			// Mostly real-life voice scripts (K); a Roman quote (S) only twice a week (Wed + Sat mornings)
-			const format = !auto ? f0 : slot === 'Morning' ? ([3, 6].includes(wd) ? 'S' : 'K') : slot === 'Midday' ? (wd === 2 ? 'M' : 'K') : 'K';
+			// Nov 22: every slot is J (@legat.matteo style) — happy real footage + ONE positive phrase + upbeat music
+			const format = !auto ? f0 : 'J';
 			const n = format === 'B' || format === 'K' ? 3 : format === 'E' ? 4 : 1;
 			const ph = take(theme, n);
 			if (f0 === 'F') streak += 7;
@@ -121,10 +122,10 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 				});
 				continue;
 			}
-			const cta = ['A', 'C', 'E', 'F', 'K'].includes(format);
+			const cta = ['A', 'C', 'E', 'F', 'K', 'J'].includes(format);
 			const L = (fn) => Object.fromEntries(LANGS.map((l, li) => [l, fn(l, li)]));
 			const dayN = Math.round((Date.parse(date) - Date.parse(START)) / 864e5);
-			const hookSrc = format === 'R' || format === 'K' ? HOOK_R[(dayN * 3 + ['Morning', 'Midday', 'Evening'].indexOf(slot)) % HOOK_R.length] : HOOK[format];
+			const hookSrc = format === 'R' || format === 'K' || format === 'J' ? HOOK_R[(dayN * 3 + ['Morning', 'Midday', 'Evening'].indexOf(slot)) % HOOK_R.length] : HOOK[format];
 			const hook = L((l, li) => hookSrc[li].replace('{t}', TL[theme][li]).replace('{n}', String(streak || 7)));
 			rows.push({
 				date, slot, theme, format, streak: format === 'F' ? streak : 0,
@@ -132,7 +133,7 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 				phrases: ph.map((p) => ({ id: p.id, en: p.en, es: p.es, fr: p.fr })),
 				caption: L((l, li) => `${format === 'K' ? sentences(sc[l] ?? sc.en)[0] : n === 1 ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : ['R', 'M'].includes(format) ? SHARE[li] : SOFT[li]}`),
 				...(format === 'K' ? { script: L((l) => sentences(sc[l] ?? sc.en)) } : {}),
-				hashtags: L((l, li) => `${HASH_THEME[theme][li]} ${HASH_BASE[li]}`),
+				hashtags: L((l, li) => `${format === 'J' ? ['#happy #goodvibes #positivevibes', '#buenrollo #felicidad #vibrapositiva', '#bonnehumeur #bonheur #goodvibes'][li] + ' ' : ''}${HASH_THEME[theme][li]} ${HASH_BASE[li]}`),
 				publish: L((l) => zonedToUtc(date, SCHEDULE[l][slot], SCHEDULE[l].tz))
 			});
 		}

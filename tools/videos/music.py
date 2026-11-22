@@ -39,8 +39,67 @@ def chord(root, q):
     third = 3 if q == 'm' else 4
     return [root, root + third, root + 7]
 
+def drum(kind, vel=1.0):
+    t = np.arange(int(0.35 * SR)) / SR
+    if kind == 'kick':
+        f = 110 * np.exp(-t * 18) + 45
+        return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 9) * vel
+    if kind == 'clap':
+        n = np.random.default_rng(3).standard_normal(len(t))
+        return sosfilt(butter(2, [900, 4000], 'band', fs=SR, output='sos'), n) * np.exp(-t * 22) * 0.6 * vel
+    n = np.random.default_rng(5).standard_normal(len(t))  # hat
+    return sosfilt(butter(2, 7000, 'high', fs=SR, output='sos'), n) * np.exp(-t * 60) * 0.25 * vel
+
+def happy(out, seconds, seed):
+    """Upbeat, feel-good loop: major key, four-on-the-floor, claps, bouncy bass and bright plucks."""
+    h = int(hashlib.md5(seed.encode()).hexdigest(), 16)
+    rng = np.random.default_rng(h % 2**32)
+    key = [60, 62, 65, 67, 57][h % 5]
+    prog = [[(0, 'M'), (7, 'M'), (9, 'm'), (5, 'M')], [(0, 'M'), (5, 'M'), (7, 'M'), (5, 'M')], [(9, 'm'), (5, 'M'), (0, 'M'), (7, 'M')]][(h >> 8) % 3]
+    bpm = 112 + (h >> 16) % 12
+    beat = 60 / bpm
+    n = int((seconds + 2) * SR)
+    buf = {k: np.zeros(n) for k in ('drums', 'bass', 'pluck', 'pad')}
+    def add(k, sig, at):
+        i = int(at * SR)
+        if i >= n: return
+        j = min(n, i + len(sig)); buf[k][i:j] += sig[: j - i]
+    b, t = 0, 0.0
+    while t < seconds + 1:
+        root, q = prog[b % 4]
+        notes = chord(key + root, q)
+        for k in range(4):
+            bt = t + k * beat
+            add('drums', drum('kick', 1.0), bt)
+            if k % 2 == 1: add('drums', drum('clap'), bt)
+            add('drums', drum('hat', 0.8), bt + beat / 2)
+            # bouncy offbeat bass
+            add('bass', piano(f(notes[0] - 24), beat * 0.45, 0.9), bt + beat / 2)
+        # pluck pattern (16ths, syncopated)
+        patt = [0, 2, 1, 2, 0, 2, 1, 0]
+        for e, idx in enumerate(patt):
+            if (h >> e) & 1 or e % 2 == 0:
+                add('pluck', piano(f(notes[idx] + 12), 0.5, 0.35 * rng.uniform(0.8, 1.1)), t + e * beat / 2)
+        for m in notes:
+            add('pad', pad(f(m), beat * 4 + 0.5, 0.03), t)
+        t += beat * 4; b += 1
+    lp = lambda x, c: sosfilt(butter(2, c, 'low', fs=SR, output='sos'), x)
+    mix = buf['drums'] * 0.55 + lp(buf['bass'], 300) * 0.9 + lp(buf['pluck'], 6000) * 0.8 + lp(buf['pad'], 2500)
+    L = int(1.2 * SR); tt = np.arange(L) / SR
+    ir = rng.standard_normal(L) * np.exp(-tt * 5); ir[0] = 0
+    wet = fftconvolve(lp(buf['pluck'], 6000) + buf['pad'], ir)[:n]
+    wet /= np.abs(wet).max() + 1e-9
+    mix = mix / (np.abs(mix).max() + 1e-9) + wet * 0.18
+    mix = mix[: int(seconds * SR)]
+    tt = np.arange(len(mix)) / SR
+    mix *= np.minimum(1, tt / 0.3) * np.minimum(1, (seconds - tt) / 1.2).clip(0)
+    mix /= np.abs(mix).max() + 1e-9
+    sf.write(out, np.stack([mix, mix], axis=1).astype(np.float32) * 0.85, SR)
+
 def main():
     out, seconds, seed = sys.argv[1], float(sys.argv[2]), sys.argv[3]
+    if len(sys.argv) > 4 and sys.argv[4] == 'happy':
+        return happy(out, seconds, seed)
     h = int(hashlib.md5(seed.encode()).hexdigest(), 16)
     rng = np.random.default_rng(h % 2**32)
     key, prog = KEYS[h % len(KEYS)], PROGS[(h >> 8) % len(PROGS)]

@@ -116,3 +116,12 @@ export const SATISFY = ['dominoes falling', 'kinetic sand cutting', 'paint mixin
 export async function landscapeClips(queries, seed, root, n = 1) {
 	return stockClips(queries, seed, root, n, 'landscape');
 }
+
+// ---------- happy real-life footage for format J (@legat.matteo style) ----------
+export const JOY = ['people dancing street', 'friends dancing night city', 'woman dancing street happy', 'man dancing street', 'friends laughing together', 'girl dancing happy', 'dancing in the rain', 'couple dancing city', 'happy friends running beach', 'people celebrating street', 'dancing on the street night', 'friends having fun outdoors'];
+/** n portrait clips of people being happy / dancing (your own clips in marketing/clips/joy first). */
+export async function joyClips(seed, root, n = 2) {
+	const own = ownClips({ theme: 'joy', date: seed, slot: '' }, root, n);
+	if (own.length >= n) return own;
+	return [...own, ...(await stockClips(JOY, seed, root, n - own.length, 'portrait'))];
+}
