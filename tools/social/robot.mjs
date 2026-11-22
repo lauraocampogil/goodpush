@@ -5,6 +5,7 @@
 //      POSTIZ_API_KEY (Postiz → Settings → Public API), PIXABAY_API_KEY or PEXELS_API_KEY (stock footage, optional)
 //      POSTIZ_CHANNELS (optional JSON {"en":{"instagram":"id","tiktok":"id"},"es":{…}} — otherwise matched by name "goodpush.en"/"goodpush.es")
 import { mkdirSync, readFileSync, existsSync, readdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { basename, join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openRenderer } from '../videos/renderer.mjs';
@@ -122,7 +123,10 @@ for (const page of due) {
 			const musicDir = join(root, 'marketing', 'music');
 			const tracks = existsSync(musicDir) ? readdirSync(musicDir).filter((x) => /\.(mp3|m4a|wav)$/i.test(x)).sort() : [];
 			const track = tracks.length ? join(musicDir, tracks[[...base].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % tracks.length]) : null;
-			if (!existsSync(ig)) await r.phrase({ ...job, seed: base }, lang, ig, f.phrases[0], track);
+			// No tracks in marketing/music → the original GoodPush score (music.py, the one the voice videos used)
+			let score = track;
+			if (!score) { score = join(out, `${base}_music.wav`); if (!existsSync(score)) execFileSync('python3', [join(root, 'tools/videos/music.py'), score, '10', base]); }
+			if (!existsSync(ig)) await r.phrase({ ...job, seed: base }, lang, ig, f.phrases[0], score);
 			igMedia = [ig]; ttMedia = [tt];
 			// Instagram is automatic (with a royalty-free song from marketing/music/). IG_MANUAL=1 → TikTok only.
 			if (process.env.IG_MANUAL === '1') platforms.splice(0, platforms.length, ...platforms.filter((pl) => pl !== 'Instagram'));
