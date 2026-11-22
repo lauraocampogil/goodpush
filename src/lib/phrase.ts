@@ -1,6 +1,7 @@
 import { CATEGORY_IDS, type CategoryId, type Lang } from './data/categories';
 import { PHRASES, TOPIC_PHRASES, type Phrase } from './data/phrases';
 import type { TopicId } from './data/topics';
+import { JOY } from './data/joy';
 
 /** 'YYYY-MM-DD' for a given time zone (defaults to the device's). */
 export function dayKey(date = new Date(), timeZone?: string): string {
@@ -44,6 +45,12 @@ export function phraseForDay(
 	opts: { slot?: number; premium?: boolean; topics?: TopicId[] } = {}
 ): Phrase {
 	const slot = opts.slot ?? 0;
+	// The free daily push is a happy one-liner (GoodPush tone); the vibe still decides the card colour.
+	if (slot === 0) {
+		const cs = (categories.length ? categories : [...CATEGORY_IDS]).filter((c) => CATEGORY_IDS.includes(c));
+		const n0 = dayNumber(key);
+		return { ...JOY[n0 % JOY.length], cat: cs[n0 % cs.length] };
+	}
 	const cats = (categories.length ? categories : [...CATEGORY_IDS]).filter((c) =>
 		CATEGORY_IDS.includes(c)
 	);

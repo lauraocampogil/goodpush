@@ -18,7 +18,6 @@
 	import { enablePush, syncProfile } from '#lib/push.ts';
 	import { app } from '#lib/store.svelte.ts';
 	import ShareButton from '../ShareButton.svelte';
-	import { todaysQuote } from '#lib/quotes.ts';
 	import { PUBLIC_PREMIUM_PRICE } from '$app/env/public';
 	import type { Phrase } from '#lib/data/phrases.ts';
 	import { TOPIC_EMOJI, isMovieTopic } from '#lib/data/topics.ts';
@@ -74,7 +73,7 @@
 		}
 		// 1) The phrase today's push delivered (kept by the service worker) — the same one all day
 		pushedToday()
-			.then((p) => p ?? todaysQuote(today, app.profile.topics, app.profile.categories))
+			.then((p) => p ?? null) // no news/movie quote: the day's phrase is the happy one-liner
 			.then((q) => {
 			if (q) {
 				quote = q;

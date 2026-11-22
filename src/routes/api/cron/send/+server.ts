@@ -139,7 +139,8 @@ export const GET: RequestHandler = async ({ request, url }) => {
 				if (slot === -1) return;
 
 				const topics = r.topics ?? [];
-				const news = slot === 0 ? pickQuote(quotesByDay.get(today) ?? [], topics, today, r.categories) : null;
+				// Daily push = always a happy one-liner (no news/movie quotes since Nov 22)
+				const news = null as Phrase | null; void pickQuote; void quotesByDay;
 				const streak = liveStreak(r.streak_count, r.streak_last, today);
 				const phrase = news ?? phraseForDay(r.categories, today, { slot, premium: access, topics });
 				if (dryRun) return void sent++;

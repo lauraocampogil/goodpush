@@ -4,6 +4,7 @@
 // `auto: true` (used by the robot) swaps formats that need a human for ones it can make alone:
 //   C (screen recording) → R (real footage) · some D evenings → R.
 import { PHRASES, TOPIC_PHRASES } from '../../src/lib/data/phrases.ts';
+import { joyLine } from './joy.mjs';
 import { QUOTES, author, srcOf } from './quotes.mjs';
 import { SCRIPTS, sentences } from './scripts.mjs';
 const SHORT_Q = QUOTES.filter((q) => q.en.replace(/\*/g, '').split(/\s+/).length <= 25);
@@ -130,8 +131,8 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 			rows.push({
 				date, slot, theme, format, streak: format === 'F' ? streak : 0,
 				hook,
-				phrases: ph.map((p) => ({ id: p.id, en: p.en, es: p.es, fr: p.fr })),
-				caption: L((l, li) => `${format === 'K' ? sentences(sc[l] ?? sc.en)[0] : n === 1 ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : ['R', 'M'].includes(format) ? SHARE[li] : SOFT[li]}`),
+				phrases: format === 'J' ? [(() => { const j = joyLine(dayN * 3 + ['Morning', 'Midday', 'Evening'].indexOf(slot)); return { id: `joy-${dayN}-${slot}`, en: j.en, es: j.es, fr: j.en }; })()] : ph.map((p) => ({ id: p.id, en: p.en, es: p.es, fr: p.fr })),
+				caption: L((l, li) => `${format === 'J' ? joyLine(dayN * 3 + ['Morning', 'Midday', 'Evening'].indexOf(slot))[l] ?? '' : format === 'K' ? sentences(sc[l] ?? sc.en)[0] : n === 1 ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : ['R', 'M'].includes(format) ? SHARE[li] : SOFT[li]}`),
 				...(format === 'K' ? { script: L((l) => sentences(sc[l] ?? sc.en)) } : {}),
 				hashtags: L((l, li) => `${format === 'J' ? ['#happy #goodvibes #positivevibes', '#buenrollo #felicidad #vibrapositiva', '#bonnehumeur #bonheur #goodvibes'][li] + ' ' : ''}${HASH_THEME[theme][li]} ${HASH_BASE[li]}`),
 				publish: L((l) => zonedToUtc(date, SCHEDULE[l][slot], SCHEDULE[l].tz))

@@ -124,6 +124,8 @@ for (const page of due) {
 			const track = tracks.length ? join(musicDir, tracks[[...base].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % tracks.length]) : null;
 			if (!existsSync(ig)) await r.phrase({ ...job, seed: base }, lang, ig, f.phrases[0], track);
 			igMedia = [ig]; ttMedia = [tt];
+			// Instagram is manual too (Laura adds the song from Instagram's library): only TikTok goes to Postiz
+			if (process.env.IG_AUTO !== '1') platforms.splice(0, platforms.length, ...platforms.filter((pl) => pl !== 'Instagram'));
 		} else if (format === 'M') {
 			const file = join(out, `${base}.mp4`);
 			if (!existsSync(file)) await r.mascotCard(job, lang, file);

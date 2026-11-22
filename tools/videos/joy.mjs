@@ -1,0 +1,48 @@
+// One-liners for format J — the carefree, happy tone of @legat.matteo ("Who cares what miserable people think",
+// "The weirder, the better", "We stress too much for a life that can end any time. Make sure to live.").
+// Written by GoodPush: short, light, a little cheeky, always positive. One phrase per video, nothing else.
+export const JOY_LINES = [
+	{ en: 'Who cares what miserable people think.', es: 'A quién le importa lo que piense la gente amargada.' },
+	{ en: 'The weirder, the better.', es: 'Cuanto más rara, mejor.' },
+	{ en: 'We stress too much for a life that can end any time. Make sure to live.', es: 'Nos estresamos demasiado por una vida que se acaba cuando menos lo esperas. Vívela.' },
+	{ en: 'Dance like nobody’s filming.', es: 'Baila como si nadie te estuviera grabando.' },
+	{ en: 'Be the reason someone smiles today.', es: 'Sé la razón por la que alguien sonríe hoy.' },
+	{ en: 'Life is too short to be serious all the time.', es: 'La vida es demasiado corta para ser serio todo el rato.' },
+	{ en: 'Romanticize your life. Nobody else will do it for you.', es: 'Romantiza tu vida. Nadie lo va a hacer por ti.' },
+	{ en: 'Some days you just have to create your own sunshine.', es: 'Hay días en los que te toca fabricar tu propio sol.' },
+	{ en: 'Stop waiting for the weekend to be happy.', es: 'Deja de esperar al finde para ser feliz.' },
+	{ en: 'Laugh more. Worry less. Text them back.', es: 'Ríe más. Preocúpate menos. Contéstale.' },
+	{ en: 'You’re allowed to be a little too much.', es: 'Tienes permiso para ser un poco demasiado.' },
+	{ en: 'Do it scared. Do it badly. Just do it with a smile.', es: 'Hazlo con miedo. Hazlo mal. Pero hazlo sonriendo.' },
+	{ en: 'Main character energy only.', es: 'Hoy solo energía de protagonista.' },
+	{ en: 'The vibe is: happy for no reason.', es: 'El plan de hoy: ser feliz sin motivo.' },
+	{ en: 'Normal is boring. Be yourself.', es: 'Lo normal es aburrido. Sé tú.' },
+	{ en: 'One day you’ll miss these days. Enjoy them.', es: 'Un día vas a echar de menos estos días. Disfrútalos.' },
+	{ en: 'Protect your peace. Turn up the music.', es: 'Protege tu paz. Sube la música.' },
+	{ en: 'Nobody remembers who was cool. They remember who was fun.', es: 'Nadie se acuerda de quién era el guay. Se acuerdan de quién era divertido.' },
+	{ en: 'If it makes you happy, it doesn’t have to make sense.', es: 'Si te hace feliz, no tiene que tener sentido.' },
+	{ en: 'Smile. It confuses people.', es: 'Sonríe. Desconcierta a la gente.' },
+	{ en: 'Good things are coming. Act like it.', es: 'Vienen cosas buenas. Compórtate como si ya estuvieran aquí.' },
+	{ en: 'Be the energy you want to attract.', es: 'Sé la energía que quieres atraer.' },
+	{ en: 'Today is a good day to have a good day.', es: 'Hoy es un buen día para tener un buen día.' },
+	{ en: 'Overthinking never made anyone happy. Dancing did.', es: 'Pensar demasiado nunca hizo feliz a nadie. Bailar sí.' },
+	{ en: 'Say yes to the plan. Make the memory.', es: 'Di que sí al plan. Crea el recuerdo.' },
+	{ en: 'Your life, your rules, your playlist.', es: 'Tu vida, tus reglas, tu playlist.' },
+	{ en: 'Be silly. It’s good for you.', es: 'Haz el tonto. Te sienta bien.' },
+	{ en: 'Life is happening now. Don’t watch it from the sofa.', es: 'La vida está pasando ahora. No la mires desde el sofá.' },
+	{ en: 'Happiness looks good on you.', es: 'La felicidad te queda muy bien.' },
+	{ en: 'Collect moments, not opinions.', es: 'Colecciona momentos, no opiniones.' },
+	{ en: 'Stop explaining yourself. Just enjoy.', es: 'Deja de dar explicaciones. Disfruta.' },
+	{ en: 'Make today so good that yesterday gets jealous.', es: 'Haz que hoy sea tan bueno que ayer tenga envidia.' },
+	{ en: 'You don’t need a reason to celebrate. You’re here.', es: 'No necesitas una razón para celebrar. Estás aquí.' },
+	{ en: 'Small joys count. Coffee, sun, your song.', es: 'Las pequeñas alegrías cuentan. Café, sol, tu canción.' },
+	{ en: 'Let them talk. You keep dancing.', es: 'Que hablen. Tú sigue bailando.' },
+	{ en: 'Be happy. It drives people crazy.', es: 'Sé feliz. Saca de quicio a la gente.' },
+	{ en: 'Not every day is good, but there’s something good in every day.', es: 'No todos los días son buenos, pero en todos hay algo bueno.' },
+	{ en: 'Life gets better when you stop caring what they think.', es: 'La vida mejora cuando dejas de preocuparte por lo que piensan.' },
+	{ en: 'Joy is a choice. Choose it again today.', es: 'La alegría se elige. Elígela otra vez hoy.' },
+	{ en: 'Go outside. Call a friend. Laugh too loud.', es: 'Sal a la calle. Llama a una amiga. Ríete demasiado alto.' }
+];
+const hash = (s) => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+export const joyLine = (i) => JOY_LINES[((i % JOY_LINES.length) + JOY_LINES.length) % JOY_LINES.length];
+export const joyFor = (seed) => JOY_LINES[hash(seed) % JOY_LINES.length];
