@@ -56,7 +56,7 @@ const HASH_THEME = {
 
 /** When each account posts — local time of its audience. */
 export const SCHEDULE = {
-	en: { tz: 'America/New_York', Morning: '08:00', Midday: '12:00', Evening: '17:00' },
+	en: { tz: 'Europe/Madrid', Morning: '08:00', Midday: '14:00', Evening: '21:00' }, // same time as ES (Laura, Nov 23)
 	es: { tz: 'Europe/Madrid', Morning: '08:00', Midday: '14:00', Evening: '21:00' },
 	fr: { tz: 'Europe/Paris', Morning: '07:30', Midday: '12:30', Evening: '20:30' }
 };
