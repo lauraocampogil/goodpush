@@ -83,6 +83,27 @@ export async function langLists(): Promise<Record<Lang, number>> {
 	return (listCache = out);
 }
 
+/** Everyone in the main GoodPush list also goes into their language list (EN default) — the language lists
+ *  were created later, so older subscribers were only in the main list and got nothing. Returns counts. */
+export async function syncLangLists(): Promise<Record<Lang, number>> {
+	const lists = await langLists();
+	const by: Record<Lang, string[]> = { en: [], es: [], fr: [] };
+	for (let offset = 0; ; offset += 500) {
+		const r = (await (await call(`/contacts/lists/${BREVO_LIST_ID}/contacts?limit=500&offset=${offset}`, 'GET')).json()) as { contacts?: { email: string; emailBlacklisted?: boolean; attributes?: Record<string, unknown> }[] };
+		const cs = r.contacts ?? [];
+		for (const c of cs) {
+			if (c.emailBlacklisted) continue;
+			const l = String(c.attributes?.LANGUAGE ?? 'en').toLowerCase() as Lang;
+			(by[l] ?? by.en).push(c.email);
+		}
+		if (cs.length < 500) break;
+	}
+	for (const l of Object.keys(by) as Lang[]) {
+		for (let i = 0; i < by[l].length; i += 150) await call(`/contacts/lists/${lists[l]}/contacts/add`, 'POST', { emails: by[l].slice(i, i + 150) }).catch(() => {});
+	}
+	return { en: by.en.length, es: by.es.length, fr: by.fr.length };
+}
+
 /** Creates a campaign for one language list and sends it now. Returns the campaign id. */
 export async function sendCampaign(o: { name: string; subject: string; preview: string; html: string; listId: number; senderEmail: string }) {
 	const res = await call('/emailCampaigns', 'POST', {

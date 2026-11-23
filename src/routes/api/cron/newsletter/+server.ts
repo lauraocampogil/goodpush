@@ -3,7 +3,7 @@ import { CRON_SECRET } from '$app/env/private';
 import { PUBLIC_CONTACT_EMAIL } from '$app/env/public';
 import { LANGS, type Lang } from '#lib/data/categories.ts';
 import { captureServer } from '#lib/server/analytics.ts';
-import { brevoReady, langLists, sendCampaign } from '#lib/server/brevo.ts';
+import { brevoReady, langLists, sendCampaign, syncLangLists } from '#lib/server/brevo.ts';
 import { buildIssue, renderIssue, subject, weekKey } from '#lib/server/newsletter.ts';
 import { db } from '#lib/server/supabase.ts';
 import type { RequestHandler } from './$types';
@@ -31,9 +31,11 @@ export const GET: RequestHandler = async ({ request, url }) => {
 	const { data: already } = await supabase.from('newsletter_issues').select('week').eq('week', week).maybeSingle();
 	if (already && !url.searchParams.has('force')) return json({ ok: true, week, skipped: 'already sent' });
 
+	const audience = await syncLangLists().catch(() => null); // make sure every subscriber is in their language list
 	const lists = await langLists();
 	const campaigns: Partial<Record<Lang, number | string>> = {};
 	for (const lang of LANGS) {
+		if (audience && audience[lang] === 0) { campaigns[lang] = 'no subscribers'; continue; }
 		try {
 			campaigns[lang] = await sendCampaign({
 				name: `The Good Weekly #${issue.number} (${lang.toUpperCase()}) — ${week}`,
@@ -48,6 +50,6 @@ export const GET: RequestHandler = async ({ request, url }) => {
 		}
 	}
 	await supabase.from('newsletter_issues').upsert({ week, number: issue.number, phrase_id: issue.phrase.id, campaigns, sent_at: new Date().toISOString() });
-	await captureServer([{ event: 'newsletter_sent', distinct_id: 'goodpush-cron', properties: { week, number: issue.number, campaigns } }]);
-	return json({ ok: true, week, number: issue.number, campaigns });
+	await captureServer([{ event: 'newsletter_sent', distinct_id: 'goodpush-cron', properties: { week, number: issue.number, campaigns, audience } }]);
+	return json({ ok: true, week, number: issue.number, campaigns, audience });
 };
