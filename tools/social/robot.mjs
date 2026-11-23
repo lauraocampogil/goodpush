@@ -125,7 +125,7 @@ for (const page of due) {
 			const track = tracks.length ? join(musicDir, tracks[[...base].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % tracks.length]) : null;
 			// No tracks in marketing/music → the original GoodPush score (music.py, the one the voice videos used)
 			let score = track;
-			if (!score) { score = join(out, `${base}_music.wav`); if (!existsSync(score)) execFileSync('python3', [join(root, 'tools/videos/music.py'), score, '10', base]); }
+			if (!score) { score = join(out, `${base}_music.wav`); if (!existsSync(score)) execFileSync('python3', [join(root, 'tools/videos/music.py'), score, '8', base]); }
 			if (!existsSync(ig)) await r.phrase({ ...job, seed: base }, lang, ig, f.phrases[0], score);
 			igMedia = [ig]; ttMedia = [tt];
 			// Instagram is automatic (with a royalty-free song from marketing/music/). IG_MANUAL=1 → TikTok only.

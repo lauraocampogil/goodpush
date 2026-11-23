@@ -3,7 +3,7 @@ import { CRON_SECRET } from '$app/env/private';
 import { PUBLIC_CONTACT_EMAIL } from '$app/env/public';
 import { LANGS, type Lang } from '#lib/data/categories.ts';
 import { captureServer } from '#lib/server/analytics.ts';
-import { brevoReady, langLists, sendCampaign, syncLangLists } from '#lib/server/brevo.ts';
+import { brevoReady, langLists, sendCampaign, sendEmail, syncLangLists } from '#lib/server/brevo.ts';
 import { buildIssue, renderIssue, subject, weekKey } from '#lib/server/newsletter.ts';
 import { db } from '#lib/server/supabase.ts';
 import type { RequestHandler } from './$types';
@@ -49,6 +49,8 @@ export const GET: RequestHandler = async ({ request, url }) => {
 			campaigns[lang] = `error: ${(err as Error).message}`;
 		}
 	}
+	// A copy to the GoodPush inbox every week, so the team sees exactly what went out (no subscription needed)
+	if (PUBLIC_CONTACT_EMAIL) await sendEmail({ to: PUBLIC_CONTACT_EMAIL, subject: `[copia] ${subject('es')}`, html: renderIssue(issue, 'es'), senderEmail: PUBLIC_CONTACT_EMAIL }).catch(() => {});
 	await supabase.from('newsletter_issues').upsert({ week, number: issue.number, phrase_id: issue.phrase.id, campaigns, sent_at: new Date().toISOString() });
 	await captureServer([{ event: 'newsletter_sent', distinct_id: 'goodpush-cron', properties: { week, number: issue.number, campaigns, audience } }]);
 	return json({ ok: true, week, number: issue.number, campaigns, audience });

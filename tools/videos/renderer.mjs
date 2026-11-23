@@ -327,7 +327,7 @@ export async function openRenderer() {
 			await page.setViewportSize({ width: 1080, height: 1920 });
 			await page.goto(url);
 			// Static: the whole phrase is on screen from the first frame, nothing moves (Laura, Nov 22)
-			const D = await page.evaluate((j) => window.setupV(j), { ...job, lang, full: true, still: true, lines: [{ text: phrase.replace(/\*/g, ''), start: 0, end: 0.001 }] }) + 7.6;
+			const D = await page.evaluate((j) => window.setupV(j), { ...job, lang, full: true, still: true, lines: [{ text: phrase.replace(/\*/g, ''), start: 0, end: 0.001 }] }) + 4.6; // ~7 s: short enough to loop (watch time > 100% helps reach)
 			const part = file.replace(/\.mp4$/, '.part.mp4');
 			const aIn = audio ? ['-stream_loop', '-1', '-i', audio] : ['-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo'];
 			const af = audio ? ['-af', `loudnorm=I=-14:TP=-1.5,afade=t=out:st=${(D - 1.2).toFixed(2)}:d=1.2`] : [];
