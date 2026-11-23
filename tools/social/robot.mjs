@@ -130,6 +130,8 @@ for (const page of due) {
 			igMedia = [ig]; ttMedia = [tt];
 			// Instagram is automatic (with a royalty-free song from marketing/music/). IG_MANUAL=1 → TikTok only.
 			if (process.env.IG_MANUAL === '1') platforms.splice(0, platforms.length, ...platforms.filter((pl) => pl !== 'Instagram'));
+			// New account: Instagram only once a day (the evening post) so it isn't flagged as spam
+			if (slot !== (process.env.IG_SLOT || 'Evening')) platforms.splice(0, platforms.length, ...platforms.filter((pl) => pl !== 'Instagram'));
 		} else if (format === 'M') {
 			const file = join(out, `${base}.mp4`);
 			if (!existsSync(file)) await r.mascotCard(job, lang, file);
@@ -159,7 +161,7 @@ for (const page of due) {
 		if (platforms.includes('Instagram') && c.instagram) {
 			const media = await Promise.all(igMedia.map(upload));
 			const ch = asChannel(c.instagram);
-			items.push({ integration: { id: ch.id }, value: [{ content: text, image: media }], settings: { __type: ch.identifier ?? 'instagram-standalone', post_type: 'post', is_trial_reel: false, collaborators: [] } });
+			items.push({ integration: { id: ch.id }, value: [{ content: text, image: media }], settings: { __type: ch.identifier ?? 'instagram-standalone', post_type: 'post', ...(format === 'J' && process.env.IG_TRIAL !== '0' ? { is_trial_reel: true, graduation_strategy: 'SS_PERFORMANCE' } : { is_trial_reel: false }), collaborators: [] } });
 		}
 		if (platforms.includes('TikTok') && c.tiktok) {
 			const media = igMedia === ttMedia && items.length ? items[0].value[0].image : await Promise.all(ttMedia.map(upload));
