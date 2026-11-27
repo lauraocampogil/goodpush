@@ -391,6 +391,7 @@ window.setupV = function (job) {
 		<div id="sB" class="abs" style="right:-320px;bottom:150px;width:860px;height:860px;opacity:.08"></div>
 		<div class="abs" style="left:70px;right:70px;top:120px;height:8px;border-radius:8px;background:rgba(127,127,127,.25)"><div id="bar" style="height:100%;width:0;border-radius:8px"></div></div>
 		<div id="cap" class="abs" style="left:90px;right:90px;top:790px;height:280px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Bricolage,Inter;font-weight:800;font-stretch:75%;letter-spacing:-0.01em;text-transform:uppercase;font-size:110px;line-height:1"><div id="capin"></div></div>
+		${job.kicker ? `<div id="kick" class="abs" style="left:90px;right:90px;top:640px;text-align:center;font-family:Bricolage,Inter;font-weight:800;font-stretch:82%;letter-spacing:0.06em;text-transform:uppercase;font-size:40px;opacity:.85"><span id="kickin" style="display:inline-block;padding:10px 22px;border-radius:999px"></span></div>` : ''}
 		<div id="logo" class="abs" style="left:0;right:0;top:1160px;display:flex;justify-content:center;align-items:center;gap:14px;font-family:Bricolage,Inter;font-weight:800;font-stretch:82%;letter-spacing:-0.02em;font-size:38px;text-transform:uppercase"><span id="logoS" style="width:52px;height:52px;display:inline-block"></span>GoodPush</div>`;
 	let shownCap = -1, shownCol = -1;
 	const paint = (k) => {
@@ -398,6 +399,7 @@ window.setupV = function (job) {
 		document.getElementById('bg').style.background = c.bg;
 		document.getElementById('cap').style.color = c.fg;
 		document.getElementById('logo').style.color = c.fg;
+		const kk = document.getElementById('kickin'); if (kk) { kk.textContent = job.kicker; kk.style.background = c.acc; kk.style.color = c.bg === '#0D0D0E' ? '#0D0D0E' : c.bg; }
 		document.getElementById('bar').style.background = c.acc;
 		document.getElementById('logoS').innerHTML = smiley('smile', c.smiley === 'ink' ? 'ink' : c.bg === '#D5FF00' ? 'ink' : 'sun');
 		document.getElementById('sA').innerHTML = smiley('smile', c.bg === '#0D0D0E' ? 'sun' : 'ink');

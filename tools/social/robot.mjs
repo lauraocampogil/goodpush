@@ -119,14 +119,14 @@ for (const page of due) {
 			// TikTok gets it SILENT → Laura adds a trending song (Happy, MJ…) when she publishes the draft (TikTok licenses those).
 			// Instagram is posted automatically, so it gets a royalty-free track from marketing/music/ (or none if the folder is empty).
 			const tt = join(out, `${base}_tt.mp4`), ig = join(out, `${base}.mp4`);
-			if (!existsSync(tt)) await r.phrase({ ...job, seed: base }, lang, tt, f.phrases[0], null);
+			if (!existsSync(tt)) await r.phrase({ ...job, seed: base, kicker: f.kicker }, lang, tt, f.phrases[0], null);
 			const musicDir = join(root, 'marketing', 'music');
 			const tracks = existsSync(musicDir) ? readdirSync(musicDir).filter((x) => /\.(mp3|m4a|wav)$/i.test(x)).sort() : [];
 			const track = tracks.length ? join(musicDir, tracks[[...base].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % tracks.length]) : null;
 			// No tracks in marketing/music → the original GoodPush score (music.py, the one the voice videos used)
 			let score = track;
 			if (!score) { score = join(out, `${base}_music.wav`); if (!existsSync(score)) execFileSync('python3', [join(root, 'tools/videos/music.py'), score, '8', base]); }
-			if (!existsSync(ig)) await r.phrase({ ...job, seed: base }, lang, ig, f.phrases[0], score);
+			if (!existsSync(ig)) await r.phrase({ ...job, seed: base, kicker: f.kicker }, lang, ig, f.phrases[0], score);
 			igMedia = [ig]; ttMedia = [tt];
 			// Instagram is automatic (with a royalty-free song from marketing/music/). IG_MANUAL=1 → TikTok only.
 			if (process.env.IG_MANUAL === '1') platforms.splice(0, platforms.length, ...platforms.filter((pl) => pl !== 'Instagram'));

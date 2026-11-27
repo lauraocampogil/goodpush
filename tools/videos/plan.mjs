@@ -42,6 +42,17 @@ const CLOSER = [['Now go get it.', 'Ahora ve a por ello.', 'Maintenant, vas-y.']
 const CTA_LINE = ['Get one every day on your lock screen — link in bio. 14 days free.', 'Recibe una cada día en tu pantalla de bloqueo — link en la bio. 14 días gratis.', 'Reçois-en une chaque jour sur ton écran verrouillé — lien en bio. 14 jours gratuits.'];
 const SOFT = ['Save it for later 💛', 'Guárdala para luego 💛', 'Garde-la pour plus tard 💛'];
 const SHARE = ['Send this to someone who needs it 💛', 'Envíaselo a quien lo necesite 💛', "Envoie-le à quelqu'un qui en a besoin 💛"];
+// Format J: a small hook above the phrase (first frame = the reason to stop scrolling) and an engagement line in the caption
+const KICK = [
+	['If you see this, it’s your sign', 'Read it twice', 'This one’s for you', 'Save it for tomorrow', 'Your daily reminder', 'Hard truth'],
+	['Si ves esto, es tu señal', 'Léelo dos veces', 'Esto es para ti', 'Guárdalo para mañana', 'Tu recordatorio de hoy', 'Verdad incómoda'],
+	['Si tu vois ça, c’est ton signe', 'Lis-le deux fois', 'C’est pour toi', 'Garde-le pour demain', 'Ton rappel du jour', 'Vérité qui pique']
+];
+const ENGAGE = [
+	['Send this to someone who needs it today 👇', 'Comment 🔥 if this is for you', 'Save it for the days you forget 📌', 'Tag the friend who needs to hear this 👇'],
+	['Envíaselo a quien necesite leerlo hoy 👇', 'Comenta 🔥 si es para ti', 'Guárdalo para los días que se te olvide 📌', 'Etiqueta a quien necesita leer esto 👇'],
+	['Envoie-le à quelqu’un qui en a besoin 👇', 'Commente 🔥 si c’est pour toi', 'Enregistre-le pour les jours où tu oublies 📌', 'Identifie la personne qui doit lire ça 👇']
+];
 const ASK = ['Comment your number 👇', 'Comenta tu número 👇', 'Commente ton numéro 👇'];
 const HASH_BASE = ['#motivation #dailymotivation #mindset #goodpush', '#motivación #frasesmotivadoras #mentalidad #goodpush', '#motivation #citationdujour #mindset #goodpush'];
 const HASH_THEME = {
@@ -132,9 +143,12 @@ export function planRange(from, days = 7, { auto = false } = {}) {
 				date, slot, theme, format, streak: format === 'F' ? streak : 0,
 				hook,
 				phrases: format === 'J' ? [(() => { const j = joyLine(dayN * 3 + ['Morning', 'Midday', 'Evening'].indexOf(slot)); return { id: `joy-${dayN}-${slot}`, en: j.en, es: j.es, fr: j.en }; })()] : ph.map((p) => ({ id: p.id, en: p.en, es: p.es, fr: p.fr })),
-				caption: L((l, li) => `${format === 'J' ? joyLine(dayN * 3 + ['Morning', 'Midday', 'Evening'].indexOf(slot))[l] ?? '' : format === 'K' ? sentences(sc[l] ?? sc.en)[0] : n === 1 ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : ['R', 'M'].includes(format) ? SHARE[li] : SOFT[li]}`),
+				caption: L((l, li) => { const k = dayN * 3 + ['Morning', 'Midday', 'Evening'].indexOf(slot);
+					if (format === 'J') return `${joyLine(k)[l] ?? ''}\n\n${ENGAGE[li][k % 4]}${k % 3 === 2 ? `\n${CTA_LINE[li]}` : ''}`; // app pitch only 1 in 3: sales lines hurt reach
+					return `${format === 'K' ? sentences(sc[l] ?? sc.en)[0] : n === 1 ? clean(ph[0][l]) : hook[l]}\n\n${cta ? CTA_LINE[li] : format === 'B' ? ASK[li] : ['R', 'M'].includes(format) ? SHARE[li] : SOFT[li]}`; }),
+				...(format === 'J' ? { kicker: L((l, li) => KICK[li][(dayN * 3 + ['Morning', 'Midday', 'Evening'].indexOf(slot)) % KICK[li].length]) } : {}),
 				...(format === 'K' ? { script: L((l) => sentences(sc[l] ?? sc.en)) } : {}),
-				hashtags: L((l, li) => `${format === 'J' ? ['#happy #goodvibes #positivevibes', '#buenrollo #felicidad #vibrapositiva', '#bonnehumeur #bonheur #goodvibes'][li] + ' ' : ''}${HASH_THEME[theme][li]} ${HASH_BASE[li]}`),
+				hashtags: L((l, li) => format === 'J' ? `${HASH_THEME[theme][li]} ${['#motivation #mindset', '#motivacion #frasesmotivadoras', '#motivation #mindset'][li]}` : `${HASH_THEME[theme][li]} ${HASH_BASE[li]}`), // 5 focused tags beat 10 generic ones
 				publish: L((l) => zonedToUtc(date, SCHEDULE[l][slot], SCHEDULE[l].tz))
 			});
 		}
